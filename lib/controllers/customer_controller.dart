@@ -34,6 +34,12 @@ class CustomerController extends GetxController {
   }
 
   @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+  }
+
+  @override
   void onClose() {
     if (customer != null) {
       customerAddressInputController.clear();

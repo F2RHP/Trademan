@@ -9,6 +9,14 @@ class MenuItems
   MenuItems(@required this.menuName,@required this.menuKey,@required this.menuIcon);
 }
 
+class DashboardMenu
+{
+  String menuName="";
+  Icon menuIcon=Icon(Icons.u_turn_left);
+
+  DashboardMenu.create(this.menuName,this.menuIcon);
+}
+
 class SubMenuItem
 {
   String subMenuName='';

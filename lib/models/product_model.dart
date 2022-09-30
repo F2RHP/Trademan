@@ -30,21 +30,21 @@ class Product {
   });
 
   int producTId;
-  String producTName;
-  dynamic producTCode;
-  String producTNotes;
+  String? producTName;
+  String? producTCode;
+  String? producTNotes;
   int nOOfQuantity;
-  int producTCost;
-  int sellinGCost;
+  double producTCost;
+  double sellinGCost;
   DateTime purchasEDate;
-  dynamic purchaseorderkey;
+  String? purchaseorderkey;
   int productSTypeId;
-  String producTType;
+  String? producTType;
   int quantitYTypeId;
-  String quantitYTypeName;
+  String? quantitYTypeName;
   int supplieRId;
-  String supplieRName;
-  String supplieRContact;
+  String? supplieRName;
+  String? supplieRContact;
 
   Product copyWith({
     required int producTId,
@@ -52,8 +52,8 @@ class Product {
     required dynamic producTCode,
     required String producTNotes,
     required int nOOfQuantity,
-    required int producTCost,
-    required int sellinGCost,
+    required double producTCost,
+    required double sellinGCost,
     required DateTime purchasEDate,
     required dynamic purchaseorderkey,
     required int productSTypeId,

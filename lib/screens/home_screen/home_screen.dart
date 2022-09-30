@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/controllers/homescreen_controller.dart';
@@ -37,8 +39,83 @@ class HomeScreen extends GetView<HomeScreenController> {
          ],),
        ),
         body: SafeArea(
-          child: Center(child: Text("Tradet"),),
+          child:Buildbody(context),
         ));
+  }
+
+  Widget Buildbody(BuildContext context) {
+    Widget w = CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(child: gettitlewidget(),),
+        GetBodyWidget(context),
+        SliverGrid(
+            delegate: SliverChildListDelegate([...getmenus()]), gridDelegate:
+        SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,crossAxisSpacing: 2,mainAxisSpacing: 2))
+      ],);
+    return w;
+  }
+
+
+
+  Container gettitlewidget() {
+    return Container(padding: EdgeInsets.all(1.0), width: double.maxFinite,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(4.0),
+
+            gradient:
+            LinearGradient(colors: [Colors.yellow, Colors.lightBlueAccent]),),
+          child: Column(children: [
+            Text("KPR Trader Expense APP",
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,),
+            Text("Tenkasi",
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,)
+          ],
+          ),
+        );
+  }
+
+
+
+  List<Container> getmenus() {
+    return controller.dashboardmenu.map((element) =>
+        Container(padding: EdgeInsets.all(16),
+          color:getColor() ,
+          child: Column(children: [
+            Icon(element.menuIcon.icon, size: 80,
+            color: Colors.black,),
+            Text(element.menuName,
+                style: TextStyle(fontSize: 30, color: Colors.black),
+                textAlign: TextAlign.center)
+          ],),)).toList();
+  }
+
+  Color getColor() {
+    Random random = Random();
+    return Color.fromARGB(random.nextInt(300), random.nextInt(300),
+        random.nextInt(300), random.nextInt(300));
+  }
+  Widget GetBodyWidget(BuildContext context)
+  {
+    return    Obx(() {
+        return SliverList(
+            delegate: SliverChildBuilderDelegate((BuildContext context,
+                int index) {
+              if (controller.isLoading.isTrue) {
+                return Center(
+                  child: CircularProgressIndicator(color: Colors.pink,),
+                );
+              }
+              else {
+                return ListTile(title: Text(
+                    controller.products[index].producTName.toString()),);
+              }
+            }, childCount: controller.products.length));
+      }
+    );
+
+
+
   }
 
   ListView buildLeftDrawerView(BuildContext contextBase) {
@@ -112,31 +189,7 @@ class HomeScreen extends GetView<HomeScreenController> {
     return collection;
   }
 
-  // void Test()
-  // {
-  //   Obx(() {
-  //     if (controller.invoicesList.isEmpty) {
-  //       return Center(
-  //         child: CustomText(
-  //           text: AppStrings.HOME_NO_INVOICES,
-  //           color: Colors.black,
-  //           fontSize: Dimensions.calcH(20),
-  //           weight: FontWeight.w600,
-  //         ),
-  //       );
-  //     } else {
-  //       return Column(
-  //         children: [
-  //           ...controller.invoicesList
-  //               .map((invoice) => InvoiceView_eng(
-  //             invoice: invoice,
-  //           ))
-  //               .toList()
-  //         ],
-  //       );
-  //     }
-  //   })
-  // }
+
   
   AppBar buildAppBar_eng(bool isnormal) {
     if(isnormal) {
