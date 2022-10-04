@@ -14,6 +14,7 @@ import 'package:get/get.dart';
 import 'package:trader_app/controllers/homescreen_controller.dart';
 
 import '../../models/menu_models.dart';
+import '../../models/product_model.dart';
 
 class HomeScreen extends GetView<HomeScreenController> {
   const HomeScreen({Key? key}) : super(key: key);
@@ -49,8 +50,9 @@ class HomeScreen extends GetView<HomeScreenController> {
         SliverToBoxAdapter(child: gettitlewidget(),),
         GetBodyWidget(context),
         SliverGrid(
-            delegate: SliverChildListDelegate([...getmenus()]), gridDelegate:
-        SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,crossAxisSpacing: 2,mainAxisSpacing: 2))
+            delegate: SliverChildListDelegate([...getmenus()]),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount:2, crossAxisSpacing: 2, mainAxisSpacing: 2))
       ],);
     return w;
   }
@@ -95,27 +97,62 @@ class HomeScreen extends GetView<HomeScreenController> {
     return Color.fromARGB(random.nextInt(300), random.nextInt(300),
         random.nextInt(300), random.nextInt(300));
   }
-  Widget GetBodyWidget(BuildContext context)
-  {
-    return    Obx(() {
+  Widget GetBodyWidget(BuildContext context) {
+    return Obx(() {
+      if (controller.isLoading.isTrue) {
+        return SliverToBoxAdapter(
+          child: Center(
+            child: CircularProgressIndicator(color: Colors.orange,),
+          ),
+        );
+      } else {
         return SliverList(
             delegate: SliverChildBuilderDelegate((BuildContext context,
                 int index) {
-              if (controller.isLoading.isTrue) {
-                return Center(
-                  child: CircularProgressIndicator(color: Colors.pink,),
-                );
-              }
-              else {
-                return ListTile(title: Text(
-                    controller.products[index].producTName.toString()),);
-              }
+              return getProductitems(index);
             }, childCount: controller.products.length));
       }
+    }
     );
+  }
 
-
-
+  Widget getProductitems(int index) {
+    Widget c = Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),),
+      color: Colors.lightBlueAccent,
+      child: Row(children: [
+        Icon(Icons.account_balance_sharp, size: 55,),
+        Flexible(
+          child: Container(
+            padding: EdgeInsets.only(left: 5.0), color: Colors.greenAccent,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(controller.products[index].producTName.toString(),
+                  style: TextStyle(fontSize: 20, color: Colors.pink),),
+                Container(
+                  child: Row(mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      RichText(text: TextSpan(children: [TextSpan(text: "Cost :",style: TextStyle(color: Colors.black,fontSize: 17)),
+                        TextSpan(text: controller.products[index].producTCost
+        .toString(),style: TextStyle(color: Colors.deepPurple,fontSize: 17))
+                      ])),
+                      // Text( "Cost :${controller.products[index].producTCost
+                      //     .toString()}",),
+                      Container(width: 5.0,),
+                      Text("Selling Cost :${controller.products[index]
+                          .sellinGCost
+                          .toString()}")
+                    ],),
+                ),
+                Text(controller.products[index].supplieRName.toString(),
+                  style: TextStyle(fontSize: 12),),
+              ],),
+          ),
+        )
+      ], mainAxisAlignment: MainAxisAlignment.start,),);
+    return c;
   }
 
   ListView buildLeftDrawerView(BuildContext contextBase) {

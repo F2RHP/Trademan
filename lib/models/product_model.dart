@@ -83,24 +83,31 @@ class Product {
         supplieRContact: supplieRContact ?? this.supplieRContact,
       );
 
-  factory Product.fromMap(Map<String, dynamic> json) => Product(
-    producTId: json["producT_ID"],
-    producTName: json["producT_NAME"],
-    producTCode: json["producT_CODE"],
-    producTNotes: json["producT_NOTES"],
-    nOOfQuantity: json["nO_OF_QUANTITY"],
-    producTCost: json["producT_COST"],
-    sellinGCost: json["sellinG_COST"],
-    purchasEDate: DateTime.parse(json["purchasE_DATE"]),
-    purchaseorderkey: json["purchaseorderkey"],
-    productSTypeId: json["productS_TYPE_ID"],
-    producTType: json["producT_TYPE"],
-    quantitYTypeId: json["quantitY_TYPE_ID"],
-    quantitYTypeName: json["quantitY_TYPE_NAME"],
-    supplieRId: json["supplieR_ID"],
-    supplieRName: json["supplieR_NAME"],
-    supplieRContact: json["supplieR_CONTACT"],
-  );
+  factory Product.fromMap(Map<String, dynamic> json)
+  {
+    try {
+      return Product(
+        producTId: json["producT_ID"],
+        producTName: json["producT_NAME"],
+        producTCode: json["producT_CODE"],
+        producTNotes: json["producT_NOTES"],
+        nOOfQuantity: json["nO_OF_QUANTITY"],
+        producTCost: json["producT_COST"],
+        sellinGCost: json["sellinG_COST"],
+        purchasEDate: DateTime.parse(json["purchasE_DATE"]),
+        purchaseorderkey: json["purchaseorderkey"],
+        productSTypeId: json["productS_TYPE_ID"],
+        producTType: json["producT_TYPE"],
+        quantitYTypeId: json["quantitY_TYPE_ID"],
+        quantitYTypeName: json["quantitY_TYPE_NAME"],
+        supplieRId: json["supplieR_ID"],
+        supplieRName: json["supplieR_NAME"],
+        supplieRContact: json["supplieR_CONTACT"],
+      );
+    } catch (e) {
+     return Product(producTId: 1, producTName: "producTName", producTCode: "producTCode", producTNotes: "producTNotes", nOOfQuantity: 2, producTCost: 345.0, sellinGCost: 555.0, purchasEDate: DateTime.now(), purchaseorderkey: "purchaseorderkey", productSTypeId: 1, producTType: "1", quantitYTypeId: 1, quantitYTypeName: "quantitYTypeName", supplieRId: 1, supplieRName: "supplieRName", supplieRContact: "supplieRContact");
+    }
+  }
 
   Map<String, dynamic> toMap() => {
     "producT_ID": producTId,
