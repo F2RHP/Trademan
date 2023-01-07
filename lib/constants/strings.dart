@@ -76,4 +76,7 @@ class AppStrings {
   static const String PREVIEW_TITLE = "Invoice Preview";
   static const String PREVIEW_SAVE_BTN = "Save and Download";
   static const String PREVIEW_NEW_BTN = "Create New Invoice";
+
+  //PRODUCT SCREEN STRINGS
+   static const String PRODUCT_TITLE = "KPR Products👌";
 }

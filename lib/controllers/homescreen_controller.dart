@@ -1,15 +1,11 @@
-//import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:trader_app/models/menu_models.dart';
-import 'package:trader_app/services/productservice.dart';
-import 'package:trader_app/models/product_model.dart';
 class HomeScreenController extends GetxController
 {
   final isLoading=false.obs;
   List<MenuItems> drawerMenuItems=[];
-   final  products=[].obs;
+   //final  products=[].obs;
    var dashboardmenu=<DashboardMenu>[].obs;
   @override
   void onInit() async {
@@ -17,7 +13,7 @@ class HomeScreenController extends GetxController
     super.onInit();
     drawerMenuItems = getmenuItems();
     dashboardmenu.value = getDashboardMenus();
-    products.value = await ProductService().getAllProducts();
+    //products.value = await ProductService().getAllProducts();
     isLoading.value=false;
   }
 
@@ -52,6 +48,7 @@ List<DashboardMenu> getDashboardMenus()
     MenuItems m=MenuItems('Master','Master' ,const Icon(Icons.lock_clock));
     m.submenu.add(SubMenuItem('Customer','Customer' ,const Icon(Icons.supervised_user_circle_rounded)));
     m.submenu.add(SubMenuItem('Supplier','Supplier' ,const Icon(Icons.lock_clock)));
+    m.submenu.add(SubMenuItem('Products','Products' ,const Icon(Icons.lock_clock)));
     menuItems.add(m);
     menuItems.add(MenuItems('Users','Users',const Icon(Icons.person)));
     menuItems.add(MenuItems('Settings','Settings',const Icon(Icons.settings)));

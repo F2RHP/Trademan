@@ -11,7 +11,6 @@ import 'package:trader_app/screens/shared_widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:trader_app/controllers/homescreen_controller.dart';
 
 import '../../models/menu_models.dart';
 import '../../models/product_model.dart';
@@ -26,8 +25,8 @@ class HomeScreen extends GetView<HomeScreenController> {
         appBar: buildAppBar_eng(false),
        drawer: Drawer(
          child: ListView(children: [
-           UserAccountsDrawerHeader(
-             currentAccountPictureSize: Size(75,75),
+           const UserAccountsDrawerHeader(
+              currentAccountPictureSize:  Size(75,75),
            currentAccountPicture: CircleAvatar(
              backgroundImage: NetworkImage(
                  "https://appmaking.co/wp-content/uploads/2021/08/appmaking-logo-colored.png"),
@@ -40,19 +39,19 @@ class HomeScreen extends GetView<HomeScreenController> {
          ],),
        ),
         body: SafeArea(
-          child:Buildbody(context),
+          child:buildbody(context),
         ));
   }
 
-  Widget Buildbody(BuildContext context) {
+  Widget buildbody(BuildContext context) {
     Widget w = CustomScrollView(
       slivers: [
         SliverToBoxAdapter(child: gettitlewidget(),),
-        GetBodyWidget(context),
+        // getBodyWidget(context),
         SliverGrid(
-            delegate: SliverChildListDelegate([...getmenus()]),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount:2, crossAxisSpacing: 2, mainAxisSpacing: 2))
+            delegate: SliverChildListDelegate([...getmenus(context)]),
+            gridDelegate:const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount:3, crossAxisSpacing: 2, mainAxisSpacing: 2))
       ],);
     return w;
   }
@@ -65,11 +64,11 @@ class HomeScreen extends GetView<HomeScreenController> {
 
             gradient:
             LinearGradient(colors: [Colors.yellow, Colors.lightBlueAccent]),),
-          child: Column(children: [
-            Text("KPR Trader Expense APP",
+          child:  Column(children: [
+             Text("KPR Trader Expense APP",
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,),
-            Text("Tenkasi",
+              Text("Tenkasi",
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,)
           ],
@@ -79,15 +78,19 @@ class HomeScreen extends GetView<HomeScreenController> {
 
 
 
-  List<Container> getmenus() {
+  List<Container> getmenus(BuildContext context) {
+    
+   
     return controller.dashboardmenu.map((element) =>
-        Container(padding: EdgeInsets.all(16),
+        Container(padding: EdgeInsets.all(5),
           color:getColor() ,
-          child: Column(children: [
-            Icon(element.menuIcon.icon, size: 80,
+          child: Column(mainAxisSize: MainAxisSize.max,
+          
+            children: [
+            Icon(element.menuIcon.icon,size: 20,
             color: Colors.black,),
             Text(element.menuName,
-                style: TextStyle(fontSize: 30, color: Colors.black),
+                style: TextStyle(fontSize: 25, color: Colors.black),
                 textAlign: TextAlign.center)
           ],),)).toList();
   }
@@ -97,64 +100,9 @@ class HomeScreen extends GetView<HomeScreenController> {
     return Color.fromARGB(random.nextInt(300), random.nextInt(300),
         random.nextInt(300), random.nextInt(300));
   }
-  Widget GetBodyWidget(BuildContext context) {
-    return Obx(() {
-      if (controller.isLoading.isTrue) {
-        return SliverToBoxAdapter(
-          child: Center(
-            child: CircularProgressIndicator(color: Colors.orange,),
-          ),
-        );
-      } else {
-        return SliverList(
-            delegate: SliverChildBuilderDelegate((BuildContext context,
-                int index) {
-              return getProductitems(index);
-            }, childCount: controller.products.length));
-      }
-    }
-    );
-  }
+ 
 
-  Widget getProductitems(int index) {
-    Widget c = Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),),
-      color: Colors.lightBlueAccent,
-      child: Row(children: [
-        Icon(Icons.account_balance_sharp, size: 55,),
-        Flexible(
-          child: Container(
-            padding: EdgeInsets.only(left: 5.0), color: Colors.greenAccent,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(controller.products[index].producTName.toString(),
-                  style: TextStyle(fontSize: 20, color: Colors.pink),),
-                Container(
-                  child: Row(mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      RichText(text: TextSpan(children: [TextSpan(text: "Cost :",style: TextStyle(color: Colors.black,fontSize: 17)),
-                        TextSpan(text: controller.products[index].producTCost
-        .toString(),style: TextStyle(color: Colors.deepPurple,fontSize: 17))
-                      ])),
-                      // Text( "Cost :${controller.products[index].producTCost
-                      //     .toString()}",),
-                      Container(width: 5.0,),
-                      Text("Selling Cost :${controller.products[index]
-                          .sellinGCost
-                          .toString()}")
-                    ],),
-                ),
-                Text(controller.products[index].supplieRName.toString(),
-                  style: TextStyle(fontSize: 12),),
-              ],),
-          ),
-        )
-      ], mainAxisAlignment: MainAxisAlignment.start,),);
-    return c;
-  }
-
+  
   ListView buildLeftDrawerView(BuildContext contextBase) {
     return ListView.builder(
         scrollDirection: Axis.vertical,
@@ -249,19 +197,6 @@ class HomeScreen extends GetView<HomeScreenController> {
           SizedBox(
             width: Dimensions.calcW(15),
           ),
-          // InkWell(
-          //   onTap: () {},
-          //   splashColor: AppColors.kSecondaryColor,
-          //   customBorder: const CircleBorder(),
-          //   child: SvgPicture.asset(
-          //     "assets/icons/settings.svg",
-          //     height: Dimensions.calcH(30),
-          //     color: AppColors.kPrimaryDark,
-          //   ),
-          // ),
-          // SizedBox(
-          //   width: Dimensions.calcW(8),
-          // ),
         ],
       );
     }
