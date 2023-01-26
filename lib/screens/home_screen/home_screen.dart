@@ -47,7 +47,7 @@ class HomeScreen extends GetView<HomeScreenController> {
     Widget w = CustomScrollView(
       slivers: [
         SliverToBoxAdapter(child: gettitlewidget(),),
-        // getBodyWidget(context),
+         //getBodyWidget(context),
         SliverGrid(
             delegate: SliverChildListDelegate([...getmenus(context)]),
             gridDelegate:const SliverGridDelegateWithFixedCrossAxisCount(
@@ -78,21 +78,27 @@ class HomeScreen extends GetView<HomeScreenController> {
 
 
 
-  List<Container> getmenus(BuildContext context) {
+  List<Widget> getmenus(BuildContext context) {
     
    
     return controller.dashboardmenu.map((element) =>
-        Container(padding: EdgeInsets.all(5),
-          color:getColor() ,
-          child: Column(mainAxisSize: MainAxisSize.max,
-          
-            children: [
-            Icon(element.menuIcon.icon,size: 20,
-            color: Colors.black,),
-            Text(element.menuName,
-                style: TextStyle(fontSize: 25, color: Colors.black),
-                textAlign: TextAlign.center)
-          ],),)).toList();
+        InkWell(
+          onTap: () {
+            print(element.menuName);
+
+      },
+          child: Container(padding: EdgeInsets.all(5),
+            color:getColor() ,
+            child: Column(mainAxisSize: MainAxisSize.max,
+            
+              children: [
+              Icon(element.menuIcon.icon,size: 20,
+              color: Colors.black,),
+              Text(element.menuName,
+                  style: TextStyle(fontSize: 25, color: Colors.black),
+                  textAlign: TextAlign.center)
+            ],),),
+        )).toList();
   }
 
   Color getColor() {

@@ -3,6 +3,7 @@
 class AppLinks {
   static const String SPLASHSCREEN = "/";
   static const String HOME = "/home";
+  static const String PRODUCTS = "/products";
   static const String NEW_INVOICE = "/new";
   static const String NEW_BUSINESS = "/add_business";
   static const String NEW_PAYER = "/add_payer";
