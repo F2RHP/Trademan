@@ -8,12 +8,22 @@ import 'package:trader_app/screens/shared_widgets/appbar_eng_view.dart';
 class ProductDetails extends GetView<ProductController> {
   const ProductDetails({super.key});
 
+
+   
+  //           icon: SvgPicture.asset(
+  //             "assets/icons/circle_close.svg",
+  //             color: AppColors.kPrimaryDark,
+  //           ),
+  //         )
+  //       ]
+
   @override
   Widget build(BuildContext context) {
    
     return SafeArea(child:
      Scaffold(appBar: 
-     AppBar_eng(title: AppStrings.PRODUCT_TITLE,showBackArrow: true),body:buildbody(context) ,));
+     AppBar_eng(title: AppStrings.PRODUCT_TITLE,showBackArrow: true,),
+     body:buildbody(context) ,));
   }
 
     Widget buildbody(BuildContext context) {
@@ -24,7 +34,7 @@ class ProductDetails extends GetView<ProductController> {
       
       ],);
     return w;
-  }
+    }
    Widget getBodyWidget(BuildContext context) {
     return Obx(() {
       if (controller.isLoading.isTrue) {

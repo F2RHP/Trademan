@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:trader_app/env/links.dart';
 import 'package:trader_app/models/menu_models.dart';
 class HomeScreenController extends GetxController
 {
@@ -19,6 +20,7 @@ class HomeScreenController extends GetxController
 
   void onItemClick(MenuItems m)
   {
+    Get.offAndToNamed(AppLinks.PRODUCTS);
     //_selectedIndex.value=m.getMenuItems().indexOf(m);
     print(m.menuName);
 
