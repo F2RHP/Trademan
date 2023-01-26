@@ -15,3 +15,7 @@ https://stackoverflow.com/questions/50392607/the-element-type-listwidget-cant-be
 
 Keyboard disable
 https://blog.logrocket.com/how-to-open-dismiss-keyboard-flutter/
+
+
+GETX - Routiong
+https://www.kindacode.com/article/using-getx-get-for-navigation-and-routing-in-flutter/

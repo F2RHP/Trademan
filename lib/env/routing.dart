@@ -14,6 +14,9 @@ import 'package:trader_app/screens/invoices_screens/new_invoice_screen/sign_invo
 import 'package:trader_app/screens/splash_screen/splash_screen.dart';
 import 'package:get/get.dart';
 
+import '../screens/products/productdetailsBinding.dart';
+import '../screens/products/productsdetails.dart';
+
 class AppRouting {
   static final ROUTES = [
     GetPage(
@@ -25,6 +28,11 @@ class AppRouting {
         page: () => const HomeScreen(),
         transition: Transition.circularReveal,
         binding: HomeBinding()),
+          GetPage(
+        name: AppLinks.PRODUCTS,
+        page: () => const ProductDetails(),
+        transition: Transition.circularReveal,
+        binding: ProductDetailsBinding()),
     GetPage(
       name: AppLinks.NEW_INVOICE,
       page: () => const NewInvoiceScreen(),
