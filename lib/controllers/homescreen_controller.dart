@@ -20,7 +20,7 @@ class HomeScreenController extends GetxController
 
   void onItemClick(MenuItems m)
   {
-    Get.offAndToNamed(AppLinks.PRODUCTS);
+    Get.toNamed(AppLinks.PRODUCTS);
     //_selectedIndex.value=m.getMenuItems().indexOf(m);
     print(m.menuName);
 
