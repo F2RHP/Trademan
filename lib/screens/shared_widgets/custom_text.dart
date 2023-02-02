@@ -10,7 +10,7 @@ class CustomText extends StatelessWidget {
   final Color color;
   final TextAlign align;
   final FontWeight weight;
-  final TextDirection? textdirection;
+  final TextDirection? textDirection;
   final TextOverflow? overflow;
   const CustomText({
     required this.text,
@@ -21,7 +21,7 @@ class CustomText extends StatelessWidget {
     this.align = TextAlign.center,
     this.weight = FontWeight.normal,
     this.overflow,
-    this.textdirection,
+    this.textDirection,
     Key? key,
   }) : super(key: key);
 
@@ -31,7 +31,7 @@ class CustomText extends StatelessWidget {
       text,
       maxLines: 1,
       overflow: overflow ?? TextOverflow.ellipsis,
-      textDirection: textdirection ?? TextDirection.ltr,
+      textDirection: textDirection ?? TextDirection.ltr,
       textAlign: align,
       style: GoogleFonts.nunito(
         color: color,

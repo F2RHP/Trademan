@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:trader_app/Ui/all_products.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/env/dimensions.dart';
+import 'package:trader_app/screens/shared_widgets/custom_btn.dart';
 import 'dashboard.dart';
 
 class AddProduct extends StatefulWidget {
@@ -255,18 +256,11 @@ class _AddProductState extends State<AddProduct> {
               SizedBox(height: Dimensions.calcH(20)),
               // Save Button
               Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const AllProducts(),));
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.kPrimaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    minimumSize: const Size(300.0, 40.0),
-                  ),
-                  child: const Text('Save'),
+                child: CustomBtn(
+                  action: ()=>Navigator.push(context, MaterialPageRoute(builder: (context) => const AllProducts(),)),
+                  label: 'Save',
+                  textColor: AppColors.kSecondaryColor,
+                  color: AppColors.kPrimaryColor,
                 ),
               ),
             ],
