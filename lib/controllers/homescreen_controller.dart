@@ -2,59 +2,104 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:trader_app/env/links.dart';
 import 'package:trader_app/models/menu_models.dart';
-class HomeScreenController extends GetxController
-{
-  final isLoading=false.obs;
-  List<MenuItems> drawerMenuItems=[];
-   //final  products=[].obs;
-   var dashboardmenu=<DashboardMenu>[].obs;
+
+class HomeScreenController extends GetxController {
+  final isLoading = false.obs;
+  List<MenuItems> drawerMenuItems = [];
+  //final  products=[].obs;
+  var dashboardmenu = <DashboardMenu>[].obs;
   @override
   void onInit() async {
-    isLoading.value=true;
+    isLoading.value = true;
     super.onInit();
     drawerMenuItems = getmenuItems();
     dashboardmenu.value = getDashboardMenus();
     //products.value = await ProductService().getAllProducts();
-    isLoading.value=false;
+    isLoading.value = false;
   }
 
-  void onItemClick(MenuItems m)
-  {
-    Get.toNamed(AppLinks.PRODUCTS);
-    //_selectedIndex.value=m.getMenuItems().indexOf(m);
+  void onItemClick(MenuItems m) {
+    switch (m.menuName.toUpperCase()) {
+      case "PRODUCT":
+        {
+           Get.toNamed(AppLinks.PRODUCTS);
+        }
+        break;
+
+      case "CUSTOMER":
+        {
+          print("Good");
+        }
+        break;
+
+      case "SALES":
+        {
+          print("Fair");
+        }
+        break;
+
+      case "SUPPLIER":
+        {
+          print("Poor");
+        }
+        break;
+        case "EXPENSES":
+        {
+          print("Poor");
+        }
+        break;
+
+      default:
+        {
+          print("Invalid choice");
+        }
+        break;
+    }
+   
+
     print(m.menuName);
-
   }
+
+  void onItemMenuClick(DashboardMenu m) {
+    Get.toNamed(AppLinks.PRODUCTS);
+
+    print(m.menuName);
+  }
+
   void onSubItemClick(SubMenuItem m) {
-  print(m.subMenuName);
+    print(m.subMenuName);
   }
-List<DashboardMenu> getDashboardMenus()
-{
 
-  List<DashboardMenu> menu=[];
-  menu.add(DashboardMenu.create("Sales",Icon(Icons.monetization_on) ));
-  menu.add(DashboardMenu.create("Purchase Order",Icon(Icons.fire_truck) ));
-  menu.add(DashboardMenu.create("Products",Icon(Icons.production_quantity_limits) ));
-  menu.add(DashboardMenu.create("Customer",Icon(Icons.man) ));
-  menu.add(DashboardMenu.create("Expense",Icon(Icons.exit_to_app_rounded) ));
-  menu.add(DashboardMenu.create("Supplier",Icon(Icons.man_sharp) ));
-  menu.add(DashboardMenu.create("Report",Icon(Icons.report) ));
+  List<DashboardMenu> getDashboardMenus() {
+    List<DashboardMenu> menu = [];
+    menu.add(DashboardMenu.create("Sales", Icon(Icons.monetization_on)));
+    menu.add(DashboardMenu.create("Purchase Order", Icon(Icons.fire_truck)));
+    menu.add(DashboardMenu.create(
+        "Products", Icon(Icons.production_quantity_limits)));
+    menu.add(DashboardMenu.create("Customer", Icon(Icons.man)));
+    menu.add(DashboardMenu.create("Expense", Icon(Icons.exit_to_app_rounded)));
+    menu.add(DashboardMenu.create("Supplier", Icon(Icons.man_sharp)));
+    menu.add(DashboardMenu.create("Report", Icon(Icons.report)));
 
-  return menu;
-}
-  List<MenuItems> getmenuItems()
-  {
+    return menu;
+  }
 
-    List<MenuItems> menuItems=[];
-    menuItems.add(MenuItems('Home','Home',const Icon(Icons.home)));
-    MenuItems m=MenuItems('Master','Master' ,const Icon(Icons.lock_clock));
-    m.submenu.add(SubMenuItem('Customer','Customer' ,const Icon(Icons.supervised_user_circle_rounded)));
-    m.submenu.add(SubMenuItem('Supplier','Supplier' ,const Icon(Icons.lock_clock)));
-    m.submenu.add(SubMenuItem('Products','Products' ,const Icon(Icons.lock_clock)));
+  List<MenuItems> getmenuItems() {
+    List<MenuItems> menuItems = [];
+    menuItems.add(MenuItems('Home', 'Home', const Icon(Icons.home)));
+    MenuItems m = MenuItems('Master', 'Master', const Icon(Icons.lock_clock));
+    m.submenu.add(SubMenuItem('Customer', 'Customer',
+        const Icon(Icons.supervised_user_circle_rounded)));
+    m.submenu
+        .add(SubMenuItem('Supplier', 'Supplier', const Icon(Icons.lock_clock)));
+    m.submenu
+        .add(SubMenuItem('Products', 'Products', const Icon(Icons.lock_clock)));
     menuItems.add(m);
-    menuItems.add(MenuItems('Users','Users',const Icon(Icons.person)));
-    menuItems.add(MenuItems('Settings','Settings',const Icon(Icons.settings)));
-    menuItems.add(MenuItems('Feedback','Feedback',const Icon(Icons.feedback)));
+    menuItems.add(MenuItems('Users', 'Users', const Icon(Icons.person)));
+    menuItems
+        .add(MenuItems('Settings', 'Settings', const Icon(Icons.settings)));
+    menuItems
+        .add(MenuItems('Feedback', 'Feedback', const Icon(Icons.feedback)));
 
     return menuItems;
   }
