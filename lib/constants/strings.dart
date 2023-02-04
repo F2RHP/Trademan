@@ -34,10 +34,8 @@ class AppStrings {
   static const String NEW_INVOICE_BUSINESS = "Your details";
   static const String NEW_INVOICE_BUSINESS_SUBTITLE =
       "add your business details";
-
   static const String NEW_INVOICE_PAYER = "Invoice to";
   static const String NEW_INVOICE_PAYER_SUBTITLE = "add payer";
-
   static const String NEW_INVOICE_ITEMS = "Items";
   static const String NEW_INVOICE_ITEMS_SUBTITLE = "add items to your invoice";
 
@@ -53,12 +51,14 @@ class AppStrings {
   static const String ADD_BUSINESS_EMAIL = "Email address";
   static const String ADD_BUSINESS_PHONE = "Phone number";
   static const String ADD_BUSINESS_ADDRESS = "Address";
+
   // ADD Payer screens STRINGS
   static const String ADD_PAYER_TITLE = "New Payer";
   static const String ADD_PAYER_NAME = "Payer Name";
   static const String ADD_PAYER_EMAIL = "Email address";
   static const String ADD_PAYER_PHONE = "Phone number";
   static const String ADD_PAYER_ADDRESS = "Address";
+
   // ADD Item screens STRINGS
   static const String ADD_ITEMS_TITLE = "Items List";
   static const String ADD_ITEMS_DIALOG_TITLE = "Add new item";
@@ -79,4 +79,13 @@ class AppStrings {
 
   //PRODUCT SCREEN STRINGS
    static const String PRODUCT_TITLE = "KPR Products👌";
+
+   //Expense
+   static const String Add_Expense = "Add Expense";
+   static const String Expense_Name = "Expense Name";
+   static const String Expense_Details = "Expense Details";
+   static const String Category = "Category";
+   static const String type_your_Category = "Type Your Category";
+   static const String Data = "Data";
+   static const String Cost = "Cost";
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trader_app/Ui/home_page.dart';
+import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/screens/home_screen/home_screen.dart';
 import 'dashboard.dart';
 
@@ -9,7 +10,10 @@ class BackgroundSplash extends StatelessWidget {
   //Splash
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      theme: ThemeData(
+       primarySwatch: AppColorCode.appColorCode,
+      ),
       home: SplashScreen(),
     );
   }
