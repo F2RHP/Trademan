@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
+import '../../Ui/add_product.dart';
 import '../../models/menu_models.dart';
 import '../../models/product_model.dart';
 
@@ -22,83 +23,166 @@ class HomeScreen extends GetView<HomeScreenController> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: AppColors.kSecondaryColor,
-        appBar: buildAppBar_eng(false),
-       drawer: Drawer(
-         child: ListView(children: [
-           const UserAccountsDrawerHeader(
-              currentAccountPictureSize:  Size(75,75),
-           currentAccountPicture: CircleAvatar(
-             backgroundImage: NetworkImage(
-                 "https://appmaking.co/wp-content/uploads/2021/08/appmaking-logo-colored.png"),
-           ),
-               accountName: Text("Ponsingh A"),
-               accountEmail: Text("kprtrader@gmail.com")),
-
-           buildLeftDrawerView(context)
-
-         ],),
-       ),
+        //appBar: buildAppBar_eng(false),
+        appBar: AppBar(title: const Text("Daily Status")),
+        drawer: Drawer(
+          child: ListView(
+            children: [
+              const UserAccountsDrawerHeader(
+                  currentAccountPictureSize: Size(75, 75),
+                  // currentAccountPicture: CircleAvatar(
+                  //   backgroundImage: NetworkImage(
+                  //       "https://appmaking.co/wp-content/uploads/2021/08/appmaking-logo-colored.png"),
+                  // ),
+                  accountName: Text("Ponsingh A"),
+                  accountEmail: Text("kprtrader@gmail.com")),
+              buildLeftDrawerView(context)
+            ],
+          ),
+        ),
         body: SafeArea(
-          child:buildbody(context),
+          child: buildbody(context),
         ));
   }
 
   Widget buildbody(BuildContext context) {
     Widget w = CustomScrollView(
       slivers: [
-        SliverToBoxAdapter(child: gettitlewidget(),),
-         //getBodyWidget(context),
+        SliverToBoxAdapter(
+          child: gettitlewidget(),
+        ),
+        //getBodyWidget(context),SliverGridDelegateWithMaxCrossAxisExtent
         SliverGrid(
             delegate: SliverChildListDelegate([...getmenus(context)]),
-            gridDelegate:const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount:3, crossAxisSpacing: 2, mainAxisSpacing: 2))
-      ],);
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, crossAxisSpacing: 2, mainAxisSpacing: 2)
+                
+                ),
+                SliverToBoxAdapter(
+          child: gettitlewidget(),
+        ),
+      ],
+    );
     return w;
   }
 
-
-
-  Container gettitlewidget() {
-    return Container(padding: EdgeInsets.all(1.0), width: double.maxFinite,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(4.0),
-
-            gradient:
-            LinearGradient(colors: [Colors.yellow, Colors.lightBlueAccent]),),
-          child:  Column(children: [
-             Text("KPR Trader Expense APP",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,),
-              Text("Tenkasi",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,)
-          ],
+  Widget gridView(BuildContext context) {
+    return GestureDetector(
+      onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const AddProduct(),
+          )),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
           ),
-        );
+          child: GridView.builder(
+            itemCount: controller.dashboardmenu.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              mainAxisSpacing: 1.50,
+              crossAxisSpacing: 1.50,
+              crossAxisCount: 2,
+            ),
+            itemBuilder: (context, index) {
+              return Container(
+                decoration: BoxDecoration(
+                  color: AppColors.kPrimaryColor,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      controller.dashboardmenu[index].menuIcon.icon,
+                      size: 100.0,
+                      color: Colors.white,
+                    ),
+                    Text(controller.dashboardmenu[index].menuName,
+                        style: const TextStyle(
+                          fontSize: 22.0,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        )),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
   }
 
-
+  Container gettitlewidget() {
+    return Container(
+      padding: EdgeInsets.all(1.0),
+      width: double.maxFinite,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4.0),
+        gradient:
+            LinearGradient(colors: [Colors.yellow, Colors.lightBlueAccent]),
+      ),
+      child: Column(
+        children: [
+          Text(
+            "KPR Trader Expense APP",
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+          Text(
+            "Tenkasi",
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          )
+        ],
+      ),
+    );
+  }
 
   List<Widget> getmenus(BuildContext context) {
-    
-   
-    return controller.dashboardmenu.map((element) =>
-        InkWell(
-          onTap: () {
-            print(element.menuName);
+    return controller.dashboardmenu
+        .map((element) => GestureDetector(
+              onTap: () {
+                controller.onItemMenuClick(element);
+                print(element.menuName);
+              },
+              // child: Container(padding: EdgeInsets.all(5),
+              //   color:getColor() ,
+              //   child: Column(mainAxisSize: MainAxisSize.max,
 
-      },
-          child: Container(padding: EdgeInsets.all(5),
-            color:getColor() ,
-            child: Column(mainAxisSize: MainAxisSize.max,
-            
-              children: [
-              Icon(element.menuIcon.icon,size: 20,
-              color: Colors.black,),
-              Text(element.menuName,
-                  style: TextStyle(fontSize: 25, color: Colors.black),
-                  textAlign: TextAlign.center)
-            ],),),
-        )).toList();
+              //     children: [
+              //     Icon(element.menuIcon.icon,size: 20,
+              //     color: Colors.black,),
+              //     Text(element.menuName,
+              //         style: TextStyle(fontSize: 25, color: Colors.black),
+              //         textAlign: TextAlign.center)
+              //   ],),)
+
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppColors.kPrimaryColor,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      element.menuIcon.icon,
+                      size: 65.0,
+                      color: Colors.white,
+                    ),
+                    Text(element.menuName,
+                        style: const TextStyle(
+                          fontSize: 22.0,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        )),
+                  ],
+                ),
+              ),
+            ))
+        .toList();
   }
 
   Color getColor() {
@@ -106,19 +190,15 @@ class HomeScreen extends GetView<HomeScreenController> {
     return Color.fromARGB(random.nextInt(300), random.nextInt(300),
         random.nextInt(300), random.nextInt(300));
   }
- 
 
-  
   ListView buildLeftDrawerView(BuildContext contextBase) {
     return ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         itemCount: controller.drawerMenuItems.length,
         itemBuilder: (BuildContext context, int index) {
-
-          if(controller.drawerMenuItems[index].submenu.isEmpty) {
+          if (controller.drawerMenuItems[index].submenu.isEmpty) {
             return ListTile(
-
               // selected:(  index== menuItemsController.getIndex),
               leading: controller.drawerMenuItems[index].menuIcon,
               title: Text(controller.drawerMenuItems[index].menuName),
@@ -128,35 +208,28 @@ class HomeScreen extends GetView<HomeScreenController> {
               // tileColor: Colors.deepPurpleAccent,
               onTap: () {
                 Navigator.pop(contextBase);
-                controller.onItemClick(controller.drawerMenuItems[index]
-                );
+                controller.onItemClick(controller.drawerMenuItems[index]);
               },
             );
-          }
-          else{
+          } else {
             return ExpansionTile(
               leading: controller.drawerMenuItems[index].menuIcon,
               title: Text(controller.drawerMenuItems[index].menuName),
               iconColor: Colors.orange,
               collapsedTextColor: Colors.black,
               textColor: Colors.black,
-              collapsedIconColor:  Colors.orange,
-              children: getSubmenuWidgets(controller.drawerMenuItems[index],contextBase),
-
+              collapsedIconColor: Colors.orange,
+              children: getSubmenuWidgets(
+                  controller.drawerMenuItems[index], contextBase),
             );
           }
-        }
-    );
+        });
   }
 
-  List<Widget> getSubmenuWidgets(MenuItems m,BuildContext contextBase)
-  {
-    List<Widget> collection=[];
+  List<Widget> getSubmenuWidgets(MenuItems m, BuildContext contextBase) {
+    List<Widget> collection = [];
     for (var submenu in m.submenu) {
-
-
-      Widget tile= ListTile(
-
+      Widget tile = ListTile(
         // selected:(  index== menuItemsController.getIndex),
         leading: submenu.subMenuicon,
 
@@ -170,8 +243,7 @@ class HomeScreen extends GetView<HomeScreenController> {
         // tileColor: Colors.deepPurpleAccent,
         onTap: () {
           Navigator.pop(contextBase);
-          controller.onSubItemClick(submenu
-          );
+          controller.onSubItemClick(submenu);
         },
       );
 
@@ -180,12 +252,9 @@ class HomeScreen extends GetView<HomeScreenController> {
     return collection;
   }
 
-
-  
   AppBar buildAppBar_eng(bool isnormal) {
-    if(isnormal) {
+    if (isnormal) {
       return AppBar_eng(
-       
         title: AppStrings.HOME_TITLE,
         actions: [
           InkWell(
@@ -205,43 +274,41 @@ class HomeScreen extends GetView<HomeScreenController> {
           ),
         ],
       );
-    }
-    else
-      {
-        return AppBar(title: Text(AppStrings.HOME_TITLE),
-            // shape: RoundedRectangleBorder(
-            //   borderRadius: BorderRadius.circular(55.0),
-            // ),
-            actions: [
-          InkWell(
-            onTap: () {
-              Get.toNamed("/new");
-            },
-            splashColor: AppColors.kSecondaryColor,
-            customBorder: const CircleBorder(),
-            child: SvgPicture.asset(
-              "assets/icons/new_invoice.svg",
-              height: Dimensions.calcH(25),
-              color: AppColors.kPrimaryDark,
+    } else {
+      return AppBar(title: Text(AppStrings.HOME_TITLE),
+          // shape: RoundedRectangleBorder(
+          //   borderRadius: BorderRadius.circular(55.0),
+          // ),
+          actions: [
+            InkWell(
+              onTap: () {
+                Get.toNamed("/new");
+              },
+              splashColor: AppColors.kSecondaryColor,
+              customBorder: const CircleBorder(),
+              child: SvgPicture.asset(
+                "assets/icons/new_invoice.svg",
+                height: Dimensions.calcH(25),
+                color: AppColors.kPrimaryDark,
+              ),
             ),
-          ),
-          SizedBox(
-            width: Dimensions.calcW(15),
-          ),
-          // InkWell(
-          //   onTap: () {},
-          //   splashColor: AppColors.kSecondaryColor,
-          //   customBorder: const CircleBorder(),
-          //   child: SvgPicture.asset(
-          //     "assets/icons/settings.svg",
-          //     height: Dimensions.calcH(30),
-          //     color: AppColors.kPrimaryDark,
-          //   ),
-          // ),
-          // SizedBox(
-          //   width: Dimensions.calcW(8),
-          // ),
-        ]);
-      }
+            SizedBox(
+              width: Dimensions.calcW(15),
+            ),
+            // InkWell(
+            //   onTap: () {},
+            //   splashColor: AppColors.kSecondaryColor,
+            //   customBorder: const CircleBorder(),
+            //   child: SvgPicture.asset(
+            //     "assets/icons/settings.svg",
+            //     height: Dimensions.calcH(30),
+            //     color: AppColors.kPrimaryDark,
+            //   ),
+            // ),
+            // SizedBox(
+            //   width: Dimensions.calcW(8),
+            // ),
+          ]);
+    }
   }
 }
