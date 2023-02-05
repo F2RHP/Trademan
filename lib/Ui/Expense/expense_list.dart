@@ -187,7 +187,6 @@ class _ExpenseListState extends State<ExpenseList> {
           AppSizedBox.sizedBoxH10,
           Divider(),
           AppSizedBox.sizedBoxH10,
-
         ],
       ),
     );
