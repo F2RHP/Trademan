@@ -3,7 +3,6 @@ import 'package:trader_app/Ui/all_products.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/env/dimensions.dart';
 import 'package:trader_app/screens/shared_widgets/custom_btn.dart';
-import 'dashboard.dart';
 
 class AddProduct extends StatefulWidget {
   const AddProduct({Key? key}) : super(key: key);

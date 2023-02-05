@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
+import 'package:trader_app/Ui/Common_Codes/common_codes.dart';
 import 'package:trader_app/env/dimensions.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
 
@@ -164,26 +165,7 @@ class _AllProductsState extends State<AllProducts> {
   Widget topSection() {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[
-            Text(
-              'Your Viewing store',
-              style: TextStyle(
-                color: Colors.green,
-                fontSize: 18.0,
-              ),
-            ),
-            Text(
-              '"KPR Traders"',
-              style: TextStyle(
-                  color: Colors.green,
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                  fontStyle: FontStyle.italic),
-            ),
-          ],
-        ),
+        const KPRTraders(),
         SizedBox(height: Dimensions.calcH(20.0)),
         Container(
           padding: const EdgeInsets.symmetric(vertical: 13.0),

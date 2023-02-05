@@ -25,7 +25,7 @@ class CustomBtn extends StatelessWidget {
     return MaterialButton(
       onPressed: action,
       splashColor: AppColors.kPrimaryLight,
-      color: color ?? Colors.white,
+      color: color ?? AppColors.kPrimaryLight,
       elevation: 0,
       minWidth: width ?? Dimensions.calcH(120),
       child: CustomText(

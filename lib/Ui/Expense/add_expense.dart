@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:trader_app/Ui/Common_Codes/common_codes.dart';
+import 'package:trader_app/Ui/Expense/expense_list.dart';
 import 'package:trader_app/Ui/color_code.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
+import 'package:trader_app/screens/shared_widgets/custom_btn.dart';
+import 'package:trader_app/screens/shared_widgets/sized_box.dart';
 
 class AddExpense extends StatefulWidget {
   const AddExpense({Key? key}) : super(key: key);
@@ -13,52 +16,159 @@ class AddExpense extends StatefulWidget {
 
 class _AddExpenseState extends State<AddExpense> {
   final formKey = GlobalKey<FormState>();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController detailsController = TextEditingController();
+  TextEditingController categoryController = TextEditingController();
+  TextEditingController dataController = TextEditingController();
+  TextEditingController costController = TextEditingController();
+  List<String> list = ['1', '2', '3', '4'];
+  var dropDownValue;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar(elevation: 0,
         leading: GestureDetector(
           onTap: () => Navigator.pop(context),
-          child: Icon(
-            Icons.arrow_back_ios_new,
-            size: 40.0,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0),
+            child: Icon(
+              Icons.arrow_back_ios_new_rounded,
+              size: 40.0,
+              color: AppColors.kSecondaryColor,
+            ),
+          ),
+        ),
+        centerTitle: true,
+        title: Text(
+          AppStrings.Add_Expense,
+          style: TextStyle(
             color: AppColors.kSecondaryColor,
           ),
         ),
       ),
       body: Padding(
         padding: CustomPadding.padding15,
-        child: Form(
-          key: formKey,
-          child: Column(
-            children: <Widget>[
-              const Text(
-                AppStrings.Expense_Name,
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-              const AppTextFormFiled(
-                autoValidator: true,
-                hintText: 'Example',
-                errorText: 'enter value',
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  if (formKey.currentState!.validate()) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Processing Data'),
+        child: SingleChildScrollView(
+          child: Form(
+            key: formKey,
+            child: Column(
+              children: [
+                buildInputFiled(),
+                CustomBtn(
+                  label: 'save',
+                  action: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ExpenseList(),
                       ),
                     );
-                  }
-                },
-                child: const Text('Click'),
-              ),
-            ],
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildInputFiled() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        const Text(
+          AppStrings.Expense_Name,
+          style: TextStyle(
+            fontSize: 20,
+          ),
+        ),
+        AppSizedBox.sizedBoxH15,
+        const AppTextFormFiled(
+          textInputAction: TextInputAction.next,
+          autoValidator: true,
+          hintText: AppStrings.Expense_Name,
+          errorText: 'enter value',
+        ),
+        AppSizedBox.sizedBoxH25,
+        const Text(
+          AppStrings.Expense_Details,
+          style: TextStyle(
+            fontSize: 20,
+          ),
+        ),
+        AppSizedBox.sizedBoxH15,
+        const AppTextFormFiled(
+          maxLines: 5,
+          keyboardType: TextInputType.multiline,
+          autoValidator: true,
+          hintText: AppStrings.Expense_Details,
+          errorText: 'enter value',
+        ),
+        AppSizedBox.sizedBoxH25,
+        const Text(
+          AppStrings.Category,
+          style: TextStyle(
+            fontSize: 20,
+          ),
+        ),
+        AppSizedBox.sizedBoxH15,
+        DropdownButtonFormField(
+          value: dropDownValue,
+          items: list
+              .map((label) => DropdownMenuItem(
+                    value: label,
+                    child: Text(label.toString()),
+                  ))
+              .toList(),
+          hint: const Text('product'),
+          onChanged: (value) {
+            setState(() {
+              dropDownValue = value;
+            });
+          },
+          decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5.0),
+              )),
+        ),
+        AppSizedBox.sizedBoxH25,
+        const AppTextFormFiled(
+          hintText: AppStrings.type_your_Category,
+          autoValidator: true,
+        ),
+        AppSizedBox.sizedBoxH25,
+        const Text(
+          AppStrings.Data,
+          style: TextStyle(
+            fontSize: 20,
+          ),
+        ),
+        AppSizedBox.sizedBoxH15,
+        const AppTextFormFiled(
+          textInputAction: TextInputAction.next,
+          autoValidator: true,
+          hintText: AppStrings.DataType,
+          errorText: 'enter value',
+        ),
+        AppSizedBox.sizedBoxH25,
+        const Text(
+          AppStrings.Cost,
+          style: TextStyle(
+            fontSize: 20,
+          ),
+        ),
+        AppSizedBox.sizedBoxH15,
+        const AppTextFormFiled(
+          autoValidator: true,
+          hintText: AppStrings.Cost,
+          errorText: 'enter value',
+        ),
+        AppSizedBox.sizedBoxH25,
+      ],
     );
   }
 }

@@ -16,6 +16,7 @@ class CustomBorderRadius {
 }
 
 class CustomPadding {
+  static EdgeInsets padding3 = const EdgeInsets.all(3.0);
   static EdgeInsets padding5 = const EdgeInsets.all(5.0);
   static EdgeInsets padding8 = const EdgeInsets.all(8.0);
   static EdgeInsets padding10 = const EdgeInsets.all(10.0);
@@ -31,10 +32,15 @@ class CustomPadding {
   static EdgeInsets padding25 = const EdgeInsets.all(25.0);
 }
 
+
 class AppTextFormFiled extends StatelessWidget {
   final String hintText;
   final String? errorText;
+  final int? maxLines;
   final bool autoValidator;
+  final TextInputAction? textInputAction;
+  final TextInputType? keyboardType;
+  final TextEditingController? controller;
   final String? Function(String?)? validator;
   const AppTextFormFiled({
     Key? key,
@@ -42,19 +48,28 @@ class AppTextFormFiled extends StatelessWidget {
     required this.autoValidator,
     this.errorText,
     this.validator,
+    this.controller,
+    this.textInputAction =TextInputAction.next,
+    this.keyboardType,
+    this.maxLines,
     // this.autoValidator,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      validator: autoValidator ?
-          (value) {
-            if (value!.trim().isEmpty) {
-              return errorText;
+      maxLines: maxLines,
+      controller: controller,
+      keyboardType: keyboardType,
+      textInputAction: textInputAction,
+      validator: autoValidator
+          ? (value) {
+              if (value!.trim().isEmpty) {
+                return errorText;
+              }
+              return null;
             }
-            return null;
-          }: validator,
+          : validator,
       decoration: InputDecoration(
           hintText: hintText,
           hintStyle: TextStyle(
@@ -69,6 +84,34 @@ class AppTextFormFiled extends StatelessWidget {
           focusedBorder: OutlineInputBorder(
             borderRadius: CustomBorderRadius.borderRadius8,
           )),
+    );
+  }
+}
+
+class KPRTraders extends StatelessWidget {
+  const KPRTraders({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return  Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          AppStrings.You_are_viewing_store,
+          style: TextStyle(
+            color: AppColors.kPrimaryColor,
+            fontSize: 18.0,
+          ),
+        ),
+        Text(
+         AppStrings.KPR_Traders,
+          style: TextStyle(
+              color: AppColors.kPrimaryColor,
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic),
+        ),
+      ],
     );
   }
 }

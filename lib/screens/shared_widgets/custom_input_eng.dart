@@ -58,7 +58,7 @@ class CustomInput_eng extends StatelessWidget {
               keyboardType: type,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.lightBlue)),
+                enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.lightBlue)),
                 fillColor: AppColors.kSecondaryColor,
                 filled: true,
               ),

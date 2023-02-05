@@ -12,6 +12,8 @@ class AppStrings {
   static const String REMOVE_BTN = "REMOVE";
   static const String CLEAR_BTN = "CLEAR";
   static const String DOWNLOAD_BTN = "DOWNLOAD";
+  static const String You_are_viewing_store = "You are viewing store";
+  static const String KPR_Traders = "\"KPR Traders\"";
 
   /// Splash screen STRINGS
   static const String APP_NAME = "FATURA";
@@ -82,10 +84,13 @@ class AppStrings {
 
    //Expense
    static const String Add_Expense = "Add Expense";
+   static const String Filter_Expense = "Filter Expense";
    static const String Expense_Name = "Expense Name";
+   static const String Expense = "Expense";
    static const String Expense_Details = "Expense Details";
    static const String Category = "Category";
    static const String type_your_Category = "Type Your Category";
-   static const String Data = "Data";
+   static const String DataType = "dd-mm-yyyy";
+   static const String Data = "Date";
    static const String Cost = "Cost";
 }
