@@ -5,7 +5,7 @@ import 'package:trader_app/env/dimensions.dart';
 import 'package:trader_app/screens/invoices_screens/new_invoice_screen/new_items/widgets/custom_tablerow.dart';
 import 'package:trader_app/screens/shared_widgets/appbar_eng_view.dart';
 import 'package:trader_app/screens/shared_widgets/custom_btn.dart';
-import 'package:trader_app/screens/shared_widgets/custom_input_eng.dart';
+import 'package:trader_app/screens/shared_widgets/title_with_text_form_field.dart';
 import 'package:trader_app/screens/shared_widgets/custom_richText.dart';
 import 'package:trader_app/screens/shared_widgets/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -116,16 +116,16 @@ class NewItemScreen extends GetView<ItemsController> {
               child: Column(
                 children: [
                   const Divider(),
-                  CustomInput_eng(
-                    label: "Item name",
+                  TitleWithTextFormField(
+                    titleText: "Item name",
                     controller: controller.itemNameInputController,
                   ),
-                  CustomInput_eng(
-                      label: AppStrings.ADD_ITEMS_PRICE,
+                  TitleWithTextFormField(
+                      titleText: AppStrings.ADD_ITEMS_PRICE,
                       controller: controller.itemPriceInputController,
                       type: TextInputType.number),
-                  CustomInput_eng(
-                    label: AppStrings.ADD_ITEMS_QTY,
+                  TitleWithTextFormField(
+                    titleText: AppStrings.ADD_ITEMS_QTY,
                     controller: controller.itemQtyInputController,
                     type: TextInputType.number,
                   ),

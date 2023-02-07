@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:trader_app/Ui/all_products.dart';
 import 'package:trader_app/constants/colors.dart';
-import 'package:trader_app/env/dimensions.dart';
+import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/screens/shared_widgets/custom_btn.dart';
+import 'package:trader_app/screens/shared_widgets/custom_text.dart';
+import 'package:trader_app/screens/shared_widgets/sized_box.dart';
+import 'package:trader_app/screens/shared_widgets/title_with_text_form_field.dart';
+
+import 'Common_Codes/common_codes.dart';
 
 class AddProduct extends StatefulWidget {
   const AddProduct({Key? key}) : super(key: key);
@@ -17,7 +22,26 @@ class _AddProductState extends State<AddProduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(elevation: 0,
+        leading: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0),
+            child: Icon(
+              Icons.arrow_back_ios_new_rounded,
+              size: 40.0,
+              color: AppColors.kSecondaryColor,
+            ),
+          ),
+        ),
+        centerTitle: true,
+        title: Text(
+          AppStrings.Add_Product,
+          style: TextStyle(
+            color: AppColors.kSecondaryColor,
+          ),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: SingleChildScrollView(
@@ -25,63 +49,10 @@ class _AddProductState extends State<AddProduct> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Title product name
-              const Text(
-                'product name',
-                style: TextStyle(
-                  fontSize: 20.0,
-                ),
-              ),
-              SizedBox(height: Dimensions.calcH(15)),
-              TextFormField(
-                decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
-              ),
-              SizedBox(height: Dimensions.calcH(20)),
+              const TitleWithTextFormField(titleText: 'Product Name'),
               // Title product ID
-              const Text(
-                'product ID',
-                style: TextStyle(
-                  fontSize: 20.0,
-                ),
-              ),
-              SizedBox(height: Dimensions.calcH(15)),
-              DropdownButtonFormField(
-                value: dropDownValue,
-                items: list
-                    .map((label) => DropdownMenuItem(
-                  value: label,
-                  child: Text(label.toString()),
-                ))
-                    .toList(),
-                hint: const Text('product'),
-                onChanged: (value) {
-                  setState(() {
-                    dropDownValue = value;
-                  });
-                },
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    )),
-              ),
-              SizedBox(height: Dimensions.calcH(20)),
-              // Title Quantity type
-              const Text(
-                'Quantity type',
-                style: TextStyle(
-                  fontSize: 20.0,
-                ),
-              ),
-              SizedBox(height: Dimensions.calcH(15)),
+              const CustomText(text: 'Product ID'),
+              AppSizedBox.sizedBoxH10,
               DropdownButtonFormField(
                 value: dropDownValue,
                 items: list
@@ -97,80 +68,26 @@ class _AddProductState extends State<AddProduct> {
                   });
                 },
                 decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
+                  border: OutlineInputBorder(
+                    borderRadius: CustomBorderRadius.borderRadius8,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: CustomBorderRadius.borderRadius8,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: CustomBorderRadius.borderRadius8,
+                    borderSide: BorderSide(
+                      color: AppColors.grey,
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    )),
-              ),
-              SizedBox(height: Dimensions.calcH(20)),
-              //Title Product description
-              const Text(
-                'Product description',
-                style: TextStyle(
-                  fontSize: 20.0,
-                ),
-              ),
-              SizedBox(height: Dimensions.calcH(15)),
-              TextFormField(
-                decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
                   ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
+                  fillColor: AppColors.kSecondaryColor,
+                  filled: true,
                 ),
               ),
-              SizedBox(height: Dimensions.calcH(20)),
-              //Title Product notes
-              const Text(
-                'Product notes',
-                style: TextStyle(
-                  fontSize: 20.0,
-                ),
-              ),
-              SizedBox(height: Dimensions.calcH(15)),
-              TextFormField(
-                decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
-              ),
-              SizedBox(height: Dimensions.calcH(20)),
-              // Image PRODUCT_IMAGE_URL
-              // Title SUPPLIER_ID
-              const Text(
-                'Supplier ID',
-                style: TextStyle(
-                  fontSize: 20.0,
-                ),
-              ),
-              SizedBox(height: Dimensions.calcH(15)),
-              TextFormField(
-                decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
-              ),
-              SizedBox(height: Dimensions.calcH(20)),
-              // Title NO_OF_QUANTITY
-              const Text(
-                'product ID',
-                style: TextStyle(
-                  fontSize: 20.0,
-                ),
-              ),
-              SizedBox(height: Dimensions.calcH(15)),
+              AppSizedBox.sizedBoxH20,
+              // Title Quantity type
+              const CustomText(text: 'Quantity type'),
+              AppSizedBox.sizedBoxH10,
               DropdownButtonFormField(
                 value: dropDownValue,
                 items: list
@@ -186,76 +103,83 @@ class _AddProductState extends State<AddProduct> {
                   });
                 },
                 decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
+                  border: OutlineInputBorder(
+                    borderRadius: CustomBorderRadius.borderRadius8,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: CustomBorderRadius.borderRadius8,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: CustomBorderRadius.borderRadius8,
+                    borderSide: BorderSide(
+                      color: AppColors.grey,
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    )),
+                  ),
+                  fillColor: AppColors.kSecondaryColor,
+                  filled: true,
+                ),
               ),
-              SizedBox(height: Dimensions.calcH(20)),
+              AppSizedBox.sizedBoxH20,
+              //Title Product description
+              const TitleWithTextFormField(titleText: 'Product description'),
+              //Title Product notes
+              const TitleWithTextFormField(titleText: 'Product Notes'),
+              // Image PRODUCT_IMAGE_URL
+              // Title SUPPLIER_ID
+              const TitleWithTextFormField(titleText: 'Supplier ID'),
+              // Title NO_OF_QUANTITY
+              const CustomText(text: 'Quantity'),
+              AppSizedBox.sizedBoxH10,
+              DropdownButtonFormField(
+                value: dropDownValue,
+                items: list
+                    .map((label) => DropdownMenuItem(
+                  value: label,
+                  child: Text(label.toString()),
+                ))
+                    .toList(),
+                hint: const Text('Quantity'),
+                onChanged: (value) {
+                  setState(() {
+                    dropDownValue = value;
+                  });
+                },
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: CustomBorderRadius.borderRadius8,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: CustomBorderRadius.borderRadius8,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: CustomBorderRadius.borderRadius8,
+                    borderSide: BorderSide(
+                      color: AppColors.grey,
+                    ),
+                  ),
+                  fillColor: AppColors.kSecondaryColor,
+                  filled: true,
+                ),
+              ),
+              AppSizedBox.sizedBoxH20,
               // Title PRODUCT_COST
-              const Text(
-                'Product Cost',
-                style: TextStyle(
-                  fontSize: 20.0,
-                ),
-              ),
-              SizedBox(height: Dimensions.calcH(15)),
-              TextFormField(
-                decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
-              ),
-              SizedBox(height: Dimensions.calcH(20)),
+              const TitleWithTextFormField(titleText: 'Product Cost'),
               // Title SELLING_COST
-              const Text(
-                'Selling Cost',
-                style: TextStyle(
-                  fontSize: 20.0,
-                ),
-              ),
-              SizedBox(height: Dimensions.calcH(15)),
-              TextFormField(
-                decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
-              ),
-              SizedBox(height: Dimensions.calcH(20)),
+              const TitleWithTextFormField(titleText: 'Selling Cost'),
               // Title PURCHASE NOTES
-              const Text(
-                'Purchase Cost',
-                style: TextStyle(
-                  fontSize: 20.0,
-                ),
-              ),
-              SizedBox(height: Dimensions.calcH(15)),
-              TextFormField(
-                decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
-              ),
-              SizedBox(height: Dimensions.calcH(20)),
+              const TitleWithTextFormField(titleText: 'Purchase Cost'),
+
               // Save Button
               Center(
                 child: CustomBtn(
-                  action: ()=>Navigator.push(context, MaterialPageRoute(builder: (context) => const AllProducts(),)),
+                  action: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AllProducts(),
+                      )),
                   label: 'Save',
+                  width: 300.0,
+height: 45.0,
                   textColor: AppColors.kSecondaryColor,
                   color: AppColors.kPrimaryColor,
                 ),

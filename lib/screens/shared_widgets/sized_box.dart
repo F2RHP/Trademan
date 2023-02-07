@@ -4,7 +4,9 @@ import 'package:trader_app/env/dimensions.dart';
 
 class AppSizedBox {
   // SizedBox height
-  static SizedBox sizedBoxH5 = SizedBox(
+  static SizedBox sizedBoxH3 = SizedBox(
+    height: Dimensions.calcW(3.0),
+  ); static SizedBox sizedBoxH5 = SizedBox(
     height: Dimensions.calcW(5.0),
   );
   static SizedBox sizedBoxH8 = SizedBox(
