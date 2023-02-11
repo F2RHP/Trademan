@@ -82,6 +82,13 @@ class AppStrings {
   //PRODUCT SCREEN STRINGS
    static const String PRODUCT_TITLE = "KPR Products👌";
    static const String Add_Product = "Add Product";
+   static const String Product_Name = "Product Name";
+   static const String Product_Description = "Product description";
+   static const String Product_Notes = "Product Notes";
+   static const String Product_Supplier_ID = "Supplier ID";
+   static const String Product_Cost = "Product Cost";
+   static const String Product_Selling_Cost = "Selling Cost";
+   static const String Product_Purchase_Cost = "Purchase Cost";
 
    //Expense
    static const String Add_Expense = "Add Expense";

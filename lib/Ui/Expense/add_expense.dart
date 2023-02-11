@@ -6,6 +6,7 @@ import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/screens/shared_widgets/custom_btn.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
+import 'package:trader_app/screens/shared_widgets/title_with_text_form_field.dart';
 
 class AddExpense extends StatefulWidget {
   const AddExpense({Key? key}) : super(key: key);
@@ -77,35 +78,8 @@ class _AddExpenseState extends State<AddExpense> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const Text(
-          AppStrings.Expense_Name,
-          style: TextStyle(
-            fontSize: 20,
-          ),
-        ),
-        AppSizedBox.sizedBoxH15,
-        const AppTextFormFiled(
-          textInputAction: TextInputAction.next,
-          autoValidator: true,
-          hintText: AppStrings.Expense_Name,
-          errorText: 'enter value',
-        ),
-        AppSizedBox.sizedBoxH25,
-        const Text(
-          AppStrings.Expense_Details,
-          style: TextStyle(
-            fontSize: 20,
-          ),
-        ),
-        AppSizedBox.sizedBoxH15,
-        const AppTextFormFiled(
-          maxLines: 5,
-          keyboardType: TextInputType.multiline,
-          autoValidator: true,
-          hintText: AppStrings.Expense_Details,
-          errorText: 'enter value',
-        ),
-        AppSizedBox.sizedBoxH25,
+        const TitleWithTextFormField(titleText: AppStrings.Expense_Name,hintText: AppStrings.Expense_Name,),
+        const TitleWithTextFormField(titleText: AppStrings.Expense_Details,hintText: AppStrings.Expense_Details,maxLines: 5,),
         const Text(
           AppStrings.Category,
           style: TextStyle(
@@ -117,57 +91,37 @@ class _AddExpenseState extends State<AddExpense> {
           value: dropDownValue,
           items: list
               .map((label) => DropdownMenuItem(
-                    value: label,
-                    child: Text(label.toString()),
-                  ))
+            value: label,
+            child: Text(label.toString()),
+          ))
               .toList(),
-          hint: const Text('product'),
+          hint: const Text('Product'),
           onChanged: (value) {
             setState(() {
               dropDownValue = value;
             });
           },
           decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5.0),
+            border: OutlineInputBorder(
+              borderRadius: CustomBorderRadius.borderRadius8,
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: CustomBorderRadius.borderRadius8,
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: CustomBorderRadius.borderRadius8,
+              borderSide: BorderSide(
+                color: AppColors.grey,
               ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5.0),
-              )),
-        ),
-        AppSizedBox.sizedBoxH25,
-        const AppTextFormFiled(
-          hintText: AppStrings.type_your_Category,
-          autoValidator: true,
-        ),
-        AppSizedBox.sizedBoxH25,
-        const Text(
-          AppStrings.Data,
-          style: TextStyle(
-            fontSize: 20,
+            ),
+            fillColor: AppColors.kSecondaryColor,
+            filled: true,
           ),
         ),
-        AppSizedBox.sizedBoxH15,
-        const AppTextFormFiled(
-          textInputAction: TextInputAction.next,
-          autoValidator: true,
-          hintText: AppStrings.DataType,
-          errorText: 'enter value',
-        ),
         AppSizedBox.sizedBoxH25,
-        const Text(
-          AppStrings.Cost,
-          style: TextStyle(
-            fontSize: 20,
-          ),
-        ),
-        AppSizedBox.sizedBoxH15,
-        const AppTextFormFiled(
-          autoValidator: true,
-          hintText: AppStrings.Cost,
-          errorText: 'enter value',
-        ),
-        AppSizedBox.sizedBoxH25,
+        const TitleWithTextFormField(titleText: AppStrings.type_your_Category,hintText: AppStrings.type_your_Category,),
+        const TitleWithTextFormField(titleText: AppStrings.Data,hintText: AppStrings.DataType,),
+        const TitleWithTextFormField(titleText: AppStrings.Cost,hintText: AppStrings.Cost,),
       ],
     );
   }
