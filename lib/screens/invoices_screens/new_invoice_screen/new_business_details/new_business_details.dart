@@ -8,7 +8,7 @@ import 'package:trader_app/controllers/invoice_controller.dart';
 import 'package:trader_app/env/dimensions.dart';
 import 'package:trader_app/screens/shared_widgets/appbar_eng_view.dart';
 import 'package:trader_app/screens/shared_widgets/custom_btn.dart';
-import 'package:trader_app/screens/shared_widgets/custom_input_eng.dart';
+import 'package:trader_app/screens/shared_widgets/title_with_text_form_field.dart';
 import 'package:trader_app/screens/shared_widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -42,26 +42,26 @@ class NewBusinessScreen extends StatelessWidget {
                   children: [
                     Column(
                       children: [
-                        CustomInput_eng(
+                        TitleWithTextFormField(
                           controller: controller.businessNameInputController,
-                          label: AppStrings.ADD_BUSINESS_NAME,
+                          titleText: AppStrings.ADD_BUSINESS_NAME,
                           isRequired: true,
                         ),
-                        CustomInput_eng(
+                        TitleWithTextFormField(
                           controller: controller.businessEmailInputController,
-                          label: AppStrings.ADD_BUSINESS_EMAIL,
+                          titleText: AppStrings.ADD_BUSINESS_EMAIL,
                           isRequired: true,
                           type: TextInputType.emailAddress,
                         ),
-                        CustomInput_eng(
+                        TitleWithTextFormField(
                           controller: controller.businessPhoneInputController,
-                          label: AppStrings.ADD_BUSINESS_PHONE,
+                          titleText: AppStrings.ADD_BUSINESS_PHONE,
                           isRequired: true,
                           type: TextInputType.phone,
                         ),
-                        CustomInput_eng(
+                        TitleWithTextFormField(
                           controller: controller.businessAddressInputController,
-                          label: AppStrings.ADD_BUSINESS_ADDRESS,
+                          titleText: AppStrings.ADD_BUSINESS_ADDRESS,
                           height: Dimensions.calcH(100),
                           isRequired: true,
                         ),

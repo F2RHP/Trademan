@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:trader_app/Ui/Customer/customer_registration_screen.dart';
 import 'package:trader_app/Ui/Expense/add_expense.dart';
-import 'package:trader_app/Ui/add_product.dart';
+import 'package:trader_app/Ui/products/add_product.dart';
 import 'package:trader_app/constants/colors.dart';
-
-class ColorCodes {
-  static Color primary = const Color(0xFF1eb060);
-  static Color redColor = Colors.red;
-}
 
 class DashBoard extends StatefulWidget {
   const DashBoard({super.key});
@@ -128,10 +124,13 @@ class _DashBoardState extends State<DashBoard> {
         ),
       ),
       centerTitle: true,
-      actions: const <Widget>[
-        Icon(
-          Icons.help_outline,
-          color: Colors.white,
+      actions:  <Widget>[
+        GestureDetector(
+          onTap: ()=> Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CustomerRegistration(),)),
+          child: const Icon(
+            Icons.help_outline,
+            color: Colors.white,
+          ),
         ),
         SizedBox(width: 20.0),
       ],

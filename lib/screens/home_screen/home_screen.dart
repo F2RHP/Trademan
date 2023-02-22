@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../../Ui/add_product.dart';
+import '../../Ui/products/add_product.dart';
 import '../../models/menu_models.dart';
 import '../../models/product_model.dart';
 

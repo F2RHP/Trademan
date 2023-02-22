@@ -4,7 +4,7 @@ import 'package:trader_app/controllers/customer_controller.dart';
 import 'package:trader_app/env/dimensions.dart';
 import 'package:trader_app/screens/shared_widgets/appbar_eng_view.dart';
 import 'package:trader_app/screens/shared_widgets/custom_btn.dart';
-import 'package:trader_app/screens/shared_widgets/custom_input_eng.dart';
+import 'package:trader_app/screens/shared_widgets/title_with_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -37,27 +37,27 @@ class NewPayerScreen extends StatelessWidget {
                     Form(
                       child: Column(
                         children: [
-                          CustomInput_eng(
+                          TitleWithTextFormField(
                             controller: controller.customerNameInputController,
-                            label: AppStrings.ADD_PAYER_NAME,
+                            titleText: AppStrings.ADD_PAYER_NAME,
                             isRequired: true,
                           ),
-                          CustomInput_eng(
+                          TitleWithTextFormField(
                             controller: controller.customerEmailInputController,
-                            label: AppStrings.ADD_PAYER_EMAIL,
+                            titleText: AppStrings.ADD_PAYER_EMAIL,
                             isRequired: true,
                             type: TextInputType.emailAddress,
                           ),
-                          CustomInput_eng(
+                          TitleWithTextFormField(
                             controller: controller.customerPhoneInputController,
-                            label: AppStrings.ADD_PAYER_PHONE,
+                            titleText: AppStrings.ADD_PAYER_PHONE,
                             isRequired: true,
                             type: TextInputType.phone,
                           ),
-                          CustomInput_eng(
+                          TitleWithTextFormField(
                             controller:
                                 controller.customerAddressInputController,
-                            label: AppStrings.ADD_PAYER_ADDRESS,
+                            titleText: AppStrings.ADD_PAYER_ADDRESS,
                             height: Dimensions.calcH(100),
                             isRequired: true,
                           ),

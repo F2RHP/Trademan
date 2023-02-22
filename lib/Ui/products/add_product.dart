@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:trader_app/Ui/all_products.dart';
+import 'package:trader_app/Ui/products/all_products.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/screens/shared_widgets/custom_btn.dart';
 import 'package:trader_app/screens/shared_widgets/custom_text.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
 import 'package:trader_app/screens/shared_widgets/title_with_text_form_field.dart';
-import 'Common_Codes/common_codes.dart';
+import '../Common_Codes/common_codes.dart';
 
 class AddProduct extends StatefulWidget {
   const AddProduct({Key? key}) : super(key: key);
@@ -73,6 +73,7 @@ class _AddProductState extends State<AddProduct> {
 
   Widget buildInputSection() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
               children: [
             // Title product name
                 const TitleWithTextFormField(titleText: AppStrings.Product_Name,hintText: AppStrings.Product_Name,),

@@ -90,12 +90,28 @@ class AppStrings {
    static const String Product_Selling_Cost = "Selling Cost";
    static const String Product_Purchase_Cost = "Purchase Cost";
 
-   //Expense
+   //Customers
+  static const String Customer_Name = "Name";
+  static const String Nick_Name = "Nick Name";
+  static const String Father_Name = "Father Name";
+  static const String Address1 = "Address1";
+  static const String Address2 = "Address2";
+  static const String Gender = "Gender";
+  static const String Village_Name = "Village Name";
+  static const String Profile_Picture = "Profile Picture";
+  static const String Customer_Email = "Email";
+  static const String Contact_Number = "Contact Number";
+  static const String Pin_Code = "Pin Code";
+  static const String Data_Birth = "Data Birth";
+  static const String Customer_Notes = "Customer Notes";
+
+
+  //Expense
    static const String Add_Expense = "Add Expense";
    static const String Filter_Expense = "Filter Expense";
-   static const String Expense_Name = "Expense Name";
+   static const String Expense_Name = "Name";
    static const String Expense = "Expense";
-   static const String Expense_Details = "Expense Details";
+   static const String Expense_Details = "Details";
    static const String Category = "Category";
    static const String type_your_Category = "Type Your Category";
    static const String DataType = "dd-mm-yyyy";

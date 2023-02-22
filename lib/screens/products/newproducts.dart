@@ -4,7 +4,7 @@ import 'package:trader_app/controllers/products_controller.dart';
 import 'package:trader_app/models/generalclass.dart';
 import 'package:trader_app/screens/shared_widgets/appbar_eng_view.dart';
 import '../../constants/strings.dart';
-import '../shared_widgets/custom_input_eng.dart';
+import '../shared_widgets/title_with_text_form_field.dart';
 
 class NewProduct extends StatefulWidget {
   NewProduct({super.key});
@@ -34,14 +34,14 @@ class _NewProductState extends State<NewProduct> {
     return Form(
       child: Column(
         children: [
-          CustomInput_eng(
+          TitleWithTextFormField(
             controller: controller.ctrlproductname,
-            label: "Product Name",
+            titleText: "Product Name",
             isRequired: true,
           ),
-          CustomInput_eng(
+          TitleWithTextFormField(
             controller: controller.ctrlnoquantity,
-            label: "No Of Quantity",
+            titleText: "No Of Quantity",
             isRequired: true,
           ),
           //buildSampleDropdown(),
