@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:trader_app/models/Expense_model/add_expense_model.dart';
 
-class AddExpense extends GetxController {
+class AddExpenseCtrl extends GetxController {
   TextEditingController nameController = TextEditingController();
   TextEditingController detailsController = TextEditingController();
   TextEditingController categoryController = TextEditingController();

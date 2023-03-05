@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:trader_app/Ui/Common_Codes/common_codes.dart';
+import 'package:trader_app/constants/colors.dart';
+import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/env/dimensions.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
 
@@ -17,7 +19,7 @@ class _AllProductsState extends State<AllProducts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: buildAppBar(context),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -27,35 +29,44 @@ class _AllProductsState extends State<AllProducts> {
             AppSizedBox.sizedBoxH20,
             ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
-              child: const GroupButton(
+              child: GroupButton(
                   options: GroupButtonOptions(
-                    spacing: 0,
-                    buttonWidth: 100,
-                    buttonHeight: 50,
-                    selectedColor: Color(0x960BE88C),
-                    unselectedColor: Colors.blueAccent,
-                  ),
-                  buttons: <String>['All', 'In Stock', 'Stock Out']),
+                      spacing: 0,
+                      buttonWidth: 100,
+                      buttonHeight: 50,
+                      selectedColor: AppColors.kPrimaryColor,
+                      unselectedColor: AppColors.blueAccentShade700,
+                      unselectedTextStyle: TextStyle(
+                        color: AppColors.white,
+                      )),
+                  buttons: const <String>['All', 'In Stock', 'Stock Out']),
             ),
             AppSizedBox.sizedBoxH20,
             Container(
-              padding: const EdgeInsets.all(15.0,),
+              padding: const EdgeInsets.all(
+                15.0,
+              ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(13.0),
-                border: Border.all(color: Colors.black,),
+                border: Border.all(
+                  color: Colors.black,
+                ),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: Colors.black54,
                         ),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.account_box_outlined,size: 50.0,)),
+                      child: const Icon(
+                        Icons.account_box_outlined,
+                        size: 50.0,
+                      )),
                   AppSizedBox.sizedBoxW15,
                   Expanded(
                     child: Column(
@@ -162,6 +173,30 @@ class _AllProductsState extends State<AllProducts> {
     );
   }
 
+  AppBar buildAppBar(BuildContext context) {
+    return AppBar(
+      elevation: 0,
+      leading: GestureDetector(
+        onTap: () => Navigator.pop(context),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 20.0),
+          child: Icon(
+            Icons.arrow_back_ios_new_rounded,
+            size: 40.0,
+            color: AppColors.kSecondaryColor,
+          ),
+        ),
+      ),
+      centerTitle: true,
+      title: Text(
+        AppStrings.ProductList,
+        style: TextStyle(
+          color: AppColors.kSecondaryColor,
+        ),
+      ),
+    );
+  }
+
   Widget topSection() {
     return Column(
       children: [
@@ -177,7 +212,7 @@ class _AllProductsState extends State<AllProducts> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               SizedBox(height: Dimensions.calcH(10.0)),
-              Text(
+              const Text(
                 'All',
                 selectionColor: Colors.black26,
                 style: TextStyle(
@@ -186,7 +221,7 @@ class _AllProductsState extends State<AllProducts> {
                 ),
               ),
               SizedBox(width: Dimensions.calcW(15.0)),
-              Text(
+              const Text(
                 'In Stock',
                 selectionColor: Colors.black26,
                 style: TextStyle(
@@ -195,7 +230,7 @@ class _AllProductsState extends State<AllProducts> {
                 ),
               ),
               SizedBox(width: Dimensions.calcW(15.0)),
-              Text(
+              const Text(
                 'Stock Out',
                 selectionColor: Colors.black26,
                 style: TextStyle(
@@ -204,7 +239,7 @@ class _AllProductsState extends State<AllProducts> {
                 ),
               ),
               SizedBox(width: Dimensions.calcW(15.0)),
-              Text(
+              const Text(
                 'A-Z',
                 selectionColor: Colors.black26,
                 style: TextStyle(
@@ -261,6 +296,7 @@ class _AllProductsState extends State<AllProducts> {
             ),
           ),
         ),
+      
       ],
     );
   }

@@ -1,4 +1,4 @@
-import 'package:trader_app/Ui/background.dart';
+import 'package:trader_app/Ui/dashboard.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/env/routing.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 
 
 void main() {
-  runApp(const BackgroundSplash());
+  runApp(getApp());
 }
 
 
@@ -18,7 +18,7 @@ Widget getApp()
     theme: ThemeData(scaffoldBackgroundColor: Colors.white,
      primarySwatch: AppColorCode.appColorCode,
     ),
-    //home: NewProduct(),
+    home: const DashBoard(),
     initialRoute: "/",
     getPages: AppRouting.ROUTES,
   );

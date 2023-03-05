@@ -36,7 +36,7 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
         ),
         centerTitle: true,
         title: Text(
-          AppStrings.Add_Product,
+          AppStrings.Customer,
           style: TextStyle(
             color: AppColors.kSecondaryColor,
           ),
@@ -76,9 +76,18 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Title product name
-        const TitleWithTextFormField(titleText: AppStrings.Customer_Name,hintText: AppStrings.Customer_Name,),
-        const TitleWithTextFormField(titleText: AppStrings.Nick_Name,hintText: AppStrings.Nick_Name,),
-        const TitleWithTextFormField(titleText: AppStrings.Father_Name,hintText: AppStrings.Father_Name,),
+        const TitleWithTextFormField(
+          titleText: AppStrings.Customer_Name,
+          hintText: AppStrings.Customer_Name,
+        ),
+        const TitleWithTextFormField(
+          titleText: AppStrings.Nick_Name,
+          hintText: AppStrings.Nick_Name,
+        ),
+        const TitleWithTextFormField(
+          titleText: AppStrings.Father_Name,
+          hintText: AppStrings.Father_Name,
+        ),
         // Title product ID
         const CustomText(text: AppStrings.Gender),
         AppSizedBox.sizedBoxH10,
@@ -86,9 +95,9 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
           value: dropDownValue,
           items: list
               .map((label) => DropdownMenuItem(
-            value: label,
-            child: Text(label.toString()),
-          ))
+                    value: label,
+                    child: Text(label.toString()),
+                  ))
               .toList(),
           hint: const Text(AppStrings.Gender),
           onChanged: (value) {
@@ -115,16 +124,29 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
         ),
         AppSizedBox.sizedBoxH20,
         // Title Quantity type
-        const TitleWithTextFormField(titleText: AppStrings.Customer_Email,hintText: AppStrings.Customer_Email,),
+        const TitleWithTextFormField(
+          titleText: AppStrings.Customer_Email,
+          hintText: AppStrings.Customer_Email,
+        ),
         // Title SELLING_COST
-        const TitleWithTextFormField(titleText: AppStrings.Address1,hintText: AppStrings.Address1),
-        const TitleWithTextFormField(titleText: AppStrings.Address2,hintText: AppStrings.Address2),
-        const TitleWithTextFormField(titleText: AppStrings.Village_Name,hintText: AppStrings.Village_Name),
-        const TitleWithTextFormField(titleText: AppStrings.Contact_Number,hintText: AppStrings.Contact_Number),
-        const TitleWithTextFormField(titleText: AppStrings.Pin_Code,hintText: AppStrings.Pin_Code),
-        const TitleWithTextFormField(titleText: AppStrings.Data_Birth,hintText: AppStrings.Data_Birth),
-        const TitleWithTextFormField(titleText: AppStrings.Customer_Notes,hintText: AppStrings.Customer_Notes,
-        maxLines: 3,
+        const TitleWithTextFormField(
+            titleText: AppStrings.Address1, hintText: AppStrings.Address1),
+        const TitleWithTextFormField(
+            titleText: AppStrings.Address2, hintText: AppStrings.Address2),
+        const TitleWithTextFormField(
+            titleText: AppStrings.Village_Name,
+            hintText: AppStrings.Village_Name),
+        const TitleWithTextFormField(
+            titleText: AppStrings.Contact_Number,
+            hintText: AppStrings.Contact_Number),
+        const TitleWithTextFormField(
+            titleText: AppStrings.Pin_Code, hintText: AppStrings.Pin_Code),
+        const TitleWithTextFormField(
+            titleText: AppStrings.Data_Birth, hintText: AppStrings.Data_Birth),
+        const TitleWithTextFormField(
+          titleText: AppStrings.Customer_Notes,
+          hintText: AppStrings.Customer_Notes,
+          maxLines: 3,
         ),
       ],
     );
