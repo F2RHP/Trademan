@@ -3,7 +3,7 @@ import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/controllers/invoice_controller.dart';
 import 'package:trader_app/env/dimensions.dart';
 import 'package:trader_app/screens/shared_widgets/custom_btn.dart';
-import 'package:trader_app/screens/shared_widgets/custom_input_eng.dart';
+import 'package:trader_app/screens/shared_widgets/title_with_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -30,9 +30,9 @@ class PaymentInstructions extends GetView<InvoiceController> {
               Form(
                 child: Column(
                   children: [
-                    CustomInput_eng(
+                    TitleWithTextFormField(
                       controller: _paymentInstInputController,
-                      label: AppStrings.ADD_PAYMENT_INSTRUCTIONS_LABEL,
+                      titleText: AppStrings.ADD_PAYMENT_INSTRUCTIONS_LABEL,
                       height: Dimensions.calcH(100),
                       isRequired: true,
                     ),

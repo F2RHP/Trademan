@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:trader_app/Ui/Common_Codes/common_codes.dart';
 import 'package:trader_app/Ui/Expense/expense_list.dart';
-import 'package:trader_app/Ui/color_code.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/screens/shared_widgets/custom_btn.dart';
@@ -22,7 +21,7 @@ class _AddExpenseState extends State<AddExpense> {
   TextEditingController categoryController = TextEditingController();
   TextEditingController dataController = TextEditingController();
   TextEditingController costController = TextEditingController();
-  List<String> list = ['1', '2', '3', '4'];
+  List<String> list = ['A', 'B'];
   var dropDownValue;
   @override
   Widget build(BuildContext context) {
@@ -125,4 +124,5 @@ class _AddExpenseState extends State<AddExpense> {
       ],
     );
   }
+
 }

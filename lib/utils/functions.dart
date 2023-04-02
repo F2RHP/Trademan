@@ -23,7 +23,7 @@ class Functions {
       if (checkPermission) {
         File pdf_doc = File("$path/$name");
         await pdf_doc.writeAsBytes(fileBytes);
-        Get.snackbar("done", "Invoice Saved succesfully to $path/$name",
+        Get.snackbar("done", "Invoice Saved successfully to $path/$name",
             snackPosition: SnackPosition.BOTTOM);
       } else {
         Get.snackbar("Error", "Storage permission denied !, please try again!",
