@@ -1,29 +1,25 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'package:trader_app/models/product_model.dart';
+import 'package:trader_app/services/servicebase.dart';
 import 'package:trader_app/services/servicehelper.dart';
 
-class ProductService {
+class ProductService extends BaseService{
+
   Future<List<Product>> getAllProducts() async
   {
     try {
-      final _uri = Uri.parse(
-          '${ServiceHelper.BaseUrl}${ServiceHelper.productGetUrl}');
-      var response = await http.get(_uri);
-      if (response.statusCode == ServiceHelper.Sucesscode) {
-        List decodedList = convert.jsonDecode(response.body);
-        List<Product> countryReportList = decodedList
+
+      var response = await  get<List<dynamic>>('${ServiceHelper.productGetUrl}');
+      
+        List<Product> countryReportList = response
             .map((mapElement) => Product.fromMap(mapElement))
             .toList();
-print(countryReportList.length);
-        return countryReportList;
-      }
-      else {
-        return <Product>[];
-      }
+
+        return countryReportList;     
     }
     catch (e) {
-      print(e.toString());
+     
       return <Product>[];
 
     }
