@@ -1,5 +1,4 @@
-import 'package:http/http.dart' as http;
-import 'dart:convert' as convert;
+import 'package:trader_app/models/customer_model/list_customer_model.dart';
 import 'package:trader_app/models/product_model.dart';
 import 'package:trader_app/services/servicebase.dart';
 import 'package:trader_app/services/servicehelper.dart';
@@ -10,8 +9,7 @@ class ProductService extends BaseService{
   {
     try {
 
-      var response = await  get<List<dynamic>>('${ServiceHelper.productGetUrl}');
-      
+      var response = await  get<List<dynamic>>(ServiceHelper.productGetUrl);
         List<Product> countryReportList = response
             .map((mapElement) => Product.fromMap(mapElement))
             .toList();
@@ -19,8 +17,24 @@ class ProductService extends BaseService{
         return countryReportList;     
     }
     catch (e) {
-     
       return <Product>[];
+
+    }
+  }
+
+  Future<List<CustomersList>> getAllListCustomers() async
+  {
+    try {
+
+      var response = await  get<List<dynamic>>(ServiceHelper.listCustomer);
+        List<CustomersList> customersList = response
+            .map((mapElement) => CustomersList.fromJson(mapElement))
+            .toList();
+
+        return customersList;
+    }
+    catch (e) {
+      return <CustomersList>[];
 
     }
   }

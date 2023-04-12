@@ -345,7 +345,7 @@ class _HomePageState extends State<HomePage> {
                     ],
                     border: Border.all(
                       color: ColorCode.backgroundColor,
-                      strokeAlign: StrokeAlign.inside,
+                      // strokeAlign: StrokeAlign.inside,
                       width: 3.0,
                     ),
                   ),

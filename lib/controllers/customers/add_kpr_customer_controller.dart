@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:trader_app/models/customer_model/add_kpr_customer.dart';
+import 'package:trader_app/models/customer_model/list_customer_model.dart';
 
 class AddKPRCustomerController extends GetxController {
   KPRCustomer? kprCustomer;
@@ -73,5 +74,19 @@ class AddKPRCustomerController extends GetxController {
           customerNotesController.clear();
     }
     super.onClose();
+  }
+  //defiles
+  updateCustomerDefiles(CustomersList m){
+    nameController.text = m.customeRName!;
+    nickNameController.text = m.customeRNickname!;
+    address1Controller.text = m.adrresS1!;
+    address2Controller.text =m.addresS2!;
+    fatherNameController.text = m.fatheRName!;
+    genderController.text = m.gender!;
+    villageNameController.text = m.villagename!;
+    pinCodeController.text = m.pincode!;
+    contactNumberController.text = m.contactnumber!;
+    dOBController.text = m.dob;
+    customerNotesController.text = m.customeRNotes!;
   }
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:group_button/group_button.dart';
+import 'package:intl/intl.dart';
 import 'package:trader_app/Ui/Common_Codes/common_codes.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
+import 'package:trader_app/controllers/products_controller.dart';
 import 'package:trader_app/env/dimensions.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
 
@@ -14,159 +17,190 @@ class AllProducts extends StatefulWidget {
 }
 
 class _AllProductsState extends State<AllProducts> {
+  final controller = Get.put(ProductController());
+
   List<String> list = ['1', '2', '3', '4'];
   var dropDownValue;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(context),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              topSection(),
+              AppSizedBox.sizedBoxH20,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: GroupButton(
+                    options: GroupButtonOptions(
+                        spacing: 0,
+                        buttonWidth: 100,
+                        buttonHeight: 50,
+                        selectedColor: AppColors.kPrimaryColor,
+                        unselectedColor: AppColors.blueAccentShade700,
+                        unselectedTextStyle: TextStyle(
+                          color: AppColors.white,
+                        )),
+                    buttons: const <String>['All', 'In Stock', 'Stock Out']),
+              ),
+              AppSizedBox.sizedBoxH20,
+              ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: controller.isSearch
+                    ? controller.products.length
+                    : controller.searchList.length,
+                itemBuilder: (context, index) {
+                  var dateTime = DateTime.parse(
+                      controller.products[index].purchasEDate.toString());
+                  DateFormat dateFormat = DateFormat('yyy-MM-dd');
+                  var nowDate = dateFormat.format(dateTime);
+                  return listMenu(
+                      controller.isSearch
+                          ? controller.products[index]
+                          : controller.searchList[index],
+                      nowDate);
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Padding listMenu(listMenu, String nowDate) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Container(
+        padding: const EdgeInsets.all(
+          15.0,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(13.0),
+          border: Border.all(
+            color: Colors.black,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            topSection(),
-            AppSizedBox.sizedBoxH20,
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
-              child: GroupButton(
-                  options: GroupButtonOptions(
-                      spacing: 0,
-                      buttonWidth: 100,
-                      buttonHeight: 50,
-                      selectedColor: AppColors.kPrimaryColor,
-                      unselectedColor: AppColors.blueAccentShade700,
-                      unselectedTextStyle: TextStyle(
-                        color: AppColors.white,
-                      )),
-                  buttons: const <String>['All', 'In Stock', 'Stock Out']),
-            ),
-            AppSizedBox.sizedBoxH20,
             Container(
-              padding: const EdgeInsets.all(
-                15.0,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(13.0),
-                border: Border.all(
-                  color: Colors.black,
+                padding: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.black54,
+                  ),
+                  shape: BoxShape.circle,
                 ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                child: const Icon(
+                  Icons.account_box_outlined,
+                  size: 50.0,
+                )),
+            AppSizedBox.sizedBoxW15,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                      padding: const EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.black54,
-                        ),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.account_box_outlined,
-                        size: 50.0,
-                      )),
-                  AppSizedBox.sizedBoxW15,
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Product Name',
-                          style: TextStyle(
-                            fontSize: 20.0,
-                          ),
-                        ),
-                        AppSizedBox.sizedBoxH15,
-                        Row(
-                          children: [
-                            RichText(
-                              text: const TextSpan(
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontStyle: FontStyle.italic,
-                                  ),
-                                  text: 'Cost: ',
-                                  children: [
-                                    TextSpan(
-                                        text: '453',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                        )),
-                                  ]),
-                            ),
-                            AppSizedBox.sizedBoxW15,
-                            RichText(
-                              text: const TextSpan(
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontStyle: FontStyle.italic,
-                                  ),
-                                  text: 'Sell: ',
-                                  children: [
-                                    TextSpan(
-                                        text: '1000',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                        )),
-                                  ]),
-                            ),
-                          ],
-                        ),
-                        AppSizedBox.sizedBoxH15,
-                        const Text(
-                          'Product Description Product DescriptionProduct DescriptionProduct Description',
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          style: TextStyle(
-                            fontSize: 20.0,
-                          ),
-                        ),
-                        AppSizedBox.sizedBoxH15,
-                        Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(8.0),
-                              decoration: BoxDecoration(
-                                  color: Colors.cyan,
-                                  borderRadius: BorderRadius.circular(18.0)),
-                              child: const Text(
-                                '211.00 Pack',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            AppSizedBox.sizedBoxW8,
-                            Container(
-                              padding: const EdgeInsets.all(8.0),
-                              decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(18.0)),
-                              child: const Text(
-                                '21',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            const Spacer(),
-                            const Text(
-                              '4 month ago',
-                            ),
-                          ],
-                        ),
-                      ],
+                  Text(
+                    listMenu.producTName.toString(),
+                    style: const TextStyle(
+                      fontSize: 20.0,
                     ),
+                  ),
+                  AppSizedBox.sizedBoxH15,
+                  Row(
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontStyle: FontStyle.italic,
+                            ),
+                            text: 'Cost: ',
+                            children: [
+                              TextSpan(
+                                  text: listMenu.producTCost.toString(),
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                            ]),
+                      ),
+                      AppSizedBox.sizedBoxW15,
+                      RichText(
+                        text: TextSpan(
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontStyle: FontStyle.italic,
+                            ),
+                            text: 'Sell: ',
+                            children: [
+                              TextSpan(
+                                  text: listMenu.sellinGCost.toString(),
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                            ]),
+                      ),
+                    ],
+                  ),
+                  AppSizedBox.sizedBoxH15,
+                  Text(
+                    listMenu.supplieRName.toString(),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    style: const TextStyle(
+                      fontSize: 20.0,
+                    ),
+                  ),
+                  AppSizedBox.sizedBoxH15,
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                            color: Colors.cyan,
+                            borderRadius: BorderRadius.circular(18.0)),
+                        child: Text(
+                          '${listMenu.nOOfQuantity} ${listMenu.quantitYTypeName}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      AppSizedBox.sizedBoxW8,
+                      // Container(
+                      //   padding: const EdgeInsets.all(8.0),
+                      //   decoration: BoxDecoration(
+                      //       color: Colors.red,
+                      //       borderRadius:
+                      //           BorderRadius.circular(18.0)),
+                      //   child: Text(
+                      //     controller.products[index].nOOfQuantity
+                      //         .toString(),
+                      //     style: const TextStyle(
+                      //       color: Colors.white,
+                      //       fontWeight: FontWeight.bold,
+                      //     ),
+                      //   ),
+                      // ),
+                      const Spacer(),
+                      Text(
+                        nowDate,
+                      ),
+                    ],
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -286,6 +320,7 @@ class _AllProductsState extends State<AllProducts> {
         ),
         SizedBox(height: Dimensions.calcH(15)),
         TextFormField(
+          onChanged: controller.onSearch,
           decoration: InputDecoration(
             hintText: 'Search...',
             focusedBorder: OutlineInputBorder(
@@ -296,7 +331,6 @@ class _AllProductsState extends State<AllProducts> {
             ),
           ),
         ),
-      
       ],
     );
   }

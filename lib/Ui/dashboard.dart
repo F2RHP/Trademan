@@ -1,8 +1,5 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:trader_app/Ui/Customer/customer_registration_screen.dart';
-import 'package:trader_app/Ui/add_sale.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/controllers/dash_board_ctrl.dart';
 
@@ -108,23 +105,17 @@ class _DashBoardState extends State<DashBoard> {
   AppBar appBar() {
     return AppBar(
       leading: const Icon(Icons.menu_outlined),
-      title: GestureDetector(
-        onTap: ()=> Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddSale(),)),
-        child: const Text(
-          'Daily Sales Record',
-          style: TextStyle(
-            fontSize: 24.0,
-          ),
+      title: const Text(
+        'Daily Sales Record',
+        style: TextStyle(
+          fontSize: 24.0,
         ),
       ),
       centerTitle: true,
-      actions:  <Widget>[
-        GestureDetector(
-          onTap: ()=> Navigator.of(context).push(MaterialPageRoute(builder: (context) => const CustomerRegistration(),)),
-          child: const Icon(
-            Icons.help_outline,
-            color: Colors.white,
-          ),
+      actions:  const <Widget>[
+        Icon(
+          Icons.help_outline,
+          color: Colors.white,
         ),
         SizedBox(width: 20.0),
       ],

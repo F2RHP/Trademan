@@ -35,12 +35,12 @@ class _NewProductState extends State<NewProduct> {
       child: Column(
         children: [
           TitleWithTextFormField(
-            controller: controller.ctrlproductname,
+            controller: controller.ctrlProductName,
             titleText: "Product Name",
             isRequired: true,
           ),
           TitleWithTextFormField(
-            controller: controller.ctrlnoquantity,
+            controller: controller.ctrlNoQuantity,
             titleText: "No Of Quantity",
             isRequired: true,
           ),

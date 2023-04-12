@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:trader_app/Ui/Customer/customer_list.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
@@ -16,6 +17,7 @@ class CustomerRegistration extends StatefulWidget {
 }
 
 class _CustomerRegistrationState extends State<CustomerRegistration> {
+  // final crtl = Get.pu
   List<String> list = ['1', '2', '3', '4'];
   var dropDownValue;
   @override
@@ -77,6 +79,7 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
       children: [
         // Title product name
         const TitleWithTextFormField(
+          // controller: ,
           titleText: AppStrings.Customer_Name,
           hintText: AppStrings.Customer_Name,
         ),

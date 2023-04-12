@@ -1,22 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:trader_app/models/product_model.dart';
 import '../models/generalclass.dart';
 import 'base_controller.dart';
 import '../services/productservice.dart';
 
-class ProductController extends BaseController
-{
-  final  products=[].obs;
+class ProductController extends BaseController {
+  final  products=<Product>[].obs;
+  List searchList = [].obs;
   late ProductService service;
+  bool isSearch = true;
 
   var selectedProductType=ProductType.create(1,"None").obs;
 
 final productTypes=<ProductType>[].obs;
 List<QuantityType> quantityTypes=[];
-  
-  TextEditingController ctrlproductname = TextEditingController();
-  TextEditingController ctrlnoquantity = TextEditingController();
-  TextEditingController ctrlproducttype = TextEditingController();
+
+  TextEditingController ctrlProductName = TextEditingController();
+  TextEditingController ctrlNoQuantity = TextEditingController();
+  TextEditingController ctrlProductType = TextEditingController();
+
+  onSearch(value) {
+    isSearch = false;
+    searchList = products
+        .where((getValue) =>
+    getValue.producTName!.contains(value) ||
+        getValue.supplieRName!.contains(value))
+        .toList();
+  }
 
   @override
   void onInit() async {
@@ -24,10 +35,9 @@ List<QuantityType> quantityTypes=[];
     service=ProductService();
     isLoading.value=true;
     productTypes.value=getProductType();
-    productTypes.value.insert(0, selectedProductType.value);
+    productTypes.insert(0, selectedProductType.value);
     quantityTypes=getQuantityType();
     products.value = await service.getAllProducts();
-
     isLoading.value=false;
   }
 
@@ -45,5 +55,4 @@ List<QuantityType> quantityTypes=[];
     type.add(QuantityType.create(2,"KG"));
     return type;
   }
-} 
-
+}
