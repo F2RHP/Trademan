@@ -6,4 +6,6 @@
    static String productGetUrl="Products/GetAllProducts";
    static String listCustomer = 'Customer/GetAllCustomer';
 
+   static String getCustomerById = 'Customer/GetCustomerByID';
+
  }
