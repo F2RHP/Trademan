@@ -22,20 +22,5 @@ class ProductService extends BaseService{
     }
   }
 
-  Future<List<CustomersList>> getAllListCustomers() async
-  {
-    try {
 
-      var response = await  get<List<dynamic>>(ServiceHelper.listCustomer);
-        List<CustomersList> customersList = response
-            .map((mapElement) => CustomersList.fromJson(mapElement))
-            .toList();
-
-        return customersList;
-    }
-    catch (e) {
-      return <CustomersList>[];
-
-    }
-  }
 }

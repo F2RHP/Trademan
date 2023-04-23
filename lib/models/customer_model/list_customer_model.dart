@@ -1,58 +1,57 @@
 // To parse this JSON data, do
 //
-//     final customersList = customersListFromJson(jsonString);
+//     final customersList = customersListFromMap(jsonString);
 
 import 'dart:convert';
 
-List<CustomersList> customersListFromJson(String str) =>
-    List<CustomersList>.from(
-        json.decode(str).map((x) => CustomersList.fromJson(x)));
+CustomersList customersListFromMap(String str) => CustomersList.fromMap(json.decode(str));
 
-String customersListToJson(List<CustomersList> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String customersListToMap(CustomersList data) => json.encode(data.toMap());
 
 class CustomersList {
-  CustomersList({
-    this.customeRId,
-    this.customeRName,
-    this.customeRNickname,
-    this.fatheRName,
-    this.villagename,
-    this.contactnumber,
-    this.customeRNotes,
-    this.brancHId,
-    this.brancHName,
-    this.brancHContact,
-    this.organisatioNId,
-    this.organisatioNName,
-    this.organisatioNContact,
-    this.adrresS1,
-    this.addresS2,
-    this.gender,
-    this.pincode,
-    this.dob,
-  });
+    CustomersList({
+        this.customeRId,
+        this.customeRName,
+        this.customeRNickname,
+        this.fatheRName,
+        this.villagename,
+        this.contactnumber,
+        this.customeRNotes,
+        this.brancHId,
+        this.brancHName,
+        this.brancHContact,
+        this.organisatioNId,
+        this.organisatioNName,
+        this.organisatioNContact,
+        this.adrresS1,
+        this.addresS2,
+        this.gender,
+        this.pincode,
+        this.dob,
+        this.email,
+    });
 
-  int? customeRId;
-  String? customeRName;
-  String? customeRNickname;
-  String? fatheRName;
-  String? villagename;
-  dynamic contactnumber;
-  String? customeRNotes;
-  int? brancHId;
-  String? brancHName;
-  String? brancHContact;
-  int? organisatioNId;
-  String? organisatioNName;
-  String? organisatioNContact;
-  String? adrresS1;
-  String? addresS2;
-  String? gender;
-  dynamic pincode;
-  dynamic dob;
+    int? customeRId;
+    String? customeRName;
+    String? customeRNickname;
+    String? fatheRName;
+    String? villagename;
+    dynamic contactnumber;
+    String? customeRNotes;
+    int? brancHId;
+    String? brancHName;
+    String? brancHContact;
+    int? organisatioNId;
+    String? organisatioNName;
+    String? organisatioNContact;
+    String? adrresS1;
+    String? addresS2;
+    String? gender;
+    String? pincode;
+    dynamic dob;
+    String? email;
 
-  factory CustomersList.fromJson(Map<String, dynamic> json) => CustomersList(
+    factory CustomersList.fromMap(Map<String, dynamic> json) => CustomersList(
         customeRId: json["customeR_ID"],
         customeRName: json["customeR_NAME"],
         customeRNickname: json["customeR_NICKNAME"],
@@ -71,9 +70,10 @@ class CustomersList {
         gender: json["gender"],
         pincode: json["pincode"],
         dob: json["dob"],
-      );
+        email: json["email"],
+    );
 
-  Map<String, dynamic> toJson() => {
+    Map<String, dynamic> toMap() => {
         "customeR_ID": customeRId,
         "customeR_NAME": customeRName,
         "customeR_NICKNAME": customeRNickname,
@@ -92,5 +92,6 @@ class CustomersList {
         "gender": gender,
         "pincode": pincode,
         "dob": dob,
-      };
+        "email": email,
+    };
 }
