@@ -7,6 +7,7 @@ import 'package:trader_app/screens/shared_widgets/custom_btn.dart';
 import 'package:trader_app/screens/shared_widgets/custom_text.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
 import 'package:trader_app/screens/shared_widgets/title_with_text_form_field.dart';
+import '../../controllers/customers/add_kpr_customer_controller.dart';
 import '../Common_Codes/common_codes.dart';
 
 class CustomerRegistration extends StatefulWidget {
@@ -17,7 +18,8 @@ class CustomerRegistration extends StatefulWidget {
 }
 
 class _CustomerRegistrationState extends State<CustomerRegistration> {
-  // final crtl = Get.pu
+  final AddKPRCustomerController crtl = Get.find<AddKPRCustomerController>();
+
   List<String> list = ['1', '2', '3', '4'];
   var dropDownValue;
   @override
@@ -37,12 +39,12 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
           ),
         ),
         centerTitle: true,
-        title: Text(
-          AppStrings.Customer,
-          style: TextStyle(
-            color: AppColors.kSecondaryColor,
-          ),
-        ),
+        title: Obx(() => Text(
+              crtl.action.value,
+              style: TextStyle(
+                color: AppColors.kSecondaryColor,
+              ),
+            )),
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -78,18 +80,21 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Title product name
-        const TitleWithTextFormField(
+        TitleWithTextFormField(
           // controller: ,
           titleText: AppStrings.Customer_Name,
           hintText: AppStrings.Customer_Name,
+          controller: crtl.nameController,
         ),
-        const TitleWithTextFormField(
+        TitleWithTextFormField(
           titleText: AppStrings.Nick_Name,
           hintText: AppStrings.Nick_Name,
+          controller: crtl.nickNameController,
         ),
-        const TitleWithTextFormField(
+        TitleWithTextFormField(
           titleText: AppStrings.Father_Name,
           hintText: AppStrings.Father_Name,
+          controller: crtl.fatherNameController,
         ),
         // Title product ID
         const CustomText(text: AppStrings.Gender),
@@ -127,29 +132,47 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
         ),
         AppSizedBox.sizedBoxH20,
         // Title Quantity type
-        const TitleWithTextFormField(
+        TitleWithTextFormField(
           titleText: AppStrings.Customer_Email,
           hintText: AppStrings.Customer_Email,
+          controller: crtl.emailController,
         ),
         // Title SELLING_COST
-        const TitleWithTextFormField(
-            titleText: AppStrings.Address1, hintText: AppStrings.Address1),
-        const TitleWithTextFormField(
-            titleText: AppStrings.Address2, hintText: AppStrings.Address2),
-        const TitleWithTextFormField(
-            titleText: AppStrings.Village_Name,
-            hintText: AppStrings.Village_Name),
-        const TitleWithTextFormField(
-            titleText: AppStrings.Contact_Number,
-            hintText: AppStrings.Contact_Number),
-        const TitleWithTextFormField(
-            titleText: AppStrings.Pin_Code, hintText: AppStrings.Pin_Code),
-        const TitleWithTextFormField(
-            titleText: AppStrings.Data_Birth, hintText: AppStrings.Data_Birth),
-        const TitleWithTextFormField(
+        TitleWithTextFormField(
+          titleText: AppStrings.Address1,
+          hintText: AppStrings.Address1,
+          controller: crtl.address1Controller,
+        ),
+        TitleWithTextFormField(
+          titleText: AppStrings.Address2,
+          hintText: AppStrings.Address2,
+          controller: crtl.address2Controller,
+        ),
+        TitleWithTextFormField(
+          titleText: AppStrings.Village_Name,
+          hintText: AppStrings.Village_Name,
+          controller: crtl.villageNameController,
+        ),
+        TitleWithTextFormField(
+          titleText: AppStrings.Contact_Number,
+          hintText: AppStrings.Contact_Number,
+          controller: crtl.contactNumberController,
+        ),
+        TitleWithTextFormField(
+          titleText: AppStrings.Pin_Code,
+          hintText: AppStrings.Pin_Code,
+          controller: crtl.pinCodeController,
+        ),
+        TitleWithTextFormField(
+          titleText: AppStrings.Data_Birth,
+          hintText: AppStrings.Data_Birth,
+          controller: crtl.dOBController,
+        ),
+        TitleWithTextFormField(
           titleText: AppStrings.Customer_Notes,
           hintText: AppStrings.Customer_Notes,
           maxLines: 3,
+          controller: crtl.customerNotesController,
         ),
       ],
     );

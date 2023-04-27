@@ -166,11 +166,12 @@ class _CustomersListState extends State<CustomersList> {
       actions: [
         IconButton(
           onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const CustomerRegistration(),
-              ),
-            );
+            // Navigator.of(context).push(
+            //   MaterialPageRoute(
+            //     builder: (context) => const CustomerRegistration(),
+            //   ),
+            // );
+            ctrl.onItemNewCustomerClick();
           },
           icon: const Icon(
             Icons.add,

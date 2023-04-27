@@ -5,6 +5,7 @@ import 'package:trader_app/models/customer_model/list_customer_model.dart';
 
 class AddKPRCustomerController extends GetxController {
   KPRCustomer? kprCustomer;
+  final action="".obs;
   TextEditingController nameController = TextEditingController();
   TextEditingController nickNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -19,6 +20,8 @@ class AddKPRCustomerController extends GetxController {
   TextEditingController dOBController = TextEditingController();
   TextEditingController profilePictureController = TextEditingController();
   TextEditingController customerNotesController = TextEditingController();
+
+
 
   bool customerFormValidate() {
     if (
@@ -76,7 +79,7 @@ class AddKPRCustomerController extends GetxController {
     super.onClose();
   }
   //defiles
-  updateCustomerDefiles(CustomersList m){
+  void updateCustomerDefiles(CustomersList m){
     nameController.text = m.customeRName!;
     nickNameController.text = m.customeRNickname!;
     address1Controller.text = m.adrresS1!;
@@ -85,8 +88,9 @@ class AddKPRCustomerController extends GetxController {
     genderController.text = m.gender!;
     villageNameController.text = m.villagename!;
     pinCodeController.text = m.pincode!;
-    contactNumberController.text = m.contactnumber!;
-    dOBController.text = m.dob;
+    contactNumberController.text = '64734839';//m.contactnumber!;
+    dOBController.text = '23-02-2022';//m.dob;
     customerNotesController.text = m.customeRNotes!;
   }
+
 }

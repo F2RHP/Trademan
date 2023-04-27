@@ -9,6 +9,11 @@ class BaseService {
     final response = await http.get(url);
     return _parseResponse<T>(response);
   }
+  Future<T> getWithParam<T>(String endpoint, Map<String, dynamic> queryParams) async {
+  final uri = Uri.parse(endpoint).replace(queryParameters: queryParams);
+  final response = await http.get(uri);
+  return _parseResponse<T>(response);
+}
 
   Future<T> post<T>(String endpoint, dynamic body) async {
     final url = Uri.parse('$_baseUrl/$endpoint');
