@@ -68,7 +68,7 @@ class ProductDetails extends GetView<ProductController> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(controller.products[index].producTName.toString(),
-                  style: TextStyle(fontSize: 20, color: Colors.pink),),
+                  style: const TextStyle(fontSize: 20, color: Colors.pink),),
                 Container(
                   child: Row(mainAxisAlignment: MainAxisAlignment.start,
                     children: [

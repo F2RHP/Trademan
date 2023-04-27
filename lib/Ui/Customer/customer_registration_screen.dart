@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:trader_app/Ui/Customer/customer_list.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
+import 'package:trader_app/controllers/customers/add_kpr_customer_controller.dart';
 import 'package:trader_app/screens/shared_widgets/custom_btn.dart';
 import 'package:trader_app/screens/shared_widgets/custom_text.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
@@ -18,8 +19,7 @@ class CustomerRegistration extends StatefulWidget {
 }
 
 class _CustomerRegistrationState extends State<CustomerRegistration> {
-  final AddKPRCustomerController crtl = Get.find<AddKPRCustomerController>();
-
+  final ctrl = Get.put(AddKPRCustomerController());
   List<String> list = ['1', '2', '3', '4'];
   var dropDownValue;
   @override
@@ -81,17 +81,19 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
       children: [
         // Title product name
         TitleWithTextFormField(
-          // controller: ,
+          controller: ctrl.nameController,
           titleText: AppStrings.Customer_Name,
           hintText: AppStrings.Customer_Name,
           controller: crtl.nameController,
         ),
         TitleWithTextFormField(
+          controller: ctrl.nickNameController,
           titleText: AppStrings.Nick_Name,
           hintText: AppStrings.Nick_Name,
           controller: crtl.nickNameController,
         ),
         TitleWithTextFormField(
+          controller: ctrl.fatherNameController,
           titleText: AppStrings.Father_Name,
           hintText: AppStrings.Father_Name,
           controller: crtl.fatherNameController,
@@ -133,6 +135,7 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
         AppSizedBox.sizedBoxH20,
         // Title Quantity type
         TitleWithTextFormField(
+          controller: ctrl.emailController,
           titleText: AppStrings.Customer_Email,
           hintText: AppStrings.Customer_Email,
           controller: crtl.emailController,
