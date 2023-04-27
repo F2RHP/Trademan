@@ -19,7 +19,7 @@ class CustomerRegistration extends StatefulWidget {
 }
 
 class _CustomerRegistrationState extends State<CustomerRegistration> {
-  final ctrl = Get.put(AddKPRCustomerController());
+  final AddKPRCustomerController ctrl = Get.find<AddKPRCustomerController>();
   List<String> list = ['1', '2', '3', '4'];
   var dropDownValue;
   @override
@@ -40,7 +40,7 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
         ),
         centerTitle: true,
         title: Obx(() => Text(
-              crtl.action.value,
+              ctrl.action.value,
               style: TextStyle(
                 color: AppColors.kSecondaryColor,
               ),
@@ -84,19 +84,16 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
           controller: ctrl.nameController,
           titleText: AppStrings.Customer_Name,
           hintText: AppStrings.Customer_Name,
-          controller: crtl.nameController,
         ),
         TitleWithTextFormField(
           controller: ctrl.nickNameController,
           titleText: AppStrings.Nick_Name,
           hintText: AppStrings.Nick_Name,
-          controller: crtl.nickNameController,
         ),
         TitleWithTextFormField(
           controller: ctrl.fatherNameController,
           titleText: AppStrings.Father_Name,
           hintText: AppStrings.Father_Name,
-          controller: crtl.fatherNameController,
         ),
         // Title product ID
         const CustomText(text: AppStrings.Gender),
@@ -138,44 +135,43 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
           controller: ctrl.emailController,
           titleText: AppStrings.Customer_Email,
           hintText: AppStrings.Customer_Email,
-          controller: crtl.emailController,
         ),
         // Title SELLING_COST
         TitleWithTextFormField(
           titleText: AppStrings.Address1,
           hintText: AppStrings.Address1,
-          controller: crtl.address1Controller,
+          controller: ctrl.address1Controller,
         ),
         TitleWithTextFormField(
           titleText: AppStrings.Address2,
           hintText: AppStrings.Address2,
-          controller: crtl.address2Controller,
+          controller: ctrl.address2Controller,
         ),
         TitleWithTextFormField(
           titleText: AppStrings.Village_Name,
           hintText: AppStrings.Village_Name,
-          controller: crtl.villageNameController,
+          controller: ctrl.villageNameController,
         ),
         TitleWithTextFormField(
           titleText: AppStrings.Contact_Number,
           hintText: AppStrings.Contact_Number,
-          controller: crtl.contactNumberController,
+          controller: ctrl.contactNumberController,
         ),
         TitleWithTextFormField(
           titleText: AppStrings.Pin_Code,
           hintText: AppStrings.Pin_Code,
-          controller: crtl.pinCodeController,
+          controller: ctrl.pinCodeController,
         ),
         TitleWithTextFormField(
           titleText: AppStrings.Data_Birth,
           hintText: AppStrings.Data_Birth,
-          controller: crtl.dOBController,
+          controller: ctrl.dOBController,
         ),
         TitleWithTextFormField(
           titleText: AppStrings.Customer_Notes,
           hintText: AppStrings.Customer_Notes,
           maxLines: 3,
-          controller: crtl.customerNotesController,
+          controller: ctrl.customerNotesController,
         ),
       ],
     );
