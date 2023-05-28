@@ -3,9 +3,19 @@ import 'package:get/get.dart';
 import 'package:trader_app/models/customer_model/add_kpr_customer.dart';
 import 'package:trader_app/models/customer_model/list_customer_model.dart';
 
+import '../../models/customer_model/CustomerDTO_UPD.dart';
+import '../../services/customerservice.dart';
+
 class AddKPRCustomerController extends GetxController {
+
+ late CustomerService service;
+
   KPRCustomer? kprCustomer;
   final action="".obs;
+  
+  List<String> genderList=['Male','Female','Other'].obs;
+  final  genderDropdownvalue='Male'.obs;
+
   TextEditingController nameController = TextEditingController();
   TextEditingController nickNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -62,6 +72,12 @@ class AddKPRCustomerController extends GetxController {
     }
   }
 
+  @override 
+  void onInit()
+  {
+    service=CustomerService();
+  }
+
   @override
   void onClose() {
    if(kprCustomer!=null) {
@@ -92,5 +108,49 @@ class AddKPRCustomerController extends GetxController {
     dOBController.text = '23-02-2022';//m.dob;
     customerNotesController.text = m.customeRNotes!;
   }
+
+
+  CustomerDTO_UPD createCustomerObject() {
+  final customerId = 0; // Replace with the actual value
+  final customerName = nameController.text;
+  final customerNickname = nickNameController.text;
+  final fatherName = fatherNameController.text;
+  final address1 = address1Controller.text;
+  final address2 = address2Controller.text;
+  final villageName = villageNameController.text;
+  final pincode = pinCodeController.text;
+  final contactNumber = contactNumberController.text;
+  final email = emailController.text;
+  final gender = genderController.text;
+  final dob = DateTime.parse(dOBController.text); // Assumes the date format is in 'yyyy-MM-dd' format
+  final profilePictureUrl = profilePictureController.text;
+  final customerNotes = customerNotesController.text;
+  final branchId = 1; // Replace with the actual value
+
+  return CustomerDTO_UPD(
+    customerId: customerId,
+    customerName: customerName,
+    customerNickname: customerNickname,
+    fatherName: fatherName,
+    address1: address1,
+    address2: address2,
+    villageName: villageName,
+    pincode: pincode,
+    contactNumber: contactNumber,
+    email: email,
+    gender: gender,
+    dob: dob,
+    profilePictureUrl: profilePictureUrl,
+    customerNotes: customerNotes,
+    branchId: branchId,
+  );
+}
+
+  savecustomer() 
+  {
+    var customer=createCustomerObject();
+    service.addCustomer(customer);
+  }
+
 
 }
