@@ -2,6 +2,7 @@ import 'package:trader_app/models/customer_model/list_customer_model.dart';
 import 'package:trader_app/services/servicebase.dart';
 import 'package:trader_app/services/servicehelper.dart';
 
+import '../models/customer_model/CustomerDTO_UPD.dart';
 import '../models/customer_model/customer_search_model.dart';
 
 class CustomerService extends BaseService{
@@ -56,6 +57,23 @@ Future<List<CustomersList>> getAllListCustomersList(CustomerDTO_Input input) asy
 
     }
   }
+
+Future<void> addCustomer(CustomerDTO_UPD customer) async {
+  final endpoint = 'AddCustomer';
+  final body = customer.toJson();
+
+  try {
+    final response = await post(endpoint, body);
+
+    if (response.statusCode == 200) {
+      print('Customer added successfully!');
+    } else {
+      print('Failed to add customer. Error code: ${response.statusCode}');
+    }
+  } catch (e) {
+    print('Error occurred: $e');
+  }
+}
 
 
 }

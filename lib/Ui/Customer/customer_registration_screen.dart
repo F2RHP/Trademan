@@ -19,8 +19,7 @@ class CustomerRegistration extends StatefulWidget {
 
 class _CustomerRegistrationState extends State<CustomerRegistration> {
   final AddKPRCustomerController ctrl = Get.find<AddKPRCustomerController>();
-  List<String> list = ['1', '2', '3', '4'];
-  var dropDownValue;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,11 +54,7 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
               // Save Button
               Center(
                 child: CustomBtn(
-                  action: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const CustomersList(),
-                      )),
+                  action: () => {ctrl.savecustomer()},
                   label: 'Save',
                   width: 300.0,
                   height: 45.0,
@@ -97,37 +92,37 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
         // Title product ID
         const CustomText(text: AppStrings.Gender),
         AppSizedBox.sizedBoxH10,
-        DropdownButtonFormField(
-          value: dropDownValue,
-          items: list
-              .map((label) => DropdownMenuItem(
-                    value: label,
-                    child: Text(label.toString()),
-                  ))
-              .toList(),
-          hint: const Text(AppStrings.Gender),
-          onChanged: (value) {
-            setState(() {
-              dropDownValue = value;
-            });
-          },
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: CustomBorderRadius.borderRadius8,
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: CustomBorderRadius.borderRadius8,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: CustomBorderRadius.borderRadius8,
-              borderSide: BorderSide(
-                color: AppColors.grey,
+        Obx(() => DropdownButtonFormField(
+              value: ctrl.genderDropdownvalue.value,
+              items: ctrl.genderList
+                  .map((label) => DropdownMenuItem(
+                        value: label,
+                        child: Text(label.toString()),
+                      ))
+                  .toList(),
+              hint: const Text(AppStrings.Gender),
+              onChanged: (value) {
+                setState(() {
+                  ctrl.genderDropdownvalue.value = value.toString();
+                });
+              },
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: CustomBorderRadius.borderRadius8,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: CustomBorderRadius.borderRadius8,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: CustomBorderRadius.borderRadius8,
+                  borderSide: BorderSide(
+                    color: AppColors.grey,
+                  ),
+                ),
+                fillColor: AppColors.kSecondaryColor,
+                filled: true,
               ),
-            ),
-            fillColor: AppColors.kSecondaryColor,
-            filled: true,
-          ),
-        ),
+            )),
         AppSizedBox.sizedBoxH20,
         // Title Quantity type
         TitleWithTextFormField(
