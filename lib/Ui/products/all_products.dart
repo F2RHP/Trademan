@@ -6,6 +6,7 @@ import 'package:trader_app/Ui/Common_Codes/common_codes.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/controllers/products_controller.dart';
+
 import 'package:trader_app/env/dimensions.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
 
@@ -17,7 +18,7 @@ class AllProducts extends StatefulWidget {
 }
 
 class _AllProductsState extends State<AllProducts> {
-  final controller = Get.put(ProductController());
+  final ctrl = Get.put(ProductController(),);
 
   List<String> list = ['1', '2', '3', '4'];
   var dropDownValue;
@@ -26,7 +27,11 @@ class _AllProductsState extends State<AllProducts> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(context),
-      body: Padding(
+      body: Obx(() => ctrl.isLoading.value
+      ? const Center(
+        child: CircularProgressIndicator(),
+      )
+      :Padding(
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
           child: Column(
@@ -52,18 +57,18 @@ class _AllProductsState extends State<AllProducts> {
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: controller.isSearch
-                    ? controller.products.length
-                    : controller.searchList.length,
+                itemCount: ctrl.isSearch
+                    ? ctrl.products.length
+                    : ctrl.searchList.length,
                 itemBuilder: (context, index) {
                   var dateTime = DateTime.parse(
-                      controller.products[index].purchasEDate.toString());
+                      ctrl.products[index].purchasEDate.toString());
                   DateFormat dateFormat = DateFormat('yyy-MM-dd');
                   var nowDate = dateFormat.format(dateTime);
                   return listMenu(
-                      controller.isSearch
-                          ? controller.products[index]
-                          : controller.searchList[index],
+                      ctrl.isSearch
+                          ? ctrl.products[index]
+                          : ctrl.searchList[index],
                       nowDate);
                 },
               ),
@@ -71,10 +76,11 @@ class _AllProductsState extends State<AllProducts> {
           ),
         ),
       ),
+    ),
     );
   }
 
-  Padding listMenu(listMenu, String nowDate) {
+  Widget listMenu(listMenu, String nowDate) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Container(
@@ -184,7 +190,7 @@ class _AllProductsState extends State<AllProducts> {
                       //       borderRadius:
                       //           BorderRadius.circular(18.0)),
                       //   child: Text(
-                      //     controller.products[index].nOOfQuantity
+                      //     ctrl.products[index].nOOfQuantity
                       //         .toString(),
                       //     style: const TextStyle(
                       //       color: Colors.white,
@@ -320,7 +326,7 @@ class _AllProductsState extends State<AllProducts> {
         ),
         SizedBox(height: Dimensions.calcH(15)),
         TextFormField(
-          onChanged: controller.onSearch,
+          onChanged: ctrl.onSearch,
           decoration: InputDecoration(
             hintText: 'Search...',
             focusedBorder: OutlineInputBorder(

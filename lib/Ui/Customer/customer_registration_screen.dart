@@ -8,7 +8,6 @@ import 'package:trader_app/screens/shared_widgets/custom_btn.dart';
 import 'package:trader_app/screens/shared_widgets/custom_text.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
 import 'package:trader_app/screens/shared_widgets/title_with_text_form_field.dart';
-import '../../controllers/customers/add_kpr_customer_controller.dart';
 import '../Common_Codes/common_codes.dart';
 
 class CustomerRegistration extends StatefulWidget {

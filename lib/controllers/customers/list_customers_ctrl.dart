@@ -3,8 +3,6 @@ import 'package:trader_app/Ui/Customer/customer_registration_screen.dart';
 import 'package:trader_app/controllers/base_controller.dart';
 import 'package:trader_app/models/customer_model/list_customer_model.dart';
 import 'package:trader_app/services/customerservice.dart';
-import 'package:trader_app/services/productservice.dart';
-
 import 'add_kpr_customer_controller.dart';
 
 class ListCustomersCtrl extends BaseController {
@@ -40,6 +38,7 @@ if(isRegistered)
   @override
   void onInit() async {
     super.onInit();
+    isLoading.value = true;
     service = CustomerService();
     customersList.value = await service.getAllListCustomers();
     isLoading.value = false;
