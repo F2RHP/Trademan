@@ -121,9 +121,10 @@ class AddKPRCustomerController extends GetxController {
   final pincode = pinCodeController.text;
   final contactNumber = contactNumberController.text;
   final email = emailController.text;
-  final gender = genderController.text;
+  final gender = genderDropdownvalue.value;
   final dob = DateTime.parse(dOBController.text); // Assumes the date format is in 'yyyy-MM-dd' format
-  final profilePictureUrl = profilePictureController.text;
+  //final profilePictureUrl = profilePictureController.text;
+  final profilePictureUrl = "";
   final customerNotes = customerNotesController.text;
   final branchId = 1; // Replace with the actual value
 

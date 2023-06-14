@@ -60,17 +60,13 @@ Future<List<CustomersList>> getAllListCustomersList(CustomerDTO_Input input) asy
   }
 
 Future<void> addCustomer(CustomerDTO_UPD customer) async {
-  final endpoint = 'AddCustomer';
+  final endpoint = 'Customer/AddCustomer';
   final body = customer.toJson();
 
   try {
     final response = await post(endpoint, body);
 
-    if (response.statusCode == 200) {
-      print('Customer added successfully!');
-    } else {
-      print('Failed to add customer. Error code: ${response.statusCode}');
-    }
+
   } catch (e) {
     print('Error occurred: $e');
   }
