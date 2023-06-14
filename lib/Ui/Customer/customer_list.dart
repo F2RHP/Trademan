@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:group_button/group_button.dart';
 import 'package:trader_app/Ui/Common_Codes/common_codes.dart';
-import 'package:trader_app/Ui/Customer/customer_registration_screen.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/controllers/customers/list_customers_ctrl.dart';
@@ -24,49 +23,54 @@ class _CustomersListState extends State<CustomersList> {
       body: Obx(
         () => Padding(
           padding: const EdgeInsets.all(13.0),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                AppSizedBox.sizedBoxH10,
-                const KPRTraders(),
-                AppSizedBox.sizedBoxH20,
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10.0),
-                  child: GroupButton(
-                    buttons: const [
-                      'A-Z',
-                      'Z-A',
-                      'Due',
-                    ],
-                    options: GroupButtonOptions(
-                      unselectedColor: AppColors.blueAccentShade700,
-                      selectedColor: AppColors.blue,
-                      spacing: 0,
-                      buttonWidth: 100,
-                      buttonHeight: 50,
-                      unselectedTextStyle: TextStyle(
-                        color: AppColors.white,
+          child: ctrl.isLoading.value
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      AppSizedBox.sizedBoxH10,
+                      const KPRTraders(),
+                      AppSizedBox.sizedBoxH20,
+                      
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: GroupButton(
+                          buttons: const [
+                            'A-Z',
+                            'Z-A',
+                            'Due',
+                          ],
+                          options: GroupButtonOptions(
+                            unselectedColor: AppColors.blueAccentShade700,
+                            selectedColor: AppColors.blue,
+                            spacing: 0,
+                            buttonWidth: 100,
+                            buttonHeight: 50,
+                            unselectedTextStyle: TextStyle(
+                              color: AppColors.white,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                      AppSizedBox.sizedBoxH20,
+                      TextFormField(
+                        decoration: InputDecoration(
+                          hintText: 'Search...',
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                        ),
+                      ),
+                      AppSizedBox.sizedBoxH5,
+                      customerCard(),
+                    ],
                   ),
                 ),
-                AppSizedBox.sizedBoxH20,
-                TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Search...',
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                  ),
-                ),
-                AppSizedBox.sizedBoxH5,
-                customerCard(),
-              ],
-            ),
-          ),
         ),
       ),
     );
@@ -82,7 +86,9 @@ class _CustomersListState extends State<CustomersList> {
           padding: const EdgeInsets.symmetric(vertical: 13.0),
           child: GestureDetector(
             onTap: () {
-              ctrl.onItemClick(ctrl.customersList[index],);
+              ctrl.onItemClick(
+                ctrl.customersList[index],
+              );
             },
             child: Container(
               padding: CustomPadding.padding14,
@@ -147,20 +153,56 @@ class _CustomersListState extends State<CustomersList> {
                     ),
                   ),
                   AppSizedBox.sizedBoxW8,
-                  Container(
-                    padding: CustomPadding.padding8,
-                    decoration: BoxDecoration(
-                      color: AppColors.red,
-                      borderRadius: CustomBorderRadius.borderRadius8,
-                    ),
-                    child: Text(
-                      'Rs.8943',
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        color: AppColors.white,
-                        fontWeight: FontWeight.bold,
+                  Column(
+                    children: [
+                      Container(
+                        padding: CustomPadding.padding8,
+                        decoration: BoxDecoration(
+                          color: AppColors.red,
+                          borderRadius: CustomBorderRadius.borderRadius8,
+                        ),
+                        child: Text(
+                          'Rs.${ctrl.customersList[index].amounTDue}',
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            color: AppColors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
-                    ),
+                      AppSizedBox.sizedBoxH5,
+                      Container(
+                        padding: CustomPadding.padding8,
+                        decoration: BoxDecoration(
+                          color: AppColors.red,
+                          borderRadius: CustomBorderRadius.borderRadius8,
+                        ),
+                        child: Text(
+                          'Rs.${ctrl.customersList[index].amounTOwed}',
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            color: AppColors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      AppSizedBox.sizedBoxH5,
+                      Container(
+                        padding: CustomPadding.padding8,
+                        decoration: BoxDecoration(
+                          color: AppColors.red,
+                          borderRadius: CustomBorderRadius.borderRadius8,
+                        ),
+                        child: Text(
+                          'Rs.${ctrl.customersList[index].balance}',
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            color: AppColors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

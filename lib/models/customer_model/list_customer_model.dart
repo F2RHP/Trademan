@@ -4,34 +4,38 @@
 
 import 'dart:convert';
 
-CustomersList customersListFromMap(String str) => CustomersList.fromMap(json.decode(str));
+CustomersList customersListFromMap(String str) =>
+    CustomersList.fromMap(json.decode(str));
 
 String customersListToMap(CustomersList data) => json.encode(data.toMap());
 
 class CustomersList {
-    CustomersList({
-        this.customeRId,
-        this.customeRName,
-        this.customeRNickname,
-        this.fatheRName,
-        this.villagename,
-        this.contactnumber,
-        this.customeRNotes,
-        this.brancHId,
-        this.brancHName,
-        this.brancHContact,
-        this.organisatioNId,
-        this.organisatioNName,
-        this.organisatioNContact,
-        this.adrresS1,
-        this.addresS2,
-        this.gender,
-        this.pincode,
-        this.dob,
-        this.email,
-    });
+  CustomersList({
+    this.customeRId,
+    this.customeRName,
+    this.customeRNickname,
+    this.fatheRName,
+    this.villagename,
+    this.contactnumber,
+    this.customeRNotes,
+    this.brancHId,
+    this.brancHName,
+    this.brancHContact,
+    this.organisatioNId,
+    this.organisatioNName,
+    this.organisatioNContact,
+    this.adrresS1,
+    this.addresS2,
+    this.gender,
+    this.pincode,
+    this.dob,
+    this.amounTDue,
+    this.amounTOwed,
+    this.balance,
+    this.email,
+  });
 
-    int? customeRId;
+   int? customeRId;
     String? customeRName;
     String? customeRNickname;
     String? fatheRName;
@@ -49,9 +53,12 @@ class CustomersList {
     String? gender;
     String? pincode;
     dynamic dob;
+    int? amounTDue;
+    int? amounTOwed;
+    int? balance;
     String? email;
 
-    factory CustomersList.fromMap(Map<String, dynamic> json) => CustomersList(
+  factory CustomersList.fromMap(Map<String, dynamic> json) => CustomersList(
         customeRId: json["customeR_ID"],
         customeRName: json["customeR_NAME"],
         customeRNickname: json["customeR_NICKNAME"],
@@ -70,10 +77,13 @@ class CustomersList {
         gender: json["gender"],
         pincode: json["pincode"],
         dob: json["dob"],
+        amounTDue: json["amounT_DUE"],
+        amounTOwed: json["amounT_OWED"],
+        balance: json["balance"],
         email: json["email"],
-    );
+      );
 
-    Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toMap() => {
         "customeR_ID": customeRId,
         "customeR_NAME": customeRName,
         "customeR_NICKNAME": customeRNickname,
@@ -92,6 +102,9 @@ class CustomersList {
         "gender": gender,
         "pincode": pincode,
         "dob": dob,
+        "amounT_DUE": amounTDue,
+        "amounT_OWED": amounTOwed,
+        "balance": balance,
         "email": email,
-    };
+      };
 }

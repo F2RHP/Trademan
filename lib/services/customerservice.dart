@@ -22,7 +22,6 @@ class CustomerService extends BaseService{
     }
     catch (e) {
       return <CustomersList>[];
-
     }
   }
 
