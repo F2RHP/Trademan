@@ -58,16 +58,18 @@ Future<List<CustomersList>> getAllListCustomersList(CustomerDTO_Input input) asy
     }
   }
 
-Future<void> addCustomer(CustomerDTO_UPD customer) async {
+Future<bool> addCustomer(CustomerDTO_UPD customer) async {
   final endpoint = 'Customer/AddCustomer';
   final body = customer.toJson();
 
   try {
     final response = await post(endpoint, body);
-
+return response>0;
 
   } catch (e) {
     print('Error occurred: $e');
+    return false;
+    
   }
 }
 

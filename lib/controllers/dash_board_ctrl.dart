@@ -8,6 +8,8 @@ import 'package:trader_app/Ui/products/add_product.dart';
 import 'package:trader_app/Ui/products/all_products.dart';
 import 'package:trader_app/env/links.dart';
 
+import 'customers/list_customers_ctrl.dart';
+
 class DashBoardCtrl extends GetxController {
   void onItemClick(String m, context) {
     switch (m) {
@@ -24,13 +26,20 @@ class DashBoardCtrl extends GetxController {
 
       case "customerReg":
         {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const CustomersList(),
-            ),
-          );
+          bool isRegistered = GetInstance().isRegistered<ListCustomersCtrl>();
+          if (isRegistered) {
+            Get.delete<ListCustomersCtrl>();
+          }
+          Get.to(const CustomersList());
         }
+
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => const CustomersList(),
+        //   ),
+        // );
+
         break;
 
       case "addSale":

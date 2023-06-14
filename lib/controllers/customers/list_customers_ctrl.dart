@@ -40,7 +40,12 @@ if(isRegistered)
     super.onInit();
     isLoading.value = true;
     service = CustomerService();
-    customersList.value = await service.getAllListCustomers();
+     getAllListCustomersList();
     isLoading.value = false;
+  }
+
+  void getAllListCustomersList() async
+  {
+     customersList.value =await service.getAllListCustomers();
   }
 }
