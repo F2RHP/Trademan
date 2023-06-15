@@ -15,9 +15,9 @@ class AddKPRCustomerController extends GetxController {
 
   List<String> genderList = ['Male', 'Female', 'Other'].obs;
   final genderDropdownvalue = 'Male'.obs;
-  var saveBtnText="SAVE".obs;
+  var saveBtnText = "SAVE".obs;
 
-  int? customerId=0;
+  int? customerId = 0;
   TextEditingController nameController = TextEditingController();
   TextEditingController nickNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -35,30 +35,25 @@ class AddKPRCustomerController extends GetxController {
 
   bool customerFormValidate() {
     if (nameController.text.isEmpty ||
-        nickNameController.text.isEmpty ||
         fatherNameController.text.isEmpty ||
         villageNameController.text.isEmpty ||
-        emailController.text.isEmpty ||
         contactNumberController.text.isEmpty ||
-        address1Controller.text.isEmpty ||
-        address2Controller.text.isEmpty ||
-        pinCodeController.text.isEmpty ||
-        customerNotesController.text.isEmpty) {
+        address1Controller.text.isEmpty) {
       Get.snackbar(
         "Error",
         "Please Fill all the required fields",
         snackPosition: SnackPosition.BOTTOM,
       );
       return false;
-    } 
+    }
     return true;
   }
 
   @override
   void onInit() {
     service = CustomerService();
-    customerId=0;
-    saveBtnText="SAVE".obs;
+    customerId = 0;
+    saveBtnText = "SAVE".obs;
   }
 
   @override
@@ -68,21 +63,22 @@ class AddKPRCustomerController extends GetxController {
   }
 
   void clearController() {
-    nameController.clear();
-    nickNameController.clear();
-    fatherNameController.clear();
-    villageNameController.clear();
-    emailController.clear();
-    contactNumberController.clear();
-    address1Controller.clear();
-    address2Controller.clear();
-    pinCodeController.clear();
-    customerNotesController.clear();
+    nameController.text = "";
+    nickNameController.text = "";
+    fatherNameController.text = "";
+    villageNameController.text = "";
+    emailController.text = "";
+    contactNumberController.text = "";
+    address1Controller.text = "";
+    address2Controller.text = "";
+    pinCodeController.text = "";
+    customerNotesController.text = "";
+    dOBController.text="";
   }
 
   //defiles
   void updateCustomerDefiles(CustomersList m) {
-    customerId=m.customeRId;
+    customerId = m.customeRId;
     nameController.text = m.customeRName!;
     nickNameController.text = m.customeRNickname!;
     fatherNameController.text = m.fatheRName!;
@@ -96,7 +92,7 @@ class AddKPRCustomerController extends GetxController {
     dOBController.text = m.dob!; //m.dob;
     customerNotesController.text = m.customeRNotes!;
 
-    saveBtnText="EDIT".obs;
+    saveBtnText = "EDIT".obs;
   }
 
   CustomerDTO_UPD createCustomerObject() {
@@ -136,25 +132,41 @@ class AddKPRCustomerController extends GetxController {
       branchId: branchId,
     );
   }
+  
+void showSavedSuccessfullyDialog(int? id) {
+  var action = id! > 0 ? "Added" : "Edited";
+  WidgetsBinding.instance?.addPostFrameCallback((_) {
+    Get.defaultDialog(
+       title: "Information",
+      content: Text('${action} successfully'),
+      confirm: ElevatedButton(
+        onPressed: () {
+          Get.back();
+            Get.back();
+        },
+        child: Text('OK'),
+      ),
+    );
+  });
+}
 
   savecustomer() async {
+    if (!customerFormValidate()) {
+      return;
+    }
     var customer = createCustomerObject();
     var isInserted = await service.addCustomer(customer);
-    var action=customer.customerId!>0?"Added":"Edited";
+    
     if (isInserted) {
-      Get.showSnackbar(
-        GetSnackBar(
-          title: "Inforamation",
-          message:'User $action Successfully',
-          icon: const Icon(Icons.refresh),
-          duration: const Duration(seconds: 3),
-        ),
-      );
+      
       bool isRegistered = GetInstance().isRegistered<ListCustomersCtrl>();
       if (isRegistered) {
         var listCustomerCtrl = Get.find<ListCustomersCtrl>();
         listCustomerCtrl.getAllListCustomersList();
-        clearController();
+        
+
+        showSavedSuccessfullyDialog(customer.customerId);
+      
       }
     }
   }

@@ -11,27 +11,26 @@ class ListCustomersCtrl extends BaseController {
   late CustomerService service;
 
   void onItemClick(CustomersList m) {
-    var addController=AddKPRCustomerController();
-    addController.action.value="EDIT";
-addController.updateCustomerDefiles(m);
-bool isRegistered = GetInstance().isRegistered<AddKPRCustomerController>();
-if(isRegistered)
-{
-  Get.delete<AddKPRCustomerController>();
-}
-     Get.put(addController);
-    Get.to(const CustomerRegistration(),arguments: {'customer': m});
+    bool isRegistered = GetInstance().isRegistered<AddKPRCustomerController>();
+    if (isRegistered) {
+      Get.delete<AddKPRCustomerController>();
+    }
+    var addController = AddKPRCustomerController();
+    Get.put(addController);    
+    addController.action.value = "EDIT";
+    addController.updateCustomerDefiles(m);
+    
+    Get.to(const CustomerRegistration(), arguments: {'customer': m});
   }
 
   void onItemNewCustomerClick() {
-    var addController=AddKPRCustomerController();
-    addController.action.value="ADD";
+    var addController = AddKPRCustomerController();
+    addController.action.value = "ADD";
     bool isRegistered = GetInstance().isRegistered<AddKPRCustomerController>();
-if(isRegistered)
-{
-  Get.delete<AddKPRCustomerController>();
-}
-     Get.put(addController);
+    if (isRegistered) {
+      Get.delete<AddKPRCustomerController>();
+    }
+    Get.put(addController);
     Get.to(const CustomerRegistration());
   }
 
@@ -40,12 +39,11 @@ if(isRegistered)
     super.onInit();
     isLoading.value = true;
     service = CustomerService();
-     getAllListCustomersList();
+    getAllListCustomersList();
     isLoading.value = false;
   }
 
-  void getAllListCustomersList() async
-  {
-     customersList.value =await service.getAllListCustomers();
+  void getAllListCustomersList() async {
+    customersList.value = await service.getAllListCustomers();
   }
 }
