@@ -6,8 +6,8 @@ import 'package:trader_app/services/customerservice.dart';
 import 'add_kpr_customer_controller.dart';
 
 class ListCustomersCtrl extends BaseController {
-  final customersList = <CustomersList>[].obs;
-  List searchList = [].obs;
+  RxList<CustomersList> customersList = <CustomersList>[].obs;
+  RxList searchList = [].obs;
   late CustomerService service;
 
   void onItemClick(CustomersList m) {

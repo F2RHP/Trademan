@@ -13,7 +13,7 @@ class CustomerDTO_UPD {
   String? contactNumber;
   String? email;
   String? gender;
-  DateTime? dob;
+  String? dob;
   String? profilePictureUrl;
   String? customerNotes;
   bool logicalCancel = false;
@@ -51,7 +51,7 @@ class CustomerDTO_UPD {
       'ContactNumber': contactNumber,
       'Email': email,
       'Gender': gender,
-      'Dob': dob?.toIso8601String(),
+      'Dob': dob,
       'ProfilePictureUrl': profilePictureUrl,
       'CustomerNotes': customerNotes,
       'LogicalCancel': logicalCancel,

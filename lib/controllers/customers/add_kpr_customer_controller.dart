@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:trader_app/models/customer_model/add_kpr_customer.dart';
 import 'package:trader_app/models/customer_model/list_customer_model.dart';
 
@@ -90,6 +91,8 @@ class AddKPRCustomerController extends GetxController {
     emailController.text = m.email!;
     genderController.text = m.gender!;
     dOBController.text = m.dob!; //m.dob;
+   DateTime dateTime = DateTime.parse(m.dob);
+    dOBController.text = DateFormat('yyyy-MM-dd').format(dateTime); //m.dob;
     customerNotesController.text = m.customeRNotes!;
 
     saveBtnText = "EDIT".obs;
@@ -107,12 +110,14 @@ class AddKPRCustomerController extends GetxController {
     final contactNumber = contactNumberController.text;
     final email = emailController.text;
     final gender = genderDropdownvalue.value;
-    final dob = DateTime.parse(dOBController
-        .text); // Assumes the date format is in 'yyyy-MM-dd' format
+    final dob = DateTime.parse(dOBController.text);
+    // Assumes the date format is in 'yyyy-MM-dd' format
+
     //final profilePictureUrl = profilePictureController.text;
     final profilePictureUrl = "";
     final customerNotes = customerNotesController.text;
     final branchId = 1; // Replace with the actual value
+
 
     return CustomerDTO_UPD(
       customerId: customeRId,
@@ -126,7 +131,7 @@ class AddKPRCustomerController extends GetxController {
       contactNumber: contactNumber,
       email: email,
       gender: gender,
-      dob: dob,
+      dob: DateFormat('yyyy-MM-dd').format(dob),
       profilePictureUrl: profilePictureUrl,
       customerNotes: customerNotes,
       branchId: branchId,
@@ -135,7 +140,7 @@ class AddKPRCustomerController extends GetxController {
   
 void showSavedSuccessfullyDialog(int? id) {
   var action = id! > 0 ? "Added" : "Edited";
-  WidgetsBinding.instance?.addPostFrameCallback((_) {
+  WidgetsBinding.instance.addPostFrameCallback((_) {
     Get.defaultDialog(
        title: "Information",
       content: Text('${action} successfully'),
@@ -163,8 +168,6 @@ void showSavedSuccessfullyDialog(int? id) {
       if (isRegistered) {
         var listCustomerCtrl = Get.find<ListCustomersCtrl>();
         listCustomerCtrl.getAllListCustomersList();
-        
-
         showSavedSuccessfullyDialog(customer.customerId);
       
       }
