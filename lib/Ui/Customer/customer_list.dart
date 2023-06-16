@@ -142,7 +142,7 @@ class _CustomersListState extends State<CustomersList> {
                           ),
                         ),
                         Text(
-                          'Phone No : ${ctrl.customersList[index].brancHContact!}',
+                          'Phone No : ${ctrl.customersList[index].contactnumber!}',
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(

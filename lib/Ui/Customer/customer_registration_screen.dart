@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:trader_app/Ui/Customer/customer_list.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
@@ -157,6 +158,19 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
           controller: ctrl.pinCodeController,
         ),
         TitleWithTextFormField(
+          // readOnly: true,
+          onTap: () {
+            showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(1950),
+              lastDate: DateTime.now(),
+            ).then(
+              (value) {
+                ctrl.dOBController.text =  DateFormat('yyyy-MM-hh').format(value!);
+              }
+            );
+          },
           titleText: AppStrings.Data_Birth,
           hintText: AppStrings.Data_Birth,
           controller: ctrl.dOBController,

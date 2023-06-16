@@ -9,18 +9,24 @@ import 'package:trader_app/screens/shared_widgets/sized_box.dart';
 class TitleWithTextFormField extends StatelessWidget {
   final TextEditingController? controller;
   final TextInputType? type;
+  final Function()? onTap;
+  final Function(String)? onChanged;
   final String titleText;
   final String? hintText;
   final bool isRequired;
+  final bool? readOnly;
   final double? height;
   final int? maxLines;
   const TitleWithTextFormField({
     required this.titleText,
     this.controller,
     this.type,
+    this.onTap,
+    this.onChanged,
     this.height,
     this.hintText,
     this.isRequired = false,
+    this.readOnly = false,
     Key? key,
     this.maxLines,
   }) : super(key: key);
@@ -49,6 +55,9 @@ class TitleWithTextFormField extends StatelessWidget {
           maxLines: maxLines,
           controller: controller,
           keyboardType: type,
+          onTap: onTap,
+          onChanged: onChanged,
+          readOnly: readOnly!,
           decoration: InputDecoration(
             border: InputBorder.none,
             hintText: hintText,
