@@ -39,11 +39,11 @@ class ListCustomersCtrl extends BaseController {
     super.onInit();
     isLoading.value = true;
     service = CustomerService();
-    getAllListCustomersList();
+    await getAllListCustomersList();
     isLoading.value = false;
   }
 
-  void getAllListCustomersList() async {
+  Future<void> getAllListCustomersList() async {
     customersList.value = await service.getAllListCustomers();
   }
 }
