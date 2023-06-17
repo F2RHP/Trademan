@@ -1,11 +1,19 @@
- class ServiceHelper
- {
-   static int Sucesscode =200;
-   static String BaseUrl ="http://ponsinghclone-001-site5.itempurl.com/api";
+class ServiceHelper {
 
-   static String productGetUrl="Products/GetAllProducts";
-   static String listCustomer = 'Customer/GetAllCustomer';
+  // ignore: non_constant_identifier_names
+  static int Sucesscode = 200;
+  // ignore: non_constant_identifier_names
+  static String BaseUrl = "http://ponsinghclone-001-site5.itempurl.com/api";
 
-   static String getCustomerById = 'Customer/GetCustomerByID';
+  // Product related API
+  static String productGetUrl = "Products/GetAllProducts";
 
- }
+  //Customer related API
+  static String listCustomer = 'Customer/GetAllCustomer';
+  static String getCustomerById = 'Customer/GetCustomerByID';
+
+  //Expense related API
+  static String listExpenses = 'Expense/GetCustomerByID';
+
+
+}

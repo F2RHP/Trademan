@@ -59,7 +59,7 @@ Future<List<CustomersList>> getAllListCustomersList(CustomerDTO_Input input) asy
   }
 
 Future<bool> addCustomer(CustomerDTO_UPD customer) async {
-  final endpoint = 'Customer/AddCustomer';
+  const endpoint = 'Customer/AddCustomer';
   final body = customer.toJson();
 
   try {

@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:trader_app/models/customer_model/customer_search_model.dart';
 import 'package:trader_app/services/customerservice.dart';
 
+import 'Ui/Expense/expense_list.dart';
+
 void main() {
   //testAPi();
   runApp(getApp());
@@ -18,9 +20,8 @@ Widget getApp() {
       scaffoldBackgroundColor: Colors.white,
       primarySwatch: AppColorCode.appColorCode,
     ),
-    //home: const HomeScreen(),
-    // home: const CustomersList(),
-    home: const DashBoard(),
+    home:  ExpenseList(),
+    //home: const DashBoard(),
     // initialRoute: "/",
     getPages: AppRouting.ROUTES,
   );

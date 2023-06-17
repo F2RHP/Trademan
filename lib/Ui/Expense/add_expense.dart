@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:trader_app/Ui/Common_Codes/common_codes.dart';
 import 'package:trader_app/Ui/Expense/expense_list.dart';
 import 'package:trader_app/constants/colors.dart';
@@ -6,6 +8,9 @@ import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/screens/shared_widgets/custom_btn.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
 import 'package:trader_app/screens/shared_widgets/title_with_text_form_field.dart';
+
+import '../../controllers/Expense/add_expense_controller.dart';
+import '../../models/expense/expensetype.dart';
 
 class AddExpense extends StatefulWidget {
   const AddExpense({Key? key}) : super(key: key);
@@ -15,18 +20,16 @@ class AddExpense extends StatefulWidget {
 }
 
 class _AddExpenseState extends State<AddExpense> {
-  final formKey = GlobalKey<FormState>();
-  TextEditingController nameController = TextEditingController();
-  TextEditingController detailsController = TextEditingController();
-  TextEditingController categoryController = TextEditingController();
-  TextEditingController dataController = TextEditingController();
-  TextEditingController costController = TextEditingController();
-  List<String> list = ['A', 'B'];
-  var dropDownValue;
+
+
+  final ctrl = Get.put(AddExpenseCtrl());
+
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(elevation: 0,
+      appBar: AppBar(
+        elevation: 0,
         leading: GestureDetector(
           onTap: () => Navigator.pop(context),
           child: Padding(
@@ -49,24 +52,16 @@ class _AddExpenseState extends State<AddExpense> {
       body: Padding(
         padding: CustomPadding.padding15,
         child: SingleChildScrollView(
-          child: Form(
-            key: formKey,
-            child: Column(
-              children: [
-                buildInputFiled(),
-                CustomBtn(
-                  label: 'save',
-                  action: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ExpenseList(),
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
+          child: Column(
+            children: [
+              buildInputFiled(),
+              CustomBtn(
+                label: 'save',
+                action: () {
+                 ctrl.saveExpenseDetail();
+                },
+              ),
+            ],
           ),
         ),
       ),
@@ -77,27 +72,34 @@ class _AddExpenseState extends State<AddExpense> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const TitleWithTextFormField(titleText: AppStrings.Expense_Name,hintText: AppStrings.Expense_Name,),
-        const TitleWithTextFormField(titleText: AppStrings.Expense_Details,hintText: AppStrings.Expense_Details,maxLines: 5,),
-        const Text(
+         TitleWithTextFormField(controller: ctrl.nameController,
+          titleText: AppStrings.Expense_Name,
+          hintText: AppStrings.Expense_Name,
+        ),
+         TitleWithTextFormField(controller: ctrl.detailsController,
+          titleText: AppStrings.Expense_Details,
+          hintText: AppStrings.Expense_Details,
+          maxLines: 5,
+        ),
+         Text(
           AppStrings.Category,
           style: TextStyle(
             fontSize: 20,
           ),
         ),
         AppSizedBox.sizedBoxH15,
-        DropdownButtonFormField(
-          value: dropDownValue,
-          items: list
-              .map((label) => DropdownMenuItem(
-            value: label,
-            child: Text(label.toString()),
-          ))
+        DropdownButtonFormField<ExpenseType>(
+          value: ctrl.dropDownExpenseType,
+          items: ctrl.expenseType
+              .map((label) => DropdownMenuItem<ExpenseType>(
+                    value: label,
+                    child: Text(label.expenseName!),
+                  ))
               .toList(),
-          hint: const Text('Product'),
-          onChanged: (value) {
+          hint: const Text('ExpenseType'),
+          onChanged: (ExpenseType? newValue) {
             setState(() {
-              dropDownValue = value;
+              ctrl.dropDownExpenseType = newValue!;
             });
           },
           decoration: InputDecoration(
@@ -118,11 +120,15 @@ class _AddExpenseState extends State<AddExpense> {
           ),
         ),
         AppSizedBox.sizedBoxH25,
-        const TitleWithTextFormField(titleText: AppStrings.type_your_Category,hintText: AppStrings.type_your_Category,),
-        const TitleWithTextFormField(titleText: AppStrings.Data,hintText: AppStrings.DataType,),
-        const TitleWithTextFormField(titleText: AppStrings.Cost,hintText: AppStrings.Cost,),
+         TitleWithTextFormField(controller: ctrl.dateController,
+          titleText: AppStrings.Data,
+          hintText: AppStrings.DataType,
+        ),
+         TitleWithTextFormField(controller: ctrl.costController,
+          titleText: AppStrings.Cost,
+          hintText: AppStrings.Cost,
+        ),
       ],
     );
   }
-
 }
