@@ -25,22 +25,6 @@ class ExpenseType {
     };
   }
 
-  List<ExpenseType> expenseList = [
-  ExpenseType(
-    expenseTypeID: 1,
-    expenseName: 'Food',
-    expenseNotes: 'Lunch at a restaurant',
-  ),
-  ExpenseType(
-    expenseTypeID: 2,
-    expenseName: 'Transportation',
-    expenseNotes: 'Taxi fare',
-  ),
-  ExpenseType(
-    expenseTypeID: 3,
-    expenseName: 'Entertainment',
-    expenseNotes: 'Movie ticket',
-  ),
-];
+
 
 }

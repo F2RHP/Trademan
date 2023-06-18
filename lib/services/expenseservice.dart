@@ -21,7 +21,7 @@ class ExpenseService extends BaseService {
 
   Future<List<ExpenseType>> getAllListExpensesType() async {
     try {
-      return ExpenseType().expenseList;
+      return expenseList1;
 
       var response = await get<List<dynamic>>(ServiceHelper.listExpenses);
       List<ExpenseType> expenseList = response
@@ -33,6 +33,24 @@ class ExpenseService extends BaseService {
       return <ExpenseType>[];
     }
   }
+
+  List<ExpenseType> expenseList1 = [
+    ExpenseType(
+      expenseTypeID: 1,
+      expenseName: 'Food',
+      expenseNotes: 'Lunch at a restaurant',
+    ),
+    ExpenseType(
+      expenseTypeID: 2,
+      expenseName: 'Transportation',
+      expenseNotes: 'Taxi fare',
+    ),
+    ExpenseType(
+      expenseTypeID: 3,
+      expenseName: 'Entertainment',
+      expenseNotes: 'Movie ticket',
+    ),
+  ];
 
   List<ExpenseDetails> expenseDetailsList = [
     ExpenseDetails(
