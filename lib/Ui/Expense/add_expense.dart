@@ -20,15 +20,13 @@ class AddExpense extends StatefulWidget {
 }
 
 class _AddExpenseState extends State<AddExpense> {
-
-
   final ctrl = Get.put(AddExpenseCtrl());
 
-@override
+  @override
   void initState() {
     super.initState();
   }
- 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,22 +51,22 @@ class _AddExpenseState extends State<AddExpense> {
           ),
         ),
       ),
-      body: Padding(
-        padding: CustomPadding.padding15,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              buildInputFiled(),
-              CustomBtn(
-                label: 'save',
-                action: () {
-                 ctrl.saveExpenseDetail();
-                },
+      body: Obx(() => Padding(
+            padding: CustomPadding.padding15,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  buildInputFiled(),
+                  CustomBtn(
+                    label: 'save',
+                    action: () {
+                      ctrl.saveExpenseDetail();
+                    },
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-      ),
+            ),
+          )),
     );
   }
 
@@ -76,63 +74,94 @@ class _AddExpenseState extends State<AddExpense> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-         TitleWithTextFormField(controller: ctrl.nameController,
+        TitleWithTextFormField(
+          controller: ctrl.nameController,
           titleText: AppStrings.Expense_Name,
           hintText: AppStrings.Expense_Name,
         ),
-         TitleWithTextFormField(controller: ctrl.detailsController,
+        TitleWithTextFormField(
+          controller: ctrl.detailsController,
           titleText: AppStrings.Expense_Details,
           hintText: AppStrings.Expense_Details,
           maxLines: 5,
         ),
-         Text(
+        Text(
           AppStrings.Category,
           style: TextStyle(
             fontSize: 20,
           ),
         ),
         AppSizedBox.sizedBoxH15,
-        DropdownButtonFormField<ExpenseType>(
-          value: ctrl.dropDownExpenseType,
-          items: ctrl.expenseType
-              .map((label) => DropdownMenuItem<ExpenseType>(
-                    value: label,
-                    child: Text(label.expenseName!),
-                  ))
-              .toList(),
-          hint: const Text('ExpenseType'),
-          onChanged: (ExpenseType? newValue) {
-            setState(() {
-              ctrl.dropDownExpenseType = newValue!;
-            });
-          },
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: CustomBorderRadius.borderRadius8,
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: CustomBorderRadius.borderRadius8,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: CustomBorderRadius.borderRadius8,
-              borderSide: BorderSide(
-                color: AppColors.grey,
-              ),
-            ),
-            fillColor: AppColors.kSecondaryColor,
-            filled: true,
-          ),
-        ),
+        // loadDropdown(),
+
+DropdownButtonFormField<ExpenseType>(
+  value: ctrl.dropDownExpenseType,
+  onChanged: (newValue) {
+    setState(() {
+      ctrl.dropDownExpenseType = newValue!;
+    });
+  },
+  items: ctrl.expenseType.map((expenseType) {
+    return DropdownMenuItem<ExpenseType>(
+      value: expenseType,
+      child: Text(expenseType.expenseName!),
+    );
+  }).toList(),
+  decoration: dropDownDecoration(),
+  
+),
+
         AppSizedBox.sizedBoxH25,
-         TitleWithTextFormField(controller: ctrl.dateController,
+        TitleWithTextFormField(
+          controller: ctrl.dateController,
           titleText: AppStrings.Data,
           hintText: AppStrings.DataType,
         ),
-         TitleWithTextFormField(controller: ctrl.costController,
+        TitleWithTextFormField(
+          controller: ctrl.costController,
           titleText: AppStrings.Cost,
           hintText: AppStrings.Cost,
         ),
       ],
     );
+  }
+
+  DropdownButtonFormField<ExpenseType> loadDropdown() {
+    var dropdownButtonFormField = DropdownButtonFormField<ExpenseType>(
+        value: ctrl.dropDownExpenseType,
+        items: ctrl.expenseType
+            .map((label) => DropdownMenuItem<ExpenseType>(
+                  value: label,
+                  child: Text(label.expenseName!),
+                ))
+            .toList(),
+        hint: const Text('ExpenseType'),
+        onChanged: (ExpenseType? newValue) {
+          setState(() {
+            ctrl.dropDownExpenseType = newValue!;
+          });
+        },
+        decoration: dropDownDecoration(),
+      );
+    return dropdownButtonFormField;
+  }
+
+  InputDecoration dropDownDecoration() {
+    return InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: CustomBorderRadius.borderRadius8,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: CustomBorderRadius.borderRadius8,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: CustomBorderRadius.borderRadius8,
+          borderSide: BorderSide(
+            color: AppColors.grey,
+          ),
+        ),
+        fillColor: AppColors.kSecondaryColor,
+        filled: true,
+      );
   }
 }

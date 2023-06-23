@@ -13,7 +13,7 @@ late ExpenseService expenseService;
    
    var expenseType = <ExpenseType>[].obs;
  
-   ExpenseType dropDownExpenseType=ExpenseType(expenseTypeID: 0,expenseName: "None",expenseNotes: "None");
+   var dropDownExpenseType=null;
 
   TextEditingController nameController = TextEditingController();
   TextEditingController detailsController = TextEditingController();
