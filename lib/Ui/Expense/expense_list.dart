@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:trader_app/Ui/Common_Codes/common_codes.dart';
+import 'package:trader_app/Ui/Expense/add_expense.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
@@ -37,7 +38,9 @@ class ExpenseList extends StatelessWidget {
                   ),
           )),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {ctrl.addnewExpense();},
+        onPressed: () {
+          ctrl.addnewExpense();
+        },
         child: Icon(
           Icons.add,
           color: AppColors.kSecondaryColor,
@@ -104,10 +107,15 @@ class ExpenseList extends StatelessWidget {
         ),
       ),
       actions: [
-        Icon(
-          Icons.calendar_view_month_outlined,
-          size: 40.0,
-          color: AppColors.kSecondaryColor,
+        IconButton(
+          onPressed: () {
+            Get.to(const AddExpense());
+          },
+          icon: Icon(
+            Icons.add,
+            size: 40.0,
+            color: AppColors.kSecondaryColor,
+          ),
         ),
         AppSizedBox.sizedBoxW8,
       ],

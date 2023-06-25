@@ -16,10 +16,10 @@ class ListCustomersCtrl extends BaseController {
       Get.delete<AddKPRCustomerController>();
     }
     var addController = AddKPRCustomerController();
-    Get.put(addController);    
+    Get.put(addController);
     addController.action.value = "EDIT";
     addController.updateCustomerDefiles(m);
-    
+
     Get.to(const CustomerRegistration(), arguments: {'customer': m});
   }
 

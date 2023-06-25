@@ -18,7 +18,7 @@ class _DashBoardState extends State<DashBoard> {
     },
     {
       'icons': Icons.account_box_outlined,
-      'name': 'addProduct',
+      'name': 'allProduct',
     },
     {
       'icons': Icons.satellite_alt,
