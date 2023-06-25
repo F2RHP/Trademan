@@ -23,17 +23,12 @@ class _CustomersListState extends State<CustomersList> {
       body: Obx(
         () => Padding(
           padding: const EdgeInsets.all(13.0),
-          child: ctrl.isLoading.value
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : SingleChildScrollView(
+          child: SingleChildScrollView(
                   child: Column(
                     children: [
                       AppSizedBox.sizedBoxH10,
                       const KPRTraders(),
                       AppSizedBox.sizedBoxH20,
-                      
                       ClipRRect(
                         borderRadius: BorderRadius.circular(10.0),
                         child: GroupButton(
@@ -67,7 +62,11 @@ class _CustomersListState extends State<CustomersList> {
                         ),
                       ),
                       AppSizedBox.sizedBoxH5,
-                      customerCard(),
+                      ctrl.isLoading.value
+                          ? const Center(
+                              child: CircularProgressIndicator(color: Colors.red),
+                            )
+                          : customerCard(),
                     ],
                   ),
                 ),

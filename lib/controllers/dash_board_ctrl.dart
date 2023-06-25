@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:trader_app/Ui/Customer/customer_list.dart';
 import 'package:trader_app/Ui/Customer/customer_registration_screen.dart';
 import 'package:trader_app/Ui/Expense/add_expense.dart';
+import 'package:trader_app/Ui/Expense/expense_list.dart';
 import 'package:trader_app/Ui/add_sale.dart';
 import 'package:trader_app/Ui/products/add_product.dart';
 import 'package:trader_app/Ui/products/all_products.dart';
@@ -19,7 +20,7 @@ class DashBoardCtrl extends GetxController {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const AllProducts(),
+                builder: (context) => const AddProduct(),
               ));
         }
         break;
@@ -59,7 +60,17 @@ class DashBoardCtrl extends GetxController {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const AddExpense(),
+                builder: (context) => ExpenseList(),
+              ));
+        }
+        break;
+      case "allProduct":
+        {
+          // Get.toNamed(AppLinks.addExpense);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AllProducts(),
               ));
         }
         break;
