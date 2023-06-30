@@ -20,7 +20,7 @@ Widget getApp() {
       scaffoldBackgroundColor: Colors.white,
       primarySwatch: AppColorCode.appColorCode,
     ),
-    home:  ExpenseList(),
+    home: const DashBoard(),
     //home: const DashBoard(),
     // initialRoute: "/",
     getPages: AppRouting.ROUTES,

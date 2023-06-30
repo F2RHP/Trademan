@@ -53,13 +53,7 @@ class DashBoardCtrl extends GetxController {
 
       case "addExpense":
         {
-          // Get.toNamed(AppLinks.addExpense);
-          Get.to(ExpenseList());
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //       builder: (context) => ExpenseList(),
-          //     ));
+          Get.to(ExpenseList());   
         }
         break;
       case "allProduct":
