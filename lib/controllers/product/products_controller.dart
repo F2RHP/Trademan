@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:trader_app/models/product_model.dart';
-import '../models/generalclass.dart';
-import 'base_controller.dart';
-import '../services/productservice.dart';
+import '../../models/generalclass.dart';
+import '../base_controller.dart';
+import '../../services/productservice.dart';
 
-class ProductController extends BaseController {
+class AllProductCtrl extends BaseController {
   final  products=<Product>[].obs;
   List searchList = [].obs;
   late ProductService service;

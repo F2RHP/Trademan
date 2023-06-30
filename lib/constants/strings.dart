@@ -87,9 +87,12 @@ class AppStrings {
   static const String Product_Description = "Product description";
   static const String Product_Notes = "Product Notes";
   static const String Product_Supplier_ID = "Supplier ID";
+  static const String Product_ID = "Product ID";
+  static const String ProductTypeID = "Product Type ID";
+  static const String Quantity_ID = "Quantity ID";
   static const String Product_Cost = "Product Cost";
   static const String Product_Selling_Cost = "Selling Cost";
-  static const String Product_Purchase_Cost = "Purchase Cost";
+  static const String Product_Purchase_Notes = "Purchase Notes";
 
   //Customers
   static const String Customer = "Customer";

@@ -2,10 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:trader_app/constants/strings.dart';
-import 'package:trader_app/controllers/products_controller.dart';
+import 'package:trader_app/controllers/product/products_controller.dart';
 import 'package:trader_app/screens/shared_widgets/appbar_eng_view.dart';
 
-class ProductDetails extends GetView<ProductController> {
+class ProductDetails extends GetView<AllProductCtrl> {
   const ProductDetails({super.key});
 
 

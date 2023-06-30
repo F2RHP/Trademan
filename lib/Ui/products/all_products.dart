@@ -3,10 +3,10 @@ import 'package:get/get.dart';
 import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart';
 import 'package:trader_app/Ui/Common_Codes/common_codes.dart';
+import 'package:trader_app/Ui/products/add_product.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
-import 'package:trader_app/controllers/products_controller.dart';
-
+import 'package:trader_app/controllers/product/products_controller.dart';
 import 'package:trader_app/env/dimensions.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
 
@@ -18,7 +18,7 @@ class AllProducts extends StatefulWidget {
 }
 
 class _AllProductsState extends State<AllProducts> {
-  final ctrl = Get.put(ProductController(),);
+  final ctrl = Get.put(AllProductCtrl());
 
   List<String> list = ['1', '2', '3', '4'];
   var dropDownValue;
@@ -27,56 +27,59 @@ class _AllProductsState extends State<AllProducts> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(context),
-      body: Obx(() => ctrl.isLoading.value
-      ? const Center(
-        child: CircularProgressIndicator(),
-      )
-      :Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              topSection(),
-              AppSizedBox.sizedBoxH20,
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child: GroupButton(
-                    options: GroupButtonOptions(
-                        spacing: 0,
-                        buttonWidth: 100,
-                        buttonHeight: 50,
-                        selectedColor: AppColors.kPrimaryColor,
-                        unselectedColor: AppColors.blueAccentShade700,
-                        unselectedTextStyle: TextStyle(
-                          color: AppColors.white,
-                        )),
-                    buttons: const <String>['All', 'In Stock', 'Stock Out']),
+      body: Obx(
+        () => ctrl.isLoading.value
+            ? const Center(child: CircularProgressIndicator())
+            : Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      topSection(),
+                      AppSizedBox.sizedBoxH20,
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: GroupButton(
+                            options: GroupButtonOptions(
+                                spacing: 0,
+                                buttonWidth: 100,
+                                buttonHeight: 50,
+                                selectedColor: AppColors.kPrimaryColor,
+                                unselectedColor: AppColors.blueAccentShade700,
+                                unselectedTextStyle: TextStyle(
+                                  color: AppColors.white,
+                                )),
+                            buttons: const <String>[
+                              'All',
+                              'In Stock',
+                              'Stock Out'
+                            ]),
+                      ),
+                      AppSizedBox.sizedBoxH20,
+                      ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: ctrl.isSearch
+                            ? ctrl.products.length
+                            : ctrl.searchList.length,
+                        itemBuilder: (context, index) {
+                          var dateTime = DateTime.parse(
+                              ctrl.products[index].purchasEDate.toString());
+                          DateFormat dateFormat = DateFormat('yyy-MM-dd');
+                          var nowDate = dateFormat.format(dateTime);
+                          return listMenu(
+                              ctrl.isSearch
+                                  ? ctrl.products[index]
+                                  : ctrl.searchList[index],
+                              nowDate);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              AppSizedBox.sizedBoxH20,
-              ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: ctrl.isSearch
-                    ? ctrl.products.length
-                    : ctrl.searchList.length,
-                itemBuilder: (context, index) {
-                  var dateTime = DateTime.parse(
-                      ctrl.products[index].purchasEDate.toString());
-                  DateFormat dateFormat = DateFormat('yyy-MM-dd');
-                  var nowDate = dateFormat.format(dateTime);
-                  return listMenu(
-                      ctrl.isSearch
-                          ? ctrl.products[index]
-                          : ctrl.searchList[index],
-                      nowDate);
-                },
-              ),
-            ],
-          ),
-        ),
       ),
-    ),
     );
   }
 
@@ -227,6 +230,20 @@ class _AllProductsState extends State<AllProducts> {
           ),
         ),
       ),
+      actions: [
+        GestureDetector(
+          onTap: () {
+            Get.to(
+              const AddProduct(),
+            );
+          },
+          child: Icon(
+            Icons.add,
+            color: AppColors.white,
+          ),
+        ),
+        AppSizedBox.sizedBoxW10,
+      ],
       centerTitle: true,
       title: Text(
         AppStrings.ProductList,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:trader_app/controllers/products_controller.dart';
+import 'package:trader_app/controllers/product/products_controller.dart';
 import 'package:trader_app/models/generalclass.dart';
 import 'package:trader_app/screens/shared_widgets/appbar_eng_view.dart';
 import '../../constants/strings.dart';
@@ -14,7 +14,7 @@ class NewProduct extends StatefulWidget {
 }
 
 class _NewProductState extends State<NewProduct> {
-  final controller = Get.put(ProductController());
+  final controller = Get.put(AllProductCtrl());
 
   @override
   Widget build(BuildContext context) {
