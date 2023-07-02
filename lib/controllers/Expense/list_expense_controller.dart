@@ -7,20 +7,24 @@ import '../../Ui/Expense/add_expense.dart';
 import '../../models/expense/expensedetails.dart';
 
 class ListExpenseCtrl extends BaseController {
-  
   late ExpenseService service;
-  var expenseList=<ExpenseDetails>[].obs;
+  var expenseList = <ExpenseDetails>[].obs;
   @override
   void onInit() async {
-    isLoading.value=true;
-    service=ExpenseService();
-    expenseList.value=await service.getAllListExpenses();
-    
-    
+    isLoading.value = true;
+    service = ExpenseService();
+
+    loadExpenseList();
     // TODO: implement onInit
     super.onInit();
 
-    isLoading.value=false;
+    isLoading.value = false;
+  }
+
+  void loadExpenseList() async {
+    isLoading.value = true;
+    expenseList.value = await service.getAllListExpenses();
+    isLoading.value = false;
   }
 
   @override

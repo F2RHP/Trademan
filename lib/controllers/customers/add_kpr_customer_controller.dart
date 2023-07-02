@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:trader_app/controllers/base_controller.dart';
 import 'package:trader_app/models/customer_model/add_kpr_customer.dart';
 import 'package:trader_app/models/customer_model/list_customer_model.dart';
 
@@ -8,7 +9,7 @@ import '../../models/customer_model/CustomerDTO_UPD.dart';
 import '../../services/customerservice.dart';
 import 'list_customers_ctrl.dart';
 
-class AddKPRCustomerController extends GetxController {
+class AddKPRCustomerController extends BaseController {
   late CustomerService service;
 
   CustomerDTO_UPD? kprCustomer;
@@ -138,22 +139,7 @@ class AddKPRCustomerController extends GetxController {
     );
   }
   
-void showSavedSuccessfullyDialog(int? id) {
-  var action = id! > 0 ? "Added" : "Edited";
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    Get.defaultDialog(
-       title: "Information",
-      content: Text('${action} successfully'),
-      confirm: ElevatedButton(
-        onPressed: () {
-          Get.back();
-            Get.back();
-        },
-        child: Text('OK'),
-      ),
-    );
-  });
-}
+
 
   savecustomer() async {
     if (!customerFormValidate()) {

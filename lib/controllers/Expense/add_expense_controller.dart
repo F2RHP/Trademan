@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:trader_app/controllers/Expense/list_expense_controller.dart';
 import 'package:trader_app/controllers/base_controller.dart';
 import 'package:trader_app/models/expense/expensedetails.dart';
 import 'package:trader_app/models/expense/expensetype.dart';
@@ -64,7 +65,7 @@ late ExpenseService expenseService;
     super.onClose();
   }
 
-  void saveExpenseDetail() {
+   saveExpenseDetail() async{
 // ignore: unrelated_type_equality_checks
 //var typeId=expenseType.firstWhere((element) => element.expenseName==dropDownExpenseType).expenseTypeID!;
 ExpenseDetails details=ExpenseDetails(
@@ -73,9 +74,37 @@ expenseDescription: detailsController.text ,
 expenseTypeId: dropDownExpenseType.expenseTypeID,
 expenseTypeName: dropDownExpenseType.expenseName!,
 expenseCost:double.parse(costController.text),
-expenseDate:DateTime.parse(dateController.text) 
+expenseDate:DateTime.parse(dateController.text) ,
+expenseID: 0
 
 );
-expenseService.saveExpense(details);
+var isInserted=await expenseService.saveExpense(details);
+  if (isInserted) {
+      
+      bool isRegistered = GetInstance().isRegistered<ListExpenseCtrl>();
+      if (isRegistered) {
+        var listCustomerCtrl = Get.find<ListExpenseCtrl>();
+        listCustomerCtrl.expenseList();
+        showSavedSuccessfullyDialog1(details.expenseID);
+      
+      }
+    }
+  }
+
+    void showSavedSuccessfullyDialog1(int? id) {
+    var action = id! > 0 ? "Added" : "Edited";
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.defaultDialog(
+        title: "Information",
+        content: Text('$action successfully'),
+        confirm: ElevatedButton(
+          onPressed: () {
+            Get.back();
+            Get.back();
+          },
+          child: const Text('OK'),
+        ),
+      );
+    });
   }
 }

@@ -5,73 +5,59 @@ import 'package:trader_app/services/servicehelper.dart';
 import '../models/customer_model/CustomerDTO_UPD.dart';
 import '../models/customer_model/customer_search_model.dart';
 
-class CustomerService extends BaseService{
-
-
-
-  Future<List<CustomersList>> getAllListCustomers() async
-  {
+class CustomerService extends BaseService {
+  Future<List<CustomersList>> getAllListCustomers() async {
     try {
+      var response = await get<List<dynamic>>(ServiceHelper.listCustomer);
+      List<CustomersList> customersList = response
+          .map((mapElement) => CustomersList.fromMap(mapElement))
+          .toList();
 
-      var response = await  get<List<dynamic>>(ServiceHelper.listCustomer);
-        List<CustomersList> customersList = response
-            .map((mapElement) => CustomersList.fromMap(mapElement))
-            .toList();
-
-        return customersList;
-    }
-    catch (e) {
+      return customersList;
+    } catch (e) {
       return <CustomersList>[];
     }
   }
 
-Future<List<CustomersList>> getAllListCustomersList(CustomerDTO_Input input) async {
-  try {
-    var queryParams = input.toJson();
-    var response = await getWithParam<List<Map<String, dynamic>>>(
-      ServiceHelper.listCustomer,
-      queryParams,
-    );
-    List<CustomersList> customersList = response
-        .map((mapElement) => CustomersList.fromMap(mapElement))
-        .toList();
-    return customersList;
-  } catch (e) {
-    return <CustomersList>[];
-  }
-}
-
-
-  Future<CustomersList> getCustomerbyId(int customerId) async
-  {
+  Future<List<CustomersList>> getAllListCustomersList(
+      CustomerDTO_Input input) async {
     try {
-
-      var response = await  get<List<dynamic>>(ServiceHelper.getCustomerById);
-        CustomersList customersList = response
-            .map((mapElement) => CustomersList.fromMap(mapElement)).first;
-
-        return customersList;
+      var queryParams = input.toJson();
+      var response = await getWithParam<List<Map<String, dynamic>>>(
+        ServiceHelper.listCustomer,
+        queryParams,
+      );
+      List<CustomersList> customersList = response
+          .map((mapElement) => CustomersList.fromMap(mapElement))
+          .toList();
+      return customersList;
+    } catch (e) {
+      return <CustomersList>[];
     }
-    catch (e) {
+  }
+
+  Future<CustomersList> getCustomerbyId(int customerId) async {
+    try {
+      var response = await get<List<dynamic>>(ServiceHelper.getCustomerById);
+      CustomersList customersList =
+          response.map((mapElement) => CustomersList.fromMap(mapElement)).first;
+
+      return customersList;
+    } catch (e) {
       return CustomersList();
-
     }
   }
 
-Future<bool> addCustomer(CustomerDTO_UPD customer) async {
-  const endpoint = 'Customer/AddCustomer';
-  final body = customer.toJson();
+  Future<bool> addCustomer(CustomerDTO_UPD customer) async {
+    const endpoint = 'Customer/AddCustomer';
+    final body = customer.toJson();
 
-  try {
-    final response = await post(endpoint, body);
-return response>0;
-
-  } catch (e) {
-    print('Error occurred: $e');
-    return false;
-    
+    try {
+      final response = await post(endpoint, body);
+      return response > 0;
+    } catch (e) {
+      print('Error occurred: $e');
+      return false;
+    }
   }
-}
-
-
 }
