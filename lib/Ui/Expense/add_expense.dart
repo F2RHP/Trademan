@@ -59,8 +59,12 @@ class _AddExpenseState extends State<AddExpense> {
                   buildInputFiled(),
                   CustomBtn(
                     label: 'save',
-                    action: () {
-                      ctrl.saveExpenseDetail();
+                    action: () async {
+                      if(await ctrl.saveExpenseDetail())
+                      {
+                        ctrl.showSavedSuccessfullyDialog(1);
+                        ctrl.navigateBack();
+                      }
                     },
                   ),
                 ],

@@ -11,7 +11,8 @@ import 'package:trader_app/services/expenseservice.dart';
 class AddExpenseCtrl extends BaseController {
 
 late ExpenseService expenseService;
-   
+   var btnText="ADD".obs;
+   late ExpenseDetails details;
    var expenseType = <ExpenseType>[].obs;
  
    var dropDownExpenseType=null;
@@ -65,10 +66,10 @@ late ExpenseService expenseService;
     super.onClose();
   }
 
-   saveExpenseDetail() async{
+   Future<bool> saveExpenseDetail() async{
 // ignore: unrelated_type_equality_checks
 //var typeId=expenseType.firstWhere((element) => element.expenseName==dropDownExpenseType).expenseTypeID!;
-ExpenseDetails details=ExpenseDetails(
+ details=ExpenseDetails(
   expenseName:nameController.text,
 expenseDescription: detailsController.text ,
 expenseTypeId: dropDownExpenseType.expenseTypeID,
@@ -85,26 +86,13 @@ var isInserted=await expenseService.saveExpense(details);
       if (isRegistered) {
         var listCustomerCtrl = Get.find<ListExpenseCtrl>();
         listCustomerCtrl.expenseList();
-        showSavedSuccessfullyDialog1(details.expenseID);
+        
       
       }
     }
+
+    return isInserted;
   }
 
-    void showSavedSuccessfullyDialog1(int? id) {
-    var action = id! > 0 ? "Added" : "Edited";
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.defaultDialog(
-        title: "Information",
-        content: Text('$action successfully'),
-        confirm: ElevatedButton(
-          onPressed: () {
-            Get.back();
-            Get.back();
-          },
-          child: const Text('OK'),
-        ),
-      );
-    });
-  }
+
 }

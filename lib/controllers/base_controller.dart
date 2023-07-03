@@ -5,6 +5,10 @@ import 'package:get/get.dart';
 class BaseController extends GetxController {
   final isLoading = false.obs;
 
+void navigateBack() {
+    Get.back();
+  }
+
   void showSavedSuccessfullyDialog(int? id) {
     var action = id! > 0 ? "Added" : "Edited";
     WidgetsBinding.instance.addPostFrameCallback((_) {
