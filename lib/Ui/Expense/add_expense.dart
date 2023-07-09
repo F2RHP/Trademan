@@ -62,8 +62,8 @@ class _AddExpenseState extends State<AddExpense> {
                     action: () async {
                       if(await ctrl.saveExpenseDetail())
                       {
-                        ctrl.showSavedSuccessfullyDialog(1);
-                        ctrl.navigateBack();
+                        //ctrl.showSavedSuccessfullyDialog(1,true);
+                        ctrl.navigateBack(1,true);
                       }
                     },
                   ),

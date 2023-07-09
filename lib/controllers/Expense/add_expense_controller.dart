@@ -85,7 +85,7 @@ var isInserted=await expenseService.saveExpense(details);
       bool isRegistered = GetInstance().isRegistered<ListExpenseCtrl>();
       if (isRegistered) {
         var listCustomerCtrl = Get.find<ListExpenseCtrl>();
-        listCustomerCtrl.expenseList();
+     await  listCustomerCtrl.loadExpenseList();
         
       
       }

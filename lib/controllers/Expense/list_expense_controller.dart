@@ -21,7 +21,7 @@ class ListExpenseCtrl extends BaseController {
     isLoading.value = false;
   }
 
-  void loadExpenseList() async {
+  Future<void> loadExpenseList() async {
     isLoading.value = true;
     expenseList.value = await service.getAllListExpenses();
     isLoading.value = false;

@@ -154,7 +154,7 @@ class AddKPRCustomerController extends BaseController {
       if (isRegistered) {
         var listCustomerCtrl = Get.find<ListCustomersCtrl>();
         listCustomerCtrl.getAllListCustomersList();
-        showSavedSuccessfullyDialog(customer.customerId);
+        showSavedSuccessfullyDialog(customer.customerId,true);
       
       }
     }

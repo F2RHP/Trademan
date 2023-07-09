@@ -5,11 +5,15 @@ import 'package:get/get.dart';
 class BaseController extends GetxController {
   final isLoading = false.obs;
 
-void navigateBack() {
-    Get.back();
+  void navigateBack(int? id, bool goback) {
+    var action = id! > 0 ? "Added" : "Edited";
+    Get.snackbar("Information", '$action successfully');
+    if (goback) {
+      Get.back();
+    }
   }
 
-  void showSavedSuccessfullyDialog(int? id) {
+  void showSavedSuccessfullyDialog(int? id, bool goback) {
     var action = id! > 0 ? "Added" : "Edited";
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.defaultDialog(
@@ -17,8 +21,9 @@ void navigateBack() {
         content: Text('$action successfully'),
         confirm: ElevatedButton(
           onPressed: () {
-            Get.back();
-            Get.back();
+            if (goback) {
+              Get.back();
+            }
           },
           child: const Text('OK'),
         ),
