@@ -71,7 +71,7 @@ class HomeScreen extends GetView<HomeScreenController> {
           context,
           MaterialPageRoute(
             builder: (context) => const AddProduct(),
-          )),
+          ),),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Container(

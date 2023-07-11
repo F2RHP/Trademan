@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:intl/intl.dart';
 import 'package:trader_app/Ui/Common_Codes/common_codes.dart';
-import 'package:trader_app/Ui/Expense/expense_list.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/screens/shared_widgets/custom_btn.dart';
@@ -94,30 +94,47 @@ class _AddExpenseState extends State<AddExpense> {
         AppSizedBox.sizedBoxH15,
         // loadDropdown(),
 
-DropdownButtonFormField<ExpenseType>(
-  value: ctrl.dropDownExpenseType,
-  onChanged: (newValue) {
-    setState(() {
-      ctrl.dropDownExpenseType = newValue!;
-    });
-  },
-  items: ctrl.expenseType.map((expenseType) {
-    return DropdownMenuItem<ExpenseType>(
-      value: expenseType,
-      child: Text(expenseType.expenseName!),
-    );
-  }).toList(),
-  decoration: dropDownDecoration(),
-  
-),
+        DropdownButtonFormField<ExpenseType>(
+          value: ctrl.dropDownExpenseType,
+          onChanged: (newValue) {
+            setState(() {
+              ctrl.dropDownExpenseType = newValue!;
+            });
+          },
+          items: ctrl.expenseType.map((expenseType) {
+            return DropdownMenuItem<ExpenseType>(
+              value: expenseType,
+              child: Text(expenseType.expenseName!),
+            );
+          }).toList(),
+          decoration: dropDownDecoration(),
+        ),
 
         AppSizedBox.sizedBoxH25,
         TitleWithTextFormField(
+          readOnly: true,
+          onTap: () {
+            showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(1950),
+              lastDate: DateTime.now(),
+            ).then((value) {
+              ctrl.dateController.text =
+                  DateFormat('yyyy-MM-dd').format(value!);
+            });
+          },
+          titleText: AppStrings.Data_Birth,
+          hintText: AppStrings.Data_Birth,
           controller: ctrl.dateController,
-          titleText: AppStrings.Data,
-          hintText: AppStrings.DataType,
         ),
+        // TitleWithTextFormField(
+        //   controller: ctrl.dateController,
+        //   titleText: AppStrings.Data,
+        //   hintText: AppStrings.DataType,
+        // ),
         TitleWithTextFormField(
+          type: TextInputType.number,
           controller: ctrl.costController,
           titleText: AppStrings.Cost,
           hintText: AppStrings.Cost,
@@ -128,40 +145,40 @@ DropdownButtonFormField<ExpenseType>(
 
   DropdownButtonFormField<ExpenseType> loadDropdown() {
     var dropdownButtonFormField = DropdownButtonFormField<ExpenseType>(
-        value: ctrl.dropDownExpenseType,
-        items: ctrl.expenseType
-            .map((label) => DropdownMenuItem<ExpenseType>(
-                  value: label,
-                  child: Text(label.expenseName!),
-                ))
-            .toList(),
-        hint: const Text('ExpenseType'),
-        onChanged: (ExpenseType? newValue) {
-          setState(() {
-            ctrl.dropDownExpenseType = newValue!;
-          });
-        },
-        decoration: dropDownDecoration(),
-      );
+      value: ctrl.dropDownExpenseType,
+      items: ctrl.expenseType
+          .map((label) => DropdownMenuItem<ExpenseType>(
+                value: label,
+                child: Text(label.expenseName!),
+              ))
+          .toList(),
+      hint: const Text('ExpenseType'),
+      onChanged: (ExpenseType? newValue) {
+        setState(() {
+          ctrl.dropDownExpenseType = newValue!;
+        });
+      },
+      decoration: dropDownDecoration(),
+    );
     return dropdownButtonFormField;
   }
 
   InputDecoration dropDownDecoration() {
     return InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: CustomBorderRadius.borderRadius8,
+      border: OutlineInputBorder(
+        borderRadius: CustomBorderRadius.borderRadius8,
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: CustomBorderRadius.borderRadius8,
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: CustomBorderRadius.borderRadius8,
+        borderSide: BorderSide(
+          color: AppColors.grey,
         ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: CustomBorderRadius.borderRadius8,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: CustomBorderRadius.borderRadius8,
-          borderSide: BorderSide(
-            color: AppColors.grey,
-          ),
-        ),
-        fillColor: AppColors.kSecondaryColor,
-        filled: true,
-      );
+      ),
+      fillColor: AppColors.kSecondaryColor,
+      filled: true,
+    );
   }
 }

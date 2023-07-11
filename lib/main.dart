@@ -1,4 +1,5 @@
 import 'package:trader_app/Ui/dashboard.dart';
+import 'package:trader_app/Ui/products/add_product.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/env/routing.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +21,9 @@ Widget getApp() {
       scaffoldBackgroundColor: Colors.white,
       primarySwatch: AppColorCode.appColorCode,
     ),
-    home:  ExpenseList(),
-    //home: const DashBoard(),
+    // home:  ExpenseList(),
+    home: const DashBoard(),
+    // home: const AddProduct(),
     // initialRoute: "/",
     getPages: AppRouting.ROUTES,
   );

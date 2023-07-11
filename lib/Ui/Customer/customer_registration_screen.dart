@@ -123,7 +123,7 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
                 fillColor: AppColors.kSecondaryColor,
                 filled: true,
               ),
-            )),
+            ),),
         AppSizedBox.sizedBoxH20,
         // Title Quantity type
         TitleWithTextFormField(
@@ -165,17 +165,16 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
               initialDate: DateTime.now(),
               firstDate: DateTime(1950),
               lastDate: DateTime.now(),
-            ).then(
-              (value) {
-                ctrl.dOBController.text =  DateFormat('yyyy-MM-hh').format(value!);
-              }
-            );
+            ).then((value) {
+              ctrl.dOBController.text = DateFormat('yyyy-MM-dd').format(value!);
+            });
           },
           titleText: AppStrings.Data_Birth,
           hintText: AppStrings.Data_Birth,
           controller: ctrl.dOBController,
         ),
         TitleWithTextFormField(
+          // type: TextInputType.number,
           titleText: AppStrings.Customer_Notes,
           hintText: AppStrings.Customer_Notes,
           maxLines: 3,

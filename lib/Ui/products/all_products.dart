@@ -31,54 +31,54 @@ class _AllProductsState extends State<AllProducts> {
         () => ctrl.isLoading.value
             ? const Center(child: CircularProgressIndicator())
             : Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      topSection(),
-                      AppSizedBox.sizedBoxH20,
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: GroupButton(
-                            options: GroupButtonOptions(
-                                spacing: 0,
-                                buttonWidth: 100,
-                                buttonHeight: 50,
-                                selectedColor: AppColors.kPrimaryColor,
-                                unselectedColor: AppColors.blueAccentShade700,
-                                unselectedTextStyle: TextStyle(
-                                  color: AppColors.white,
-                                )),
-                            buttons: const <String>[
-                              'All',
-                              'In Stock',
-                              'Stock Out'
-                            ]),
-                      ),
-                      AppSizedBox.sizedBoxH20,
-                      ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: ctrl.isSearch
-                            ? ctrl.products.length
-                            : ctrl.searchList.length,
-                        itemBuilder: (context, index) {
-                          var dateTime = DateTime.parse(
-                              ctrl.products[index].purchasEDate.toString());
-                          DateFormat dateFormat = DateFormat('yyy-MM-dd');
-                          var nowDate = dateFormat.format(dateTime);
-                          return listMenu(
-                              ctrl.isSearch
-                                  ? ctrl.products[index]
-                                  : ctrl.searchList[index],
-                              nowDate);
-                        },
-                      ),
-                    ],
-                  ),
+              padding: const EdgeInsets.all(20.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    topSection(),
+                    AppSizedBox.sizedBoxH20,
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: GroupButton(
+                          options: GroupButtonOptions(
+                              spacing: 0,
+                              buttonWidth: 100,
+                              buttonHeight: 50,
+                              selectedColor: AppColors.kPrimaryColor,
+                              unselectedColor: AppColors.blueAccentShade700,
+                              unselectedTextStyle: TextStyle(
+                                color: AppColors.white,
+                              )),
+                          buttons: const <String>[
+                            'All',
+                            'In Stock',
+                            'Stock Out'
+                          ]),
+                    ),
+                    AppSizedBox.sizedBoxH20,
+                    ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: ctrl.isSearch
+                          ? ctrl.products.length
+                          : ctrl.searchList.length,
+                      itemBuilder: (context, index) {
+                        var dateTime = DateTime.parse(
+                            ctrl.products[index].purchasEDate.toString());
+                        DateFormat dateFormat = DateFormat('yyy-MM-dd');
+                        var nowDate = dateFormat.format(dateTime);
+                        return listMenu(
+                            ctrl.isSearch
+                                ? ctrl.products[index]
+                                : ctrl.searchList[index],
+                            nowDate);
+                      },
+                    ),
+                  ],
                 ),
               ),
+            ),
       ),
     );
   }
@@ -234,7 +234,7 @@ class _AllProductsState extends State<AllProducts> {
         GestureDetector(
           onTap: () {
             Get.to(
-              const AddProduct(),
+                ()=>const AddProduct(),
             );
           },
           child: Icon(

@@ -1,4 +1,3 @@
-import 'package:trader_app/models/customer_model/list_customer_model.dart';
 import 'package:trader_app/models/product_model.dart';
 import 'package:trader_app/services/servicebase.dart';
 import 'package:trader_app/services/servicehelper.dart';

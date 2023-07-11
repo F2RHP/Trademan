@@ -18,25 +18,22 @@ class ExpenseList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppbar(context),
-      body: Obx(() => Padding(
-            padding: CustomPadding.padding15,
-            child: ctrl.isLoading.value
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: ctrl.expenseList.length,
-                            itemBuilder: (context, index) =>
-                                exenseDetail(ctrl.expenseList[index])),
-                      ],
-                    ),
-                  ),
-          )),
+      body: Obx(() => ctrl.isLoading.value
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: ctrl.expenseList.length,
+                      itemBuilder: (context, index) =>
+                          expenseDetail(ctrl.expenseList[index])),
+                ],
+              ),
+            )),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           ctrl.addnewExpense();
@@ -121,71 +118,74 @@ class ExpenseList extends StatelessWidget {
       ],
     );
   }
-
-  Container exenseDetail(ExpenseDetails item) {
-    return Container(
-      padding: CustomPadding.padding18,
-      decoration: BoxDecoration(
-        borderRadius: CustomBorderRadius.borderRadius8,
-        border: Border.all(
-          color: AppColors.grey,
+//expense
+  Widget expenseDetail(ExpenseDetails item) {
+    return Padding(
+      padding: CustomPadding.padding10,
+      child: Container(
+        padding: CustomPadding.padding18,
+        decoration: BoxDecoration(
+          borderRadius: CustomBorderRadius.borderRadius8,
+          border: Border.all(
+            color: AppColors.grey,
+          ),
         ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(item.expenseName!),
-          AppSizedBox.sizedBoxH15,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(item.expenseDescription.toString()),
-              Text(
-                item.expenseCost.toString(),
-                style: TextStyle(
-                  fontSize: 24.0,
-                  color: AppColors.red,
-                ),
-              ),
-            ],
-          ),
-          AppSizedBox.sizedBoxH15,
-          Row(
-            children: [
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                decoration: BoxDecoration(
-                  color: AppColors.yellowDark,
-                  borderRadius: CustomBorderRadius.borderRadius13,
-                ),
-                child: Text(
-                  item.expenseDescription.toString(),
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              AppSizedBox.sizedBoxW10,
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                decoration: BoxDecoration(
-                  color: AppColors.kPrimaryColor,
-                  borderRadius: CustomBorderRadius.borderRadius13,
-                ),
-                child: Text(
-                  item.expenseDate.toString(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(item.expenseName!),
+            AppSizedBox.sizedBoxH15,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(item.expenseDescription.toString()),
+                Text(
+                  item.expenseCost.toString(),
                   style: TextStyle(
-                    color: AppColors.kSecondaryColor,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 24.0,
+                    color: AppColors.red,
                   ),
                 ),
-              ),
-            ],
-          ),
-          AppSizedBox.sizedBoxH15,
-        ],
+              ],
+            ),
+            AppSizedBox.sizedBoxH15,
+            Row(
+              children: [
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                  decoration: BoxDecoration(
+                    color: AppColors.yellowDark,
+                    borderRadius: CustomBorderRadius.borderRadius13,
+                  ),
+                  child: Text(
+                    item.expenseDescription.toString(),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                AppSizedBox.sizedBoxW10,
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                  decoration: BoxDecoration(
+                    color: AppColors.kPrimaryColor,
+                    borderRadius: CustomBorderRadius.borderRadius13,
+                  ),
+                  child: Text(
+                    item.expenseDate.toString(),
+                    style: TextStyle(
+                      color: AppColors.kSecondaryColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            AppSizedBox.sizedBoxH15,
+          ],
+        ),
       ),
     );
   }
