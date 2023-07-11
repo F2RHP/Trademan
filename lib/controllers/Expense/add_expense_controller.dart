@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:trader_app/controllers/Expense/list_expense_controller.dart';
 import 'package:trader_app/controllers/base_controller.dart';
 import 'package:trader_app/models/expense/expensedetails.dart';
 import 'package:trader_app/models/expense/expensetype.dart';
@@ -10,7 +11,8 @@ import 'package:trader_app/services/expenseservice.dart';
 class AddExpenseCtrl extends BaseController {
 
 late ExpenseService expenseService;
-   
+   var btnText="ADD".obs;
+   late ExpenseDetails details;
    var expenseType = <ExpenseType>[].obs;
  
    var dropDownExpenseType=null;
@@ -64,18 +66,33 @@ late ExpenseService expenseService;
     super.onClose();
   }
 
-  void saveExpenseDetail() {
+   Future<bool> saveExpenseDetail() async{
 // ignore: unrelated_type_equality_checks
 //var typeId=expenseType.firstWhere((element) => element.expenseName==dropDownExpenseType).expenseTypeID!;
-ExpenseDetails details=ExpenseDetails(
+ details=ExpenseDetails(
   expenseName:nameController.text,
 expenseDescription: detailsController.text ,
 expenseTypeId: dropDownExpenseType.expenseTypeID,
 expenseTypeName: dropDownExpenseType.expenseName!,
 expenseCost:double.parse(costController.text),
-expenseDate:DateTime.parse(dateController.text) 
+expenseDate:DateTime.parse(dateController.text) ,
+expenseID: 0
 
 );
-expenseService.saveExpense(details);
+var isInserted=await expenseService.saveExpense(details);
+  if (isInserted) {
+      
+      bool isRegistered = GetInstance().isRegistered<ListExpenseCtrl>();
+      if (isRegistered) {
+        var listCustomerCtrl = Get.find<ListExpenseCtrl>();
+     await  listCustomerCtrl.loadExpenseList();
+        
+      
+      }
+    }
+
+    return isInserted;
   }
+
+
 }

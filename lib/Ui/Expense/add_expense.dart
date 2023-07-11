@@ -8,7 +8,6 @@ import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/screens/shared_widgets/custom_btn.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
 import 'package:trader_app/screens/shared_widgets/title_with_text_form_field.dart';
-
 import '../../controllers/Expense/add_expense_controller.dart';
 import '../../models/expense/expensetype.dart';
 
@@ -59,8 +58,12 @@ class _AddExpenseState extends State<AddExpense> {
                   buildInputFiled(),
                   CustomBtn(
                     label: 'save',
-                    action: () {
-                      ctrl.saveExpenseDetail();
+                    action: () async {
+                      if(await ctrl.saveExpenseDetail())
+                      {
+                        //ctrl.showSavedSuccessfullyDialog(1,true);
+                        ctrl.navigateBack(1,true);
+                      }
                     },
                   ),
                 ],

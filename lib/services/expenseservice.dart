@@ -7,7 +7,7 @@ import '../models/expense/expensedetails.dart';
 class ExpenseService extends BaseService {
   Future<List<ExpenseDetails>> getAllListExpenses() async {
     try {
-      return expenseDetailsList;
+      //return expenseDetailsList;
       var response = await get<List<dynamic>>(ServiceHelper.listExpenses);
       List<ExpenseDetails> expenseList = response
           .map((mapElement) => ExpenseDetails.fromMap(mapElement))
@@ -22,7 +22,6 @@ class ExpenseService extends BaseService {
   Future<List<ExpenseType>> getAllListExpensesType() async {
     try {
       return expenseList1;
-
       var response = await get<List<dynamic>>(ServiceHelper.listExpenses);
       List<ExpenseType> expenseList = response
           .map((mapElement) => ExpenseType.fromMap(mapElement))
@@ -83,5 +82,16 @@ class ExpenseService extends BaseService {
     // Add more ExpenseDetails objects here for further testing
   ];
 
-  void saveExpense(ExpenseDetails details) {}
+  Future<bool> saveExpense(ExpenseDetails details) async {
+    var endpoint = ServiceHelper.postExpenses;
+    final body = details.toJson();
+
+    try {
+      final response = await post(endpoint, body);
+      return response > 0;
+    } catch (e) {
+      //print('Error occurred: $e');
+      return false;
+    }
+  }
 }

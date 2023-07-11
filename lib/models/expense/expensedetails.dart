@@ -17,18 +17,30 @@ class ExpenseDetails {
     required this.expenseCost,
   });
 
-  factory ExpenseDetails.fromMap(Map<String, dynamic> json) {
+  factory ExpenseDetails.fromMap(Map<String, dynamic> map) {
     return ExpenseDetails(
-      expenseID: json['ExpenseID'],
-      expenseName: json['ExpenseName'],
-      expenseDescription: json['ExpenseDescription'],
-      expenseTypeId: json['ExpenseTypeId'],
-      expenseTypeName: json['ExpenseTypeName'],
-      expenseDate: json['ExpenseDate'] != null
-          ? DateTime.parse(json['ExpenseDate'])
+      expenseID: map['expenseID'],
+      expenseName: map['expenseName'],
+      expenseDescription: map['expenseDescription'],
+      expenseTypeId: map['expenseTypeId'],
+      expenseTypeName: map['expenseTypeName'],
+      expenseDate: map['expenseDate'] != null
+          ? DateTime.parse(map['expenseDate'])
           : null,
-      expenseCost: json['ExpenseCost'],
+      expenseCost: map['expenseCost']?.toDouble(),
     );
+  }
+
+   Map<String, dynamic> toJson() {
+    return {
+      'expenseID': expenseID,
+      'expenseName': expenseName,
+      'expenseDescription': expenseDescription,
+      'expenseTypeId': expenseTypeId,
+      'expenseTypeName': expenseTypeName,
+      'expenseDate': expenseDate != null ? expenseDate!.toIso8601String() : null,
+      'expenseCost': expenseCost,
+    };
   }
 
 
