@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/controllers/product/add_product_ctrl.dart';
+import 'package:trader_app/models/supplier/supplier.dart';
+import 'package:trader_app/models/utility/utility_models.dart';
 import 'package:trader_app/screens/shared_widgets/custom_btn.dart';
 import 'package:trader_app/screens/shared_widgets/custom_text.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
@@ -17,8 +19,7 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProduct> {
-  List<String> list = ['1', '2', '3', '4'];
-  List<String> productCodeList = ['A', 'AC'];
+
 
   AddProductCtrl ctrl = Get.put(
     AddProductCtrl(),
@@ -47,7 +48,8 @@ class _AddProductState extends State<AddProduct> {
           ),
         ),
       ),
-      body: Padding(
+      body: Obx(() {
+  return Padding(
         padding: const EdgeInsets.all(15.0),
         child: SingleChildScrollView(
           child: Column(
@@ -70,8 +72,30 @@ class _AddProductState extends State<AddProduct> {
             ],
           ),
         ),
-      ),
+      );
+}),
     );
+  }
+
+DropdownButtonFormField<T> loadDropdown<T>(
+    List<T> items,
+    T value,
+    String Function(T) labelFunction,
+    void Function(T?) onChanged,
+  ) {
+    var dropdownButtonFormField = DropdownButtonFormField<T>(
+      value: value,
+      items: items
+          .map((item) => DropdownMenuItem<T>(
+                value: item,
+                child: Text(labelFunction(item)),
+              ))
+          .toList(),
+      hint: const Text('Select'),
+      onChanged: onChanged,
+      decoration: dropDownDecoration(),
+    );
+    return dropdownButtonFormField;
   }
 
   Widget buildInputSection() {
@@ -84,149 +108,54 @@ class _AddProductState extends State<AddProduct> {
           hintText: AppStrings.Product_Name,
           controller: ctrl.productNameCtrl,
         ),
-        // Title product ID
-        const CustomText(text: AppStrings.Product_ID),
-        AppSizedBox.sizedBoxH10,
-        DropdownButtonFormField(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          value: ctrl.product_ID,
-          items: list
-              .map((label) => DropdownMenuItem(
-                    value: label,
-                    child: Text(label.toString()),
-                  ))
-              .toList(),
-          hint: const Text(AppStrings.Product_ID),
-          onChanged: (value) {
-            setState(() {
-              ctrl.product_ID = value;
-            });
-          },
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: CustomBorderRadius.borderRadius8,
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: CustomBorderRadius.borderRadius8,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: CustomBorderRadius.borderRadius8,
-              borderSide: BorderSide(
-                color: AppColors.grey,
-              ),
-            ),
-            fillColor: AppColors.kSecondaryColor,
-            filled: true,
-          ),
-        ),
-        AppSizedBox.sizedBoxH20,
         // Title Quantity type
-        const CustomText(text: AppStrings.ProductTypeID),
+        const CustomText(text: AppStrings.ProductType),
         AppSizedBox.sizedBoxH10,
-        DropdownButtonFormField(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          value: ctrl.productTypeID,
-          items: list
-              .map((label) => DropdownMenuItem(
+        DropdownButtonFormField<ProductTypeModel>(
+          // autovalidateMode: AutovalidateMode.onUserInteraction,
+          value: ctrl.selectedProductType,
+          items: ctrl.productType
+              .map((label) => DropdownMenuItem<ProductTypeModel>(
                     value: label,
-                    child: Text(label.toString()),
+                    child: Text(label.name!),
                   ))
               .toList(),
-          hint: const Text(AppStrings.ProductTypeID),
+          hint: const Text(AppStrings.ProductType),
           onChanged: (value) {
             setState(() {
-              ctrl.productTypeID = value;
+              ctrl.selectedProductType = value!;
             });
           },
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: CustomBorderRadius.borderRadius8,
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: CustomBorderRadius.borderRadius8,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: CustomBorderRadius.borderRadius8,
-              borderSide: BorderSide(
-                color: AppColors.grey,
-              ),
-            ),
-            fillColor: AppColors.kSecondaryColor,
-            filled: true,
-          ),
+          decoration: dropDownDecoration(),
         ),
         AppSizedBox.sizedBoxH20,
-        const CustomText(text: AppStrings.Quantity_ID),
+        const CustomText(text: AppStrings.Quantity_Type),
         AppSizedBox.sizedBoxH10,
-        DropdownButtonFormField(
+        DropdownButtonFormField<QuantityTypeModel>(
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          value: ctrl.quantity_Type,
-          items: list
-              .map((label) => DropdownMenuItem(
+          value: ctrl.selectedQuantity,
+          items: ctrl.quantityType
+              .map((label) => DropdownMenuItem<QuantityTypeModel>(
                     value: label,
-                    child: Text(label.toString()),
+                    child: Text(label.quantityTypeName!),
                   ))
               .toList(),
-          hint: const Text(AppStrings.Quantity_ID),
+          hint: const Text(AppStrings.Quantity_Type),
           onChanged: (value) {
             setState(() {
-              ctrl.quantity_Type = value;
+              ctrl.selectedQuantity = value!;
             });
           },
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: CustomBorderRadius.borderRadius8,
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: CustomBorderRadius.borderRadius8,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: CustomBorderRadius.borderRadius8,
-              borderSide: BorderSide(
-                color: AppColors.grey,
-              ),
-            ),
-            fillColor: AppColors.kSecondaryColor,
-            filled: true,
-          ),
+          decoration: dropDownDecoration(),
         ),
-        AppSizedBox.sizedBoxH20,
         // Title Quantity type
-        const CustomText(text: 'Product Code'),
         AppSizedBox.sizedBoxH10,
-        DropdownButtonFormField(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          value: ctrl.product_Code,
-          items: productCodeList
-              .map((label) => DropdownMenuItem(
-                    value: label,
-                    child: Text(label.toString()),
-                  ))
-              .toList(),
-          hint: const Text('Product Code'),
-          onChanged: (value) {
-            setState(() {
-              ctrl.product_Code = value;
-            });
-          },
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: CustomBorderRadius.borderRadius8,
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: CustomBorderRadius.borderRadius8,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: CustomBorderRadius.borderRadius8,
-              borderSide: BorderSide(
-                color: AppColors.grey,
-              ),
-            ),
-            fillColor: AppColors.kSecondaryColor,
-            filled: true,
-          ),
+        TitleWithTextFormField(
+          titleText: AppStrings.Product_Code,
+          hintText: AppStrings.Product_Code,
+          controller: ctrl.productCodeCtrl,
         ),
-        AppSizedBox.sizedBoxH20,
+        AppSizedBox.sizedBoxH10,
         //Title Product description
         TitleWithTextFormField(
           titleText: AppStrings.Product_Description,
@@ -240,76 +169,33 @@ class _AddProductState extends State<AddProduct> {
           controller: ctrl.productNotesCtrl,
         ),
         // Title NO_OF_QUANTITY
-        const CustomText(text: AppStrings.Product_Supplier_ID),
+
+        const CustomText(text: AppStrings.Product_Supplier),
         AppSizedBox.sizedBoxH10,
-        DropdownButtonFormField(
+        DropdownButtonFormField<SupplierDTO>(
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          value: ctrl.noOfQuantity,
-          items: list
-              .map((label) => DropdownMenuItem(
+          value: ctrl.selectedSupplier,
+          items: ctrl.supplierList
+              .map((label) => DropdownMenuItem<SupplierDTO>(
                     value: label,
-                    child: Text(label.toString()),
+                    child: Text(label.supplierName),
                   ))
               .toList(),
-          hint: const Text(AppStrings.Product_Supplier_ID),
+          hint: const Text(AppStrings.Product_Supplier),
           onChanged: (value) {
             setState(() {
-              ctrl.supplierID = value;
+              ctrl.selectedSupplier = value!;
             });
           },
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: CustomBorderRadius.borderRadius8,
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: CustomBorderRadius.borderRadius8,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: CustomBorderRadius.borderRadius8,
-              borderSide: BorderSide(
-                color: AppColors.grey,
-              ),
-            ),
-            fillColor: AppColors.kSecondaryColor,
-            filled: true,
-          ),
+          decoration: dropDownDecoration(),
         ),
-        AppSizedBox.sizedBoxH20,
-        const CustomText(text: 'Quantity'),
         AppSizedBox.sizedBoxH10,
-        DropdownButtonFormField(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          value: ctrl.noOfQuantity,
-          items: list
-              .map((label) => DropdownMenuItem(
-                    value: label,
-                    child: Text(label.toString()),
-                  ))
-              .toList(),
-          hint: const Text('Quantity'),
-          onChanged: (value) {
-            setState(() {
-              ctrl.noOfQuantity = value;
-            });
-          },
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: CustomBorderRadius.borderRadius8,
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: CustomBorderRadius.borderRadius8,
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: CustomBorderRadius.borderRadius8,
-              borderSide: BorderSide(
-                color: AppColors.grey,
-              ),
-            ),
-            fillColor: AppColors.kSecondaryColor,
-            filled: true,
-          ),
+        TitleWithTextFormField(
+          titleText: AppStrings.Product_Quantity,
+          hintText: AppStrings.Product_Quantity,
+          controller: ctrl.productNoOfquantityCtrl,
+          type: TextInputType.number,
         ),
-        AppSizedBox.sizedBoxH20,
         // Title PRODUCT_COST
         TitleWithTextFormField(
           titleText: AppStrings.Product_Cost,

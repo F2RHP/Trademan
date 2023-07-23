@@ -47,7 +47,7 @@ class _NewProductState extends State<NewProduct> {
           //buildSampleDropdown(),
           Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-            child: buildProductDropdown(),
+
           ),
           buildDropdownButton()
         ],
@@ -55,62 +55,7 @@ class _NewProductState extends State<NewProduct> {
     );
   }
 
-  Padding buildSampleDropdown() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 8.0),
-      child: DropdownButton<ProductType>(
-        isExpanded: true,
-        hint: Text(
-          'Product Type',
-        ),
-        onChanged: (newValue) {
-          setState(() {
-            controller.selectedProductType.value = newValue as ProductType;
-            print(newValue);
-          });
-        },
-        value: controller.selectedProductType.value,
-        items: controller.productTypes.map((selectedType) {
-          return DropdownMenuItem<ProductType>(
-            child: new Text(
-              selectedType.productType,
-            ),
-            value: selectedType,
-          );
-        }).toList(),
-      ),
-    );
-  }
 
-  Widget buildProductDropdown() {
-    return Obx(() => DropdownButtonFormField(
-        decoration: const InputDecoration(
-          labelText: ("Product"),
-          border: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Color.fromARGB(255, 182, 65, 110),
-              width: 1.0,
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Color.fromARGB(255, 74, 195, 102))),
-        ),
-        items: controller.productTypes.map((selectedType) {
-          return DropdownMenuItem<ProductType>(
-            child: Text(
-              selectedType.productType,
-            ),
-            value: selectedType,
-          );
-        }).toList(),
-        onChanged: (newValue) {
-          controller.selectedProductType.value = newValue as ProductType;
-          // setState(() {
-          //   controller.selectedProductType.value = newValue as ProductType;
-          //   print(newValue);
-          // });
-        }));
-  }
 
   String newValue = "None";
 

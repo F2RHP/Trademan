@@ -166,22 +166,5 @@ class _AddExpenseState extends State<AddExpense> {
     return dropdownButtonFormField;
   }
 
-  InputDecoration dropDownDecoration() {
-    return InputDecoration(
-      border: OutlineInputBorder(
-        borderRadius: CustomBorderRadius.borderRadius8,
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: CustomBorderRadius.borderRadius8,
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: CustomBorderRadius.borderRadius8,
-        borderSide: BorderSide(
-          color: AppColors.grey,
-        ),
-      ),
-      fillColor: AppColors.kSecondaryColor,
-      filled: true,
-    );
-  }
+
 }

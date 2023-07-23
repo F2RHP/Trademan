@@ -86,13 +86,15 @@ class AppStrings {
   static const String Product_Name = "Product Name";
   static const String Product_Description = "Product description";
   static const String Product_Notes = "Product Notes";
-  static const String Product_Supplier_ID = "Supplier ID";
+  static const String Product_Supplier = "Supplier";
   static const String Product_ID = "Product ID";
-  static const String ProductTypeID = "Product Type ID";
-  static const String Quantity_ID = "Quantity ID";
+  static const String ProductType = "Product Type";
+  static const String Quantity_Type = "Quantity Type";
   static const String Product_Cost = "Product Cost";
+  static const String Product_Quantity = "No Of Quantity";
   static const String Product_Selling_Cost = "Selling Cost";
   static const String Product_Purchase_Notes = "Purchase Notes";
+  static const Product_Code="Product Code";
 
   //Customers
   static const String Customer = "Customer";
@@ -140,6 +142,8 @@ class AppStrings {
   static const String due = "Due";
   static const String profit = "Profit";
   static const String notes = "Notes";
+
+
 
 
 }
