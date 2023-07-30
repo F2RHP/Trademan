@@ -11,8 +11,9 @@ import 'package:trader_app/services/expenseservice.dart';
 class AddExpenseCtrl extends BaseController {
 
 late ExpenseService expenseService;
-   var btnText="ADD".obs;
-   late ExpenseDetails details;
+   var btnText="Save".obs;
+
+int expenseID=0;
    var expenseType = <ExpenseType>[].obs;
  
    var dropDownExpenseType=null;
@@ -29,9 +30,6 @@ late ExpenseService expenseService;
     isLoading.value=true;
     expenseService=ExpenseService();
     expenseType.value= await expenseService.getAllListExpensesType();
-    // if(expenseType.isNotEmpty) {
-    //   dropDownExpenseType=expenseType.value.first;
-    // }
     // TODO: implement onInit
     super.onInit();
 
@@ -66,33 +64,46 @@ late ExpenseService expenseService;
     super.onClose();
   }
 
-   Future<bool> saveExpenseDetail() async{
-// ignore: unrelated_type_equality_checks
-//var typeId=expenseType.firstWhere((element) => element.expenseName==dropDownExpenseType).expenseTypeID!;
- details=ExpenseDetails(
-  expenseName:nameController.text,
-expenseDescription: detailsController.text ,
-expenseTypeId: dropDownExpenseType.expenseTypeID,
-expenseTypeName: dropDownExpenseType.expenseName!,
-expenseCost:double.parse(costController.text),
-expenseDate:DateTime.parse(dateController.text) ,
-expenseID: 0
+   Future<int> saveExpenseDetail() async{
+ExpenseDetails details = ExpenseDetails(
+    expenseName: nameController.text,
+    expenseDescription: detailsController.text,
+    expenseTypeId: dropDownExpenseType,
+    expenseTypeName: "",
+    expenseCost: double.parse(costController.text),
+    expenseDate: DateTime.parse(dateController.text),
+    expenseID: expenseID,
+  );
 
-);
-var isInserted=await expenseService.saveExpense(details);
-  if (isInserted) {
-      
-      bool isRegistered = GetInstance().isRegistered<ListExpenseCtrl>();
-      if (isRegistered) {
-        var listCustomerCtrl = Get.find<ListExpenseCtrl>();
-     await  listCustomerCtrl.loadExpenseList();
-        
-      
-      }
-    }
+  int savedValue = await expenseService.saveExpense(details);
+  return savedValue;
 
-    return isInserted;
-  }
+
+  
+   }
+
+  // Function to get ExpenseType by expenseTypeId
+ExpenseType getExpenseTypeById(int expenseTypeId) {
+  return expenseType.value.firstWhere(
+    (expenseType) => expenseType.expenseTypeID == expenseTypeId,
+  );
+}
+
+  void passExpensevalue(ExpenseDetails? details) {
+  nameController.text = details?.expenseName ?? '';
+  detailsController.text = details?.expenseDescription ?? '';
+  
+  // Assuming dropDownExpenseType is of the same type as the ExpenseType in ExpenseDetails
+  dropDownExpenseType =details?.expenseTypeId??0;
+
+  costController.text = details?.expenseCost.toString() ?? '';
+  dateController.text = details?.expenseDate.toString() ?? '';
+  expenseID=details?.expenseID??0;
+}
+
+
+
+
 
 
 }

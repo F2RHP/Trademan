@@ -11,9 +11,9 @@ class ExpenseType {
 
   factory ExpenseType.fromMap(Map<String, dynamic> json) {
     return ExpenseType(
-      expenseTypeID: json['ExpenseTypeID'],
-      expenseName: json['ExpenseName'],
-      expenseNotes: json['ExpenseNotes'],
+      expenseTypeID: json['expenseTypeId'],
+      expenseName: json['name'],
+      expenseNotes: json['notes'],
     );
   }
 

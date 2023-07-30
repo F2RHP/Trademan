@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 class BaseController extends GetxController {
   final isLoading = false.obs;
 
-  void navigateBack(int? id, bool goback) {
-    var action = id! > 0 ? "Added" : "Edited";
+  void navigateBack(String action, bool goback) {
+    
     Get.snackbar("Information", '$action successfully');
     if (goback) {
       Get.back();

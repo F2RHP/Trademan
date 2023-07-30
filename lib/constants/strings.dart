@@ -122,7 +122,7 @@ class AppStrings {
   static const String Category = "Category";
   static const String type_your_Category = "Type Your Category";
   static const String DataType = "dd-mm-yyyy";
-  static const String Data = "Date";
+  static const String ExpenseDate = "Date";
   static const String Cost = "Cost";
 
   //Add Sale Screen Strings

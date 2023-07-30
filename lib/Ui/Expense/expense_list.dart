@@ -18,7 +18,7 @@ class ExpenseList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppbar(context),
-      body: Obx(() => ctrl.isLoading.value
+      body: Obx(() => ctrl.isLoading.value || ctrl.expenseList.isEmpty 
           ? const Center(
               child: CircularProgressIndicator(),
             )
@@ -122,69 +122,75 @@ class ExpenseList extends StatelessWidget {
   Widget expenseDetail(ExpenseDetails item) {
     return Padding(
       padding: CustomPadding.padding10,
-      child: Container(
-        padding: CustomPadding.padding18,
-        decoration: BoxDecoration(
-          borderRadius: CustomBorderRadius.borderRadius8,
-          border: Border.all(
-            color: AppColors.grey,
+      child: GestureDetector(
+        onTap: () => {
+          //Get.to(DestinationScreen(), arguments: ExpenseArguments(name, amount));
+          Get.to(const AddExpense(),arguments:item)
+          },
+        child: Container(
+          padding: CustomPadding.padding18,
+          decoration: BoxDecoration(
+            borderRadius: CustomBorderRadius.borderRadius8,
+            border: Border.all(
+              color: AppColors.grey,
+            ),
           ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(item.expenseName!),
-            AppSizedBox.sizedBoxH15,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(item.expenseDescription.toString()),
-                Text(
-                  item.expenseCost.toString(),
-                  style: TextStyle(
-                    fontSize: 24.0,
-                    color: AppColors.red,
-                  ),
-                ),
-              ],
-            ),
-            AppSizedBox.sizedBoxH15,
-            Row(
-              children: [
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                  decoration: BoxDecoration(
-                    color: AppColors.yellowDark,
-                    borderRadius: CustomBorderRadius.borderRadius13,
-                  ),
-                  child: Text(
-                    item.expenseDescription.toString(),
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                AppSizedBox.sizedBoxW10,
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                  decoration: BoxDecoration(
-                    color: AppColors.kPrimaryColor,
-                    borderRadius: CustomBorderRadius.borderRadius13,
-                  ),
-                  child: Text(
-                    item.expenseDate.toString(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(item.expenseName!),
+              AppSizedBox.sizedBoxH15,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(item.expenseDescription.toString()),
+                  Text(
+                    item.expenseCost.toString(),
                     style: TextStyle(
-                      color: AppColors.kSecondaryColor,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 24.0,
+                      color: AppColors.red,
                     ),
                   ),
-                ),
-              ],
-            ),
-            AppSizedBox.sizedBoxH15,
-          ],
+                ],
+              ),
+              AppSizedBox.sizedBoxH15,
+              Row(
+                children: [
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                    decoration: BoxDecoration(
+                      color: AppColors.yellowDark,
+                      borderRadius: CustomBorderRadius.borderRadius13,
+                    ),
+                    child: Text(
+                      item.expenseDescription.toString(),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  AppSizedBox.sizedBoxW10,
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                    decoration: BoxDecoration(
+                      color: AppColors.kPrimaryColor,
+                      borderRadius: CustomBorderRadius.borderRadius13,
+                    ),
+                    child: Text(
+                      item.expenseDate.toString(),
+                      style: TextStyle(
+                        color: AppColors.kSecondaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              AppSizedBox.sizedBoxH15,
+            ],
+          ),
         ),
       ),
     );

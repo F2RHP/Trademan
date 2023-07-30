@@ -13,7 +13,7 @@ class ServiceHelper {
   static String getCustomerById = 'Customer/GetCustomerByID';
 
   //Expense related API
-  static String listExpensesType = 'Expense/GetExpenseDetails';
+  static String listExpensesType = 'Utility/GetAllExpenseTypes';
   static String listExpenses = 'Expense/GetExpenseDetails';
    static String postExpenses = 'Expense/AddExpense';
 

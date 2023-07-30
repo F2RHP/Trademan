@@ -21,8 +21,8 @@ class ExpenseService extends BaseService {
 
   Future<List<ExpenseType>> getAllListExpensesType() async {
     try {
-      return expenseList1;
-      var response = await get<List<dynamic>>(ServiceHelper.listExpenses);
+      //return expenseList1;
+      var response = await get<List<dynamic>>(ServiceHelper.listExpensesType);
       List<ExpenseType> expenseList = response
           .map((mapElement) => ExpenseType.fromMap(mapElement))
           .toList();
@@ -82,16 +82,16 @@ class ExpenseService extends BaseService {
     // Add more ExpenseDetails objects here for further testing
   ];
 
-  Future<bool> saveExpense(ExpenseDetails details) async {
+  Future<int> saveExpense(ExpenseDetails details) async {
     var endpoint = ServiceHelper.postExpenses;
     final body = details.toJson();
 
     try {
       final response = await post(endpoint, body);
-      return response > 0;
+      return response;
     } catch (e) {
       //print('Error occurred: $e');
-      return false;
+      return 0;
     }
   }
 }

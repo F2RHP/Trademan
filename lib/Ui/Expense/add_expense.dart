@@ -9,7 +9,10 @@ import 'package:trader_app/screens/shared_widgets/custom_btn.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
 import 'package:trader_app/screens/shared_widgets/title_with_text_form_field.dart';
 import '../../controllers/Expense/add_expense_controller.dart';
+import '../../controllers/Expense/list_expense_controller.dart';
+import '../../models/expense/expensedetails.dart';
 import '../../models/expense/expensetype.dart';
+import 'expense_list.dart';
 
 class AddExpense extends StatefulWidget {
   const AddExpense({Key? key}) : super(key: key);
@@ -20,9 +23,19 @@ class AddExpense extends StatefulWidget {
 
 class _AddExpenseState extends State<AddExpense> {
   final ctrl = Get.put(AddExpenseCtrl());
+  ExpenseDetails? arguments = Get.arguments as ExpenseDetails?;
 
   @override
   void initState() {
+    if(arguments!=null)
+    {
+      ctrl.btnText.value="Edit";
+      ctrl.passExpensevalue(arguments);
+    }
+    else
+    {
+      ctrl.btnText.value="Save";
+    }
     super.initState();
   }
 
@@ -57,13 +70,9 @@ class _AddExpenseState extends State<AddExpense> {
                 children: [
                   buildInputFiled(),
                   CustomBtn(
-                    label: 'save',
-                    action: () async {
-                      if(await ctrl.saveExpenseDetail())
-                      {
-                        //ctrl.showSavedSuccessfullyDialog(1,true);
-                        ctrl.navigateBack(1,true);
-                      }
+                    label: ctrl.btnText.value,
+                    action: ()  {
+                     saveAndNavigate();
                     },
                   ),
                 ],
@@ -72,7 +81,24 @@ class _AddExpenseState extends State<AddExpense> {
           )),
     );
   }
+Future<void> saveAndNavigate() async {
+  if (await ctrl.saveExpenseDetail() > 0) {
+    String msg = ctrl.btnText.value;
+    Get.snackbar("Information", '$msg successfully',
+        snackPosition: SnackPosition.BOTTOM, duration: Duration(seconds: 2));
 
+    bool isRegistered = GetInstance().isRegistered<ListExpenseCtrl>();
+    if (isRegistered) {
+      var listCustomerCtrl = Get.find<ListExpenseCtrl>();
+      await listCustomerCtrl.loadExpenseList();
+      navigateBack();
+    }
+  }
+}
+
+void navigateBack() {
+  Get.off(ExpenseList());
+}
   Widget buildInputFiled() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,7 +123,7 @@ class _AddExpenseState extends State<AddExpense> {
         AppSizedBox.sizedBoxH15,
         // loadDropdown(),
 
-        DropdownButtonFormField<ExpenseType>(
+        DropdownButtonFormField<int>(
           value: ctrl.dropDownExpenseType,
           onChanged: (newValue) {
             setState(() {
@@ -105,8 +131,8 @@ class _AddExpenseState extends State<AddExpense> {
             });
           },
           items: ctrl.expenseType.map((expenseType) {
-            return DropdownMenuItem<ExpenseType>(
-              value: expenseType,
+            return DropdownMenuItem<int>(
+              value: expenseType.expenseTypeID,
               child: Text(expenseType.expenseName!),
             );
           }).toList(),
@@ -127,8 +153,8 @@ class _AddExpenseState extends State<AddExpense> {
                   DateFormat('yyyy-MM-dd').format(value!);
             });
           },
-          titleText: AppStrings.Data_Birth,
-          hintText: AppStrings.Data_Birth,
+          titleText: AppStrings.ExpenseDate,
+          hintText: AppStrings.ExpenseDate,
           controller: ctrl.dateController,
         ),
         // TitleWithTextFormField(
@@ -146,17 +172,17 @@ class _AddExpenseState extends State<AddExpense> {
     );
   }
 
-  DropdownButtonFormField<ExpenseType> loadDropdown() {
-    var dropdownButtonFormField = DropdownButtonFormField<ExpenseType>(
+  DropdownButtonFormField<int> loadDropdown() {
+    var dropdownButtonFormField = DropdownButtonFormField<int>(
       value: ctrl.dropDownExpenseType,
       items: ctrl.expenseType
-          .map((label) => DropdownMenuItem<ExpenseType>(
-                value: label,
+          .map((label) => DropdownMenuItem<int>(
+                value: label.expenseTypeID,
                 child: Text(label.expenseName!),
               ))
           .toList(),
       hint: const Text('ExpenseType'),
-      onChanged: (ExpenseType? newValue) {
+      onChanged: (newValue) {
         setState(() {
           ctrl.dropDownExpenseType = newValue!;
         });
