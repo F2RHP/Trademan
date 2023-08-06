@@ -22,28 +22,28 @@ class SupplierDTO {
   // Convert the SupplierDTO object to a Map.
   Map<String, dynamic> toMap() {
     return {
-      'SUPPLIER_ID': supplierId,
-      'SUPPLIER_NAME': supplierName,
-      'ADRRESS1': address1,
-      'ADDRESS2': address2,
-      'CONTACTNUMBER': contactNumber,
-      'LOGOURL': logoUrl,
-      'PINCODE': pincode,
-      'LOGICALCANCEL': logicalCancel,
+      'supplieR_ID': supplierId,
+      'supplieR_NAME': supplierName,
+      'adrresS1': address1,
+      'adrresS2': address2,
+      'contactnumber': contactNumber,
+      'logourl': logoUrl,
+      'pincode': pincode,
+      'logicalcancel': logicalCancel,
     };
   }
 
   // Create a SupplierDTO object from a Map.
   static SupplierDTO fromMap(Map<String, dynamic> map) {
-    return SupplierDTO(
-      supplierId: map['SUPPLIER_ID'],
-      supplierName: map['SUPPLIER_NAME'],
-      address1: map['ADRRESS1'],
-      address2: map['ADDRESS2'],
-      contactNumber: map['CONTACTNUMBER'],
-      logoUrl: map['LOGOURL'],
-      pincode: map['PINCODE'],
-      logicalCancel: map['LOGICALCANCEL'],
-    );
+  return SupplierDTO(
+    supplierId: map['supplieR_ID'] ?? 0,
+    supplierName: map['supplieR_NAME'] ?? '',
+    address1: map['adrresS1'] ?? '',
+    address2: map['adrresS2'] ?? '',
+    contactNumber: map['contactnumber'] ?? '',
+    logoUrl: map['logourl']?? '',
+    pincode: map['pincode']?? '',
+    logicalCancel: map['logicalcancel'] ?? false,
+  );
   }
 }

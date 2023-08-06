@@ -39,17 +39,17 @@ class QuantityTypeModel {
 
   factory QuantityTypeModel.fromMap(Map<String, dynamic> map) {
     return QuantityTypeModel(
-      quantityTypeId: map['QuantityTypeId'],
-      quantityTypeName: map['QuantityTypeName'],
-      quantityTypeNotes: map['QuantityTypeNotes'],
+      quantityTypeId: map['quantityTypeId'],
+      quantityTypeName: map['quantityTypeName'],
+      quantityTypeNotes: map['quantityTypeNotes'],
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'QuantityTypeId': quantityTypeId,
-      'QuantityTypeName': quantityTypeName,
-      'QuantityTypeNotes': quantityTypeNotes,
+      'quantityTypeId': quantityTypeId,
+      'quantityTypeName': quantityTypeName,
+      'quantityTypeNotes': quantityTypeNotes,
     };
   }
 }
@@ -67,17 +67,17 @@ class ProductTypeModel {
 
   factory ProductTypeModel.fromMap(Map<String, dynamic> map) {
     return ProductTypeModel(
-      productTypeId: map['ProductTypeId'],
-      name: map['Name'],
-      notes: map['Notes'],
+      productTypeId: map['productTypeId'],
+      name: map['name'],
+      notes: map['notes'],
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'ProductTypeId': productTypeId,
-      'Name': name,
-      'Notes': notes,
+      'productTypeId': productTypeId,
+      'name': name,
+      'notes': notes,
     };
   }
 
@@ -97,17 +97,17 @@ class SaleTransactionTypeModel {
 
   factory SaleTransactionTypeModel.fromMap(Map<String, dynamic> map) {
     return SaleTransactionTypeModel(
-      saleTransactionId: map['SaleTransactionId'],
-      name: map['Name'],
-      notes: map['Notes'],
+      saleTransactionId: map['saleTransactionId'],
+      name: map['name'],
+      notes: map['notes'],
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'SaleTransactionId': saleTransactionId,
-      'Name': name,
-      'Notes': notes,
+      'saleTransactionId': saleTransactionId,
+      'name': name,
+      'notes': notes,
     };
   }
 }
@@ -123,15 +123,15 @@ class TransactionTypeModel {
 
   factory TransactionTypeModel.fromMap(Map<String, dynamic> map) {
     return TransactionTypeModel(
-      transactionTypeId: map['TransactionTypeId'],
-      transactionTypeName: map['TransactionTypeName'],
+      transactionTypeId: map['transactionTypeId'],
+      transactionTypeName: map['transactionTypeName'],
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'TransactionTypeId': transactionTypeId,
-      'TransactionTypeName': transactionTypeName,
+      'transactionTypeId': transactionTypeId,
+      'transactionTypeName': transactionTypeName,
     };
   }
 }

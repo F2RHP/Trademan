@@ -17,5 +17,11 @@ class ServiceHelper {
   static String listExpenses = 'Expense/GetExpenseDetails';
    static String postExpenses = 'Expense/AddExpense';
 
+static String listQuantityType = 'Utility/GetAllQuantityTypes';
+static String listProductType = 'Utility/GetAllProductTypes';
+static String listSaletransactionType = 'Utility/GetAllSaleTransactionTypes';
+static String listAlltransactionType = 'Utility/GetAllTransactionTypes';
+
+static String listAllSuppliers = 'Suppliers/GetSuppliers';
 
 }
