@@ -10,6 +10,7 @@ import 'package:trader_app/screens/shared_widgets/custom_text.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
 import 'package:trader_app/screens/shared_widgets/title_with_text_form_field.dart';
 import '../Common_Codes/common_codes.dart';
+import 'package:trader_app/models/customer_model/list_customer_model.dart' as m;
 
 class CustomerRegistration extends StatefulWidget {
   const CustomerRegistration({Key? key}) : super(key: key);
@@ -19,7 +20,20 @@ class CustomerRegistration extends StatefulWidget {
 }
 
 class _CustomerRegistrationState extends State<CustomerRegistration> {
-  final AddKPRCustomerController ctrl = Get.find<AddKPRCustomerController>();
+  final AddKPRCustomerController ctrl = Get.put(AddKPRCustomerController());
+
+  m.CustomersList? arguments = Get.arguments as m.CustomersList?;
+
+  @override
+  void initState() {
+    if (arguments != null) {
+      ctrl.action.value = "Edit";
+      ctrl.updateCustomerDefiles(arguments);
+    } else {
+      ctrl.action.value = "Save";
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +69,10 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
               // Save Button
               Center(
                 child: CustomBtn(
-                  action: () => {ctrl.savecustomer()},
+                  action: () async => {
+                    if (await ctrl.savecustomer())
+                      {Get.off(const CustomerRegistration())}
+                  },
                   label: 'Save',
                   width: 300.0,
                   height: 45.0,
@@ -93,37 +110,39 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
         // Title product ID
         const CustomText(text: AppStrings.Gender),
         AppSizedBox.sizedBoxH10,
-        Obx(() => DropdownButtonFormField(
-              value: ctrl.genderDropdownvalue.value,
-              items: ctrl.genderList
-                  .map((label) => DropdownMenuItem(
-                        value: label,
-                        child: Text(label.toString()),
-                      ))
-                  .toList(),
-              hint: const Text(AppStrings.Gender),
-              onChanged: (value) {
-                setState(() {
-                  ctrl.genderDropdownvalue.value = value.toString();
-                });
-              },
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: CustomBorderRadius.borderRadius8,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: CustomBorderRadius.borderRadius8,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: CustomBorderRadius.borderRadius8,
-                  borderSide: BorderSide(
-                    color: AppColors.grey,
-                  ),
-                ),
-                fillColor: AppColors.kSecondaryColor,
-                filled: true,
+        Obx(
+          () => DropdownButtonFormField(
+            value: ctrl.genderDropdownvalue.value,
+            items: ctrl.genderList
+                .map((label) => DropdownMenuItem(
+                      value: label,
+                      child: Text(label.toString()),
+                    ))
+                .toList(),
+            hint: const Text(AppStrings.Gender),
+            onChanged: (value) {
+              setState(() {
+                ctrl.genderDropdownvalue.value = value.toString();
+              });
+            },
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: CustomBorderRadius.borderRadius8,
               ),
-            ),),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: CustomBorderRadius.borderRadius8,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: CustomBorderRadius.borderRadius8,
+                borderSide: BorderSide(
+                  color: AppColors.grey,
+                ),
+              ),
+              fillColor: AppColors.kSecondaryColor,
+              filled: true,
+            ),
+          ),
+        ),
         AppSizedBox.sizedBoxH20,
         // Title Quantity type
         TitleWithTextFormField(

@@ -59,8 +59,8 @@ class _AddProductState extends State<AddProduct> {
               // Save Button
               Center(
                 child: CustomBtn(
-                  action: () {
-                    ctrl.postData();
+                  action: () async {
+                    await ctrl.saveData();
                   },
                   label: 'Save',
                   width: 300.0,

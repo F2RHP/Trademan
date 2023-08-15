@@ -17,7 +17,7 @@ class ExpenseList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppbar(context),
+      appBar: buildAppBar(context),
       body: Obx(() => ctrl.isLoading.value || ctrl.expenseList.isEmpty 
           ? const Center(
               child: CircularProgressIndicator(),
@@ -82,7 +82,7 @@ class ExpenseList extends StatelessWidget {
     //                   AppSizedBox.sizedBoxH15,
   }
 
-  AppBar buildAppbar(BuildContext context) {
+ AppBar buildAppBar(BuildContext context) {
     return AppBar(
       elevation: 0,
       leading: GestureDetector(
@@ -90,12 +90,26 @@ class ExpenseList extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.only(left: 20.0),
           child: Icon(
-            Icons.home,
+            Icons.arrow_back_ios_new_rounded,
             size: 40.0,
             color: AppColors.kSecondaryColor,
           ),
         ),
       ),
+      actions: [
+        GestureDetector(
+          onTap: () {
+            Get.to(
+                ()=>const AddExpense(),
+            );
+          },
+          child: Icon(
+            Icons.add,
+            color: AppColors.white,
+          ),
+        ),
+        AppSizedBox.sizedBoxW10,
+      ],
       centerTitle: true,
       title: Text(
         AppStrings.Expense,
@@ -103,21 +117,9 @@ class ExpenseList extends StatelessWidget {
           color: AppColors.kSecondaryColor,
         ),
       ),
-      actions: [
-        IconButton(
-          onPressed: () {
-            Get.to(const AddExpense());
-          },
-          icon: Icon(
-            Icons.add,
-            size: 40.0,
-            color: AppColors.kSecondaryColor,
-          ),
-        ),
-        AppSizedBox.sizedBoxW8,
-      ],
     );
   }
+
 //expense
   Widget expenseDetail(ExpenseDetails item) {
     return Padding(

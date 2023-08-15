@@ -11,26 +11,12 @@ class ListCustomersCtrl extends BaseController {
   late CustomerService service;
 
   void onItemClick(CustomersList m) {
-    bool isRegistered = GetInstance().isRegistered<AddKPRCustomerController>();
-    if (isRegistered) {
-      Get.delete<AddKPRCustomerController>();
-    }
-    var addController = AddKPRCustomerController();
-    Get.put(addController);
-    addController.action.value = "EDIT";
-    addController.updateCustomerDefiles(m);
 
-    Get.to(const CustomerRegistration(), arguments: {'customer': m});
+    Get.to(const CustomerRegistration(), arguments:  m);
+
   }
 
   void onItemNewCustomerClick() {
-    var addController = AddKPRCustomerController();
-    addController.action.value = "ADD";
-    bool isRegistered = GetInstance().isRegistered<AddKPRCustomerController>();
-    if (isRegistered) {
-      Get.delete<AddKPRCustomerController>();
-    }
-    Get.put(addController);
     Get.to(const CustomerRegistration());
   }
 

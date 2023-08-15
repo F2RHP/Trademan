@@ -7,6 +7,8 @@ import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/controllers/customers/list_customers_ctrl.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
 
+import 'customer_registration_screen.dart';
+
 class CustomersList extends StatefulWidget {
   const CustomersList({Key? key}) : super(key: key);
 
@@ -85,9 +87,7 @@ class _CustomersListState extends State<CustomersList> {
           padding: const EdgeInsets.symmetric(vertical: 13.0),
           child: GestureDetector(
             onTap: () {
-              ctrl.onItemClick(
-                ctrl.customersList[index],
-              );
+              Get.to(const CustomerRegistration(), arguments:  ctrl.customersList[index]);
             },
             child: Container(
               padding: CustomPadding.padding14,
@@ -241,7 +241,8 @@ class _CustomersListState extends State<CustomersList> {
             //     builder: (context) => const CustomerRegistration(),
             //   ),
             // );
-            ctrl.onItemNewCustomerClick();
+            //ctrl.onItemNewCustomerClick();
+            Get.to(const CustomerRegistration());
           },
           icon: const Icon(
             Icons.add,

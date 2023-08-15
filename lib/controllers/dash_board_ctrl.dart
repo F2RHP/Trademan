@@ -12,13 +12,7 @@ class DashBoardCtrl extends GetxController {
     switch (m) {
       case "addProduct":
         {
-          // Get.toNamed(AppLinks.addProduct);
           Get.to(const AddProduct());
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //       builder: (context) => const AddProduct(),
-          //     ));
         }
         break;
 
@@ -30,25 +24,11 @@ class DashBoardCtrl extends GetxController {
           }
           Get.to(const CustomersList());
         }
-
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => const CustomersList(),
-        //   ),
-        // );
-
         break;
 
       case "addSale":
         {
-          // Get.toNamed(AppLinks.addSale);
           Get.to(const AddSale());
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //       builder: (context) => const AddSale(),
-          //     ));
         }
         break;
 
@@ -64,13 +44,7 @@ class DashBoardCtrl extends GetxController {
         break;
       case "allProduct":
         {
-          // Get.toNamed(AppLinks.addExpense);
           Get.to(const AllProducts());
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //       builder: (context) => const AllProducts(),
-          //     ));
         }
         break;
 
@@ -80,7 +54,5 @@ class DashBoardCtrl extends GetxController {
         }
         break;
     }
-
-    print('------------------&m');
   }
 }

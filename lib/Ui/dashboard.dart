@@ -12,25 +12,29 @@ class DashBoard extends StatefulWidget {
 
 class _DashBoardState extends State<DashBoard> {
   List dailySalesRecord = [
-    {
-      'icons': Icons.groups_rounded,
-      'name': 'addProduct',
-    },
+    // {
+    //   'icons': Icons.groups_rounded,
+    //   'name': 'addProduct',
+    // },
     {
       'icons': Icons.account_box_outlined,
+      'caption':'Product',
       'name': 'allProduct',
     },
     {
-      'icons': Icons.satellite_alt,
-      'name': 'addSale',
-    },
-    {
       'icons': Icons.face,
+      'caption':'Customer',
       'name': 'customerReg',
     },
     {
       'icons': Icons.account_balance_outlined,
+      'caption':'Expenses',
       'name': 'addExpense',
+    },
+        {
+      'icons': Icons.satellite_alt,
+      'caption':'Sale',
+      'name': 'addSale',
     },
   ];
 
@@ -86,7 +90,7 @@ class _DashBoardState extends State<DashBoard> {
                       size: 100.0,
                       color: Colors.white,
                     ),
-                    Text(dailySalesRecord[index]['name'],
+                    Text(dailySalesRecord[index]['caption'],
                         style: const TextStyle(
                           fontSize: 22.0,
                           fontWeight: FontWeight.w500,

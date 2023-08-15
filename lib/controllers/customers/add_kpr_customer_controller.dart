@@ -79,24 +79,24 @@ class AddKPRCustomerController extends BaseController {
   }
 
   //defiles
-  void updateCustomerDefiles(CustomersList m) {
-    customerId = m.customeRId;
-    nameController.text = m.customeRName!;
-    nickNameController.text = m.customeRNickname!;
-    fatherNameController.text = m.fatheRName!;
-    address1Controller.text = m.adrresS1!;
-    address2Controller.text = m.addresS2!;
-    villageNameController.text = m.villagename!;
-    pinCodeController.text = m.pincode!;
-    contactNumberController.text = m.contactnumber!;
-    emailController.text = m.email!;
-    genderController.text = m.gender!;
-    dOBController.text = m.dob!; //m.dob;
-   DateTime dateTime = DateTime.parse(m.dob);
+  void updateCustomerDefiles(CustomersList? m) {
+    customerId = m?.customeRId;
+    nameController.text = m?.customeRName ?? "";
+    nickNameController.text = m?.customeRNickname??"";
+    fatherNameController.text = m?.fatheRName?? "";
+    address1Controller.text = m?.adrresS1?? "";
+    address2Controller.text = m?.addresS2?? "";
+    villageNameController.text = m?.villagename?? "";
+    pinCodeController.text = m?.pincode?? "";
+    contactNumberController.text = m?.contactnumber?? "";
+    emailController.text = m?.email?? "";
+    genderController.text = m?.gender?? "";
+    dOBController.text = m?.dob!; //m.dob;
+   DateTime dateTime = DateTime.parse(m?.dob);
     dOBController.text = DateFormat('yyyy-MM-dd').format(dateTime); //m.dob;
-    customerNotesController.text = m.customeRNotes!;
+    customerNotesController.text = m?.customeRNotes?? "";
 
-    saveBtnText = "EDIT".obs;
+    saveBtnText.value = "EDIT";
   }
 
   CustomerDTO_UPD createCustomerObject() {
@@ -141,9 +141,9 @@ class AddKPRCustomerController extends BaseController {
   
 
 
-  savecustomer() async {
+  Future<bool>savecustomer() async {
     if (!customerFormValidate()) {
-      return;
+      return false;
     }
     var customer = createCustomerObject();
     var isInserted = await service.addCustomer(customer);
@@ -153,10 +153,11 @@ class AddKPRCustomerController extends BaseController {
       bool isRegistered = GetInstance().isRegistered<ListCustomersCtrl>();
       if (isRegistered) {
         var listCustomerCtrl = Get.find<ListCustomersCtrl>();
-        listCustomerCtrl.getAllListCustomersList();
+       await listCustomerCtrl.getAllListCustomersList();
         showSavedSuccessfullyDialog(customer.customerId,true);
-      
+      return true;
       }
     }
+     return false;
   }
 }
