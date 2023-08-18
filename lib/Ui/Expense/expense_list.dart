@@ -166,7 +166,7 @@ class ExpenseList extends StatelessWidget {
                       borderRadius: CustomBorderRadius.borderRadius13,
                     ),
                     child: Text(
-                      item.expenseDescription.toString(),
+                      item.expenseTypeName.toString(),
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                       ),

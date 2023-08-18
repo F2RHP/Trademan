@@ -86,7 +86,6 @@ Future<void> saveAndNavigate() async {
     String msg = ctrl.btnText.value;
     Get.snackbar("Information", '$msg successfully',
         snackPosition: SnackPosition.BOTTOM, duration: Duration(seconds: 2));
-
     bool isRegistered = GetInstance().isRegistered<ListExpenseCtrl>();
     if (isRegistered) {
       var listCustomerCtrl = Get.find<ListExpenseCtrl>();
@@ -97,7 +96,7 @@ Future<void> saveAndNavigate() async {
 }
 
 void navigateBack() {
-  Get.off(ExpenseList());
+  Get.back(closeOverlays: true);
 }
   Widget buildInputFiled() {
     return Column(

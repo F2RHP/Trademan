@@ -69,9 +69,9 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
               // Save Button
               Center(
                 child: CustomBtn(
-                  action: () async => {
-                    if (await ctrl.savecustomer())
-                      {Get.off(const CustomerRegistration())}
+                  action: () async {
+                    await ctrl.savecustomer();
+                    Get.back();
                   },
                   label: 'Save',
                   width: 300.0,

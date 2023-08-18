@@ -149,12 +149,13 @@ class AddKPRCustomerController extends BaseController {
     var isInserted = await service.addCustomer(customer);
     
     if (isInserted) {
-      
+   var snackbar = Get.snackbar("Information", '${action.value}ed successfully',snackPosition: SnackPosition.BOTTOM,);
+      snackbar.close();
       bool isRegistered = GetInstance().isRegistered<ListCustomersCtrl>();
       if (isRegistered) {
         var listCustomerCtrl = Get.find<ListCustomersCtrl>();
        await listCustomerCtrl.getAllListCustomersList();
-        showSavedSuccessfullyDialog(customer.customerId,true);
+       
       return true;
       }
     }
