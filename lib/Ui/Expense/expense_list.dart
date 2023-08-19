@@ -25,6 +25,7 @@ class ExpenseList extends StatelessWidget {
           : SingleChildScrollView(
               child: Column(
                 children: [
+                  _buildButtonRow(context),
                   ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -45,6 +46,101 @@ class ExpenseList extends StatelessWidget {
       ),
     );
   }
+
+void _showDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      String selectedDateRange = 'Today';
+      String selectedName = 'John';
+
+      return AlertDialog(
+        title: Text('Select Options'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Date Range:'),
+            ListTile(
+              title: Text('Today'),
+              onTap: () {
+                selectedDateRange = 'Today';
+                Navigator.of(context).pop(selectedDateRange);
+              },
+            ),
+            ListTile(
+              title: Text('Last Week'),
+              onTap: () {
+                selectedDateRange = 'Last Week';
+                Navigator.of(context).pop(selectedDateRange);
+              },
+            ),
+            ListTile(
+              title: Text('Last Month'),
+              onTap: () {
+                selectedDateRange = 'Last Month';
+                Navigator.of(context).pop(selectedDateRange);
+              },
+            ),
+            SizedBox(height: 20),
+            Text('Select Name:'),
+            DropdownButton<String>(
+              value: selectedName,
+              onChanged: (value) {
+                selectedName = value!;
+                Navigator.of(context).pop(selectedName);
+              },
+              items: ['John', 'Jane', 'Alice', 'Bob'].map((String name) {
+                return DropdownMenuItem<String>(
+                  value: name,
+                  child: Text(name),
+                );
+              }).toList(),
+            ),
+          ],
+        ),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(selectedDateRange); // Close the dialog and return the selected values
+                },
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        ],
+      );
+    },
+  );
+}
+
+
+ Widget _buildButtonRow(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          onPressed: (){_showDialog(context);},
+          child: const Text('Filter'),
+        ),
+       const SizedBox(width: 20), // Adding space between buttons
+        ElevatedButton(
+          onPressed: (){},
+          child: const Text('Clear'),
+        ),
+      ],
+    );
+  }
+
+
 
   topWidgets() {
     //  AppSizedBox.sizedBoxH8,
