@@ -36,9 +36,15 @@ class AllProductCtrl extends BaseController {
     service=ProductService();
     utService=utilityService();
     isLoading.value=true;
-    products.value = await service.getAllProducts();
+    LoadAllProducts;
     isLoading.value=false;
   }
 
+Future<void>LoadAllProducts() async
+{
+  isLoading.value=true;
+    products.value = await service.getAllProducts();
+    isLoading.value=false;
+}
 
 }

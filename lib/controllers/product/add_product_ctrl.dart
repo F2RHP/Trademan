@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:trader_app/controllers/base_controller.dart';
+import 'package:trader_app/controllers/product/products_controller.dart';
 import 'package:trader_app/models/supplier/supplier.dart';
 import 'package:trader_app/services/productservice.dart';
 import 'package:trader_app/services/supplierService.dart';
@@ -117,6 +118,16 @@ class AddProductCtrl extends BaseController {
       "sellingCost": sellingCostCtrl.text,
       "purchaseNotes": purchaseNotesCtrl.text,
     };
-    await service.post(url, bodyData).whenComplete(() => Get.back());
+    await service.post(url, bodyData).whenComplete(() => 
+    // ignore: unnecessary_set_literal
+    {
+      LoadAllProducts()
+    });
+  }
+
+  Future<void>LoadAllProducts() async
+  {
+    Get.find<AllProductCtrl>().LoadAllProducts();
+      Get.back(closeOverlays: true);
   }
 }
