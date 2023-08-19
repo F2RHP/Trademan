@@ -55,7 +55,7 @@ void _showDialog(BuildContext context) {
       String selectedName = 'John';
 
       return AlertDialog(
-        title: Text('Select Options'),
+        title:const Text('Select Options'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -106,13 +106,13 @@ void _showDialog(BuildContext context) {
                 onPressed: () {
                   Navigator.of(context).pop(); // Close the dialog
                 },
-                child: Text('Cancel'),
+                child:const Text('Cancel'),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop(selectedDateRange); // Close the dialog and return the selected values
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           ),
