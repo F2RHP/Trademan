@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:trader_app/Ui/Customer/customer_list.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/controllers/customers/add_kpr_customer_controller.dart';
@@ -70,7 +69,7 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
               Center(
                 child: CustomBtn(
                   action: () async {
-                    await ctrl.savecustomer();
+                    await ctrl.saveCustomer();
                     Get.back();
                   },
                   label: 'Save',
@@ -93,6 +92,7 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
       children: [
         // Title product name
         TitleWithTextFormField(
+          isRequired: true,
           controller: ctrl.nameController,
           titleText: AppStrings.Customer_Name,
           hintText: AppStrings.Customer_Name,
@@ -103,6 +103,7 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
           hintText: AppStrings.Nick_Name,
         ),
         TitleWithTextFormField(
+          isRequired: true,
           controller: ctrl.fatherNameController,
           titleText: AppStrings.Father_Name,
           hintText: AppStrings.Father_Name,
@@ -152,6 +153,8 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
         ),
         // Title SELLING_COST
         TitleWithTextFormField(
+          isRequired: true,
+
           titleText: AppStrings.Address1,
           hintText: AppStrings.Address1,
           controller: ctrl.address1Controller,
@@ -162,11 +165,13 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
           controller: ctrl.address2Controller,
         ),
         TitleWithTextFormField(
+          isRequired: true,
           titleText: AppStrings.Village_Name,
           hintText: AppStrings.Village_Name,
           controller: ctrl.villageNameController,
         ),
         TitleWithTextFormField(
+          isRequired: true,
           titleText: AppStrings.Contact_Number,
           hintText: AppStrings.Contact_Number,
           controller: ctrl.contactNumberController,

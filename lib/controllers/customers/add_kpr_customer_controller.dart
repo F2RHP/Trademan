@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:trader_app/controllers/base_controller.dart';
-import 'package:trader_app/models/customer_model/add_kpr_customer.dart';
 import 'package:trader_app/models/customer_model/list_customer_model.dart';
 
 import '../../models/customer_model/CustomerDTO_UPD.dart';
@@ -141,7 +140,7 @@ class AddKPRCustomerController extends BaseController {
   
 
 
-  Future<bool>savecustomer() async {
+  Future<bool>saveCustomer() async {
     if (!customerFormValidate()) {
       return false;
     }

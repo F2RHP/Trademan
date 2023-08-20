@@ -19,8 +19,6 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProduct> {
-
-
   AddProductCtrl ctrl = Get.put(
     AddProductCtrl(),
   );
@@ -49,35 +47,35 @@ class _AddProductState extends State<AddProduct> {
         ),
       ),
       body: Obx(() {
-  return Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              buildInputSection(),
-              // Save Button
-              Center(
-                child: CustomBtn(
-                  action: () async {
-                    await ctrl.saveData();
-                  },
-                  label: 'Save',
-                  width: 300.0,
-                  height: 45.0,
-                  textColor: AppColors.kSecondaryColor,
-                  color: AppColors.kPrimaryColor,
+        return Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                buildInputSection(),
+                // Save Button
+                Center(
+                  child: CustomBtn(
+                    action: () async {
+                      await ctrl.saveData();
+                    },
+                    label: 'Save',
+                    width: 300.0,
+                    height: 45.0,
+                    textColor: AppColors.kSecondaryColor,
+                    color: AppColors.kPrimaryColor,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      );
-}),
+        );
+      }),
     );
   }
 
-DropdownButtonFormField<T> loadDropdown<T>(
+  DropdownButtonFormField<T> loadDropdown<T>(
     List<T> items,
     T value,
     String Function(T) labelFunction,
@@ -104,6 +102,7 @@ DropdownButtonFormField<T> loadDropdown<T>(
       children: [
         // Title product name
         TitleWithTextFormField(
+          isRequired: true,
           titleText: AppStrings.Product_Name,
           hintText: AppStrings.Product_Name,
           controller: ctrl.productNameCtrl,
@@ -151,6 +150,7 @@ DropdownButtonFormField<T> loadDropdown<T>(
         // Title Quantity type
         AppSizedBox.sizedBoxH10,
         TitleWithTextFormField(
+          isRequired: true,
           titleText: AppStrings.Product_Code,
           hintText: AppStrings.Product_Code,
           controller: ctrl.productCodeCtrl,
@@ -158,19 +158,25 @@ DropdownButtonFormField<T> loadDropdown<T>(
         AppSizedBox.sizedBoxH10,
         //Title Product description
         TitleWithTextFormField(
+          isRequired: true,
           titleText: AppStrings.Product_Description,
           hintText: AppStrings.Product_Description,
           controller: ctrl.productDecCtrl,
         ),
         //Title Product notes
         TitleWithTextFormField(
+          isRequired: true,
           titleText: AppStrings.Product_Notes,
           hintText: AppStrings.Product_Notes,
           controller: ctrl.productNotesCtrl,
         ),
         // Title NO_OF_QUANTITY
 
-        const CustomText(text: AppStrings.Product_Supplier),
+        const CustomText(
+          text: AppStrings.Product_Supplier,
+          isRequired: true,
+        ),
+
         AppSizedBox.sizedBoxH10,
         DropdownButtonFormField<SupplierDTO>(
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -191,6 +197,7 @@ DropdownButtonFormField<T> loadDropdown<T>(
         ),
         AppSizedBox.sizedBoxH10,
         TitleWithTextFormField(
+          isRequired: true,
           titleText: AppStrings.Product_Quantity,
           hintText: AppStrings.Product_Quantity,
           controller: ctrl.productNoOfquantityCtrl,
@@ -198,6 +205,7 @@ DropdownButtonFormField<T> loadDropdown<T>(
         ),
         // Title PRODUCT_COST
         TitleWithTextFormField(
+          isRequired: true,
           titleText: AppStrings.Product_Cost,
           hintText: AppStrings.Product_Cost,
           controller: ctrl.productCostCtrl,
@@ -205,6 +213,7 @@ DropdownButtonFormField<T> loadDropdown<T>(
         ),
         // Title SELLING_COST
         TitleWithTextFormField(
+          isRequired: true,
           titleText: AppStrings.Product_Selling_Cost,
           hintText: AppStrings.Product_Selling_Cost,
           controller: ctrl.sellingCostCtrl,
@@ -212,6 +221,7 @@ DropdownButtonFormField<T> loadDropdown<T>(
         ),
         // Title PURCHASE NOTES
         TitleWithTextFormField(
+          isRequired: true,
           titleText: AppStrings.Product_Purchase_Notes,
           hintText: AppStrings.Product_Purchase_Notes,
           controller: ctrl.purchaseNotesCtrl,

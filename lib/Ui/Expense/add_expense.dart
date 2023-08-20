@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:trader_app/Ui/Common_Codes/common_codes.dart';
 import 'package:trader_app/constants/colors.dart';
@@ -11,8 +10,6 @@ import 'package:trader_app/screens/shared_widgets/title_with_text_form_field.dar
 import '../../controllers/Expense/add_expense_controller.dart';
 import '../../controllers/Expense/list_expense_controller.dart';
 import '../../models/expense/expensedetails.dart';
-import '../../models/expense/expensetype.dart';
-import 'expense_list.dart';
 
 class AddExpense extends StatefulWidget {
   const AddExpense({Key? key}) : super(key: key);
@@ -85,7 +82,7 @@ Future<void> saveAndNavigate() async {
   if (await ctrl.saveExpenseDetail() > 0) {
     String msg = ctrl.btnText.value;
     Get.snackbar("Information", '$msg successfully',
-        snackPosition: SnackPosition.BOTTOM, duration: Duration(seconds: 2));
+        snackPosition: SnackPosition.BOTTOM, duration: const Duration(seconds: 2));
     bool isRegistered = GetInstance().isRegistered<ListExpenseCtrl>();
     if (isRegistered) {
       var listCustomerCtrl = Get.find<ListExpenseCtrl>();
@@ -104,17 +101,19 @@ void navigateBack() {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         TitleWithTextFormField(
+          isRequired: true,
           controller: ctrl.nameController,
           titleText: AppStrings.Expense_Name,
           hintText: AppStrings.Expense_Name,
         ),
         TitleWithTextFormField(
+
           controller: ctrl.detailsController,
           titleText: AppStrings.Expense_Details,
           hintText: AppStrings.Expense_Details,
           maxLines: 5,
         ),
-        Text(
+        const Text(
           AppStrings.Category,
           style: TextStyle(
             fontSize: 20,
@@ -141,6 +140,7 @@ void navigateBack() {
 
         AppSizedBox.sizedBoxH25,
         TitleWithTextFormField(
+          isRequired: true,
           readOnly: true,
           onTap: () {
             showDatePicker(
@@ -163,6 +163,7 @@ void navigateBack() {
         //   hintText: AppStrings.DataType,
         // ),
         TitleWithTextFormField(
+          isRequired: true,
           type: TextInputType.number,
           controller: ctrl.costController,
           titleText: AppStrings.Cost,
