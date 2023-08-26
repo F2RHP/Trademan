@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:trader_app/Ui/Common_Codes/common_codes.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
+import 'package:trader_app/screens/shared_widgets/custom_text.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
+import 'package:trader_app/screens/shared_widgets/title_with_text_form_field.dart';
 
 class AddSale extends StatefulWidget {
   const AddSale({Key? key}) : super(key: key);
@@ -108,9 +111,12 @@ class _AddSaleState extends State<AddSale> {
                   (index) => DataRow(
                     cells: [
                       DataCell(
-                        SvgPicture.asset(
-                          'assets/icons/pen.svg',
-                          height: 20.0,
+                        GestureDetector(
+                          onTap: () => Get.dialog(editDialog,barrierDismissible: false,),
+                          child: SvgPicture.asset(
+                            'assets/icons/pen.svg',
+                            height: 20.0,
+                          ),
                         ),
                       ),
                       DataCell(
@@ -240,3 +246,91 @@ List getValues = [
     'total': '20981',
   }
 ];
+
+Dialog editDialog = Dialog(
+
+  child: Column(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'Product',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            GestureDetector(
+              onTap: () => Get.back(),
+              child: const Icon(Icons.clear),
+            ),
+          ],
+        ),
+      ),
+      const Divider(),
+      Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          children: [
+            const Text(
+              'Product Namme',
+              style: TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.red,
+                        shape: BoxShape.rectangle,
+                      ),
+                      child: Icon(Icons.subject, color: AppColors.white)),
+                ),
+                const Text('data'),
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.kPrimaryColor,
+                      shape: BoxShape.rectangle,
+                    ),
+                    child: Icon(
+                      Icons.add,
+                      color: AppColors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const TitleWithTextFormField(titleText: 'titleText'),
+            const TitleWithTextFormField(titleText: 'titleText'),
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: OutlinedButton(
+                onPressed: () {},
+                child: const Text('+ Add Product'),
+              ),
+            ),
+            const Divider(),
+            const Text(
+              'Profit: 456',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            ElevatedButton(onPressed: (){}, child: const Text('Save')),
+          ],
+        ),
+      ),
+    ],
+  ),
+);
