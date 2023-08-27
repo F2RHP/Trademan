@@ -12,6 +12,7 @@ import '../base_controller.dart';
 class MainSaleOrderController extends BaseController {
  //Controllers
   TextEditingController customerGiven = TextEditingController();
+  TextEditingController orderNotes = TextEditingController();
 
    TextEditingController transactionAmount = TextEditingController();
    TextEditingController transactionNotes = TextEditingController();
@@ -40,28 +41,28 @@ final saleProductList= <SaleProduct>[].obs;
     utService=utilityService();
 
     isLoading.value = true;
-    LoadAllSaleTransactiontype();
+    loadAllSaleTransactionType();
     LoadSaleCustomers();
-    LoadAllTransactiontype();
-    LoadAllProducts();
+    loadAllTransactionType();
+    loadAllProducts();
     isLoading.value = false;
 
     super.onInit();
   }
 
-  Future<void> LoadAllSaleTransactiontype() async {
+  Future<void> loadAllSaleTransactionType() async {
     isLoading.value = true;
     saleTransactionsType.value = await utService.getSaleTransactionTypes();
     isLoading.value = false;
   }
 
-   Future<void> LoadAllTransactiontype() async {
+   Future<void> loadAllTransactionType() async {
     isLoading.value = true;
     transactionType.value = await utService.getTransactionTypes();
     isLoading.value = false;
   }
 
-  Future<void>LoadAllProducts() async
+  Future<void>loadAllProducts() async
 {
   isLoading.value=true;
     productList.value = await service.getAllProducts();
@@ -79,7 +80,7 @@ final saleProductList= <SaleProduct>[].obs;
 
  SaleProduct fromProduct(Product product) {
     return SaleProduct(
-      sno: product.producTId, // Assuming you map sno to producTId
+      sno: product.producTId, // Assuming you map sno to productId
       productId: product.producTId,
       productName: product.producTName!,
       quantity: product.nOOfQuantity,

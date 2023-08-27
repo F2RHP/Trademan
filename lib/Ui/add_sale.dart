@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:trader_app/Ui/Common_Codes/common_codes.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
+import 'package:trader_app/controllers/saleorder/MainSaleOrderController.dart';
 import 'package:trader_app/controllers/saleorder/SaleOrderCashController.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
 import 'package:trader_app/screens/shared_widgets/title_with_text_form_field.dart';
@@ -17,209 +18,53 @@ class AddSale extends StatefulWidget {
 
 class _AddSaleState extends State<AddSale> {
   final saleCtrl = Get.put(SaleOrderCashController());
+  final mainSaleCtrl = Get.put(MainSaleOrderController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(),
-      body: Padding(
-        padding: CustomPadding.padding18,
-        child: Column(
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width,
-              padding: CustomPadding.padding20,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5.0),
-                border: Border.all(color: AppColors.greyLight),
-              ),
-              child: Text(
-                '+ ${AppStrings.chooseCustomer}',
-                style: TextStyle(
-                  color: AppColors.blueAccentShade700,
-                  fontSize: 16.0,
-                ),
-              ),
-            ),
-            AppSizedBox.sizedBoxH15,
-            // DropdownButtonFormField<String>(
-            //   // autovalidateMode: AutovalidateMode.onUserInteraction,
-            //   // value: ctrl.selectedProductType,
-            //   items: ctrl.productType
-            //       .map((label) => DropdownMenuItem<String>(
-            //     value: label,
-            //     child: Text(label.name!),
-            //   ))
-            //       .toList(),
-            //   hint: const Text(AppStrings.ProductType),
-            //   onChanged: (value) {
-            //     setState(() {
-            //       // ctrl.selectedProductType = value!;
-            //     });
-            //   },
-            //   decoration: dropDownDecoration(),
-            // ),
-            AppSizedBox.sizedBoxH15,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: Obx(
+        () => Padding(
+          padding: CustomPadding.padding18,
+          child: SingleChildScrollView(
+            child: Column(
               children: [
-                ElevatedButton(
-                  onPressed: () => Get.dialog(
-                    const AddProductDialog(),
-                    barrierDismissible: false,
-                  ),
-                  child: Padding(
-                    padding: CustomPadding.padding14,
-                    child: Text(
-                      '+ ${AppStrings.addProduct}',
-                      style: TextStyle(
-                        color: AppColors.white,
-                        fontSize: 16.0,
-                      ),
-                    ),
-                  ),
-                ),
                 Container(
-                  padding: CustomPadding.padding14,
+                  width: MediaQuery.of(context).size.width,
+                  padding: CustomPadding.padding20,
                   decoration: BoxDecoration(
-                    borderRadius: CustomBorderRadius.borderRadius5,
-                    color: AppColors.greyLight,
-                    border: Border.all(color: AppColors.grey),
+                    borderRadius: BorderRadius.circular(5.0),
+                    border: Border.all(color: AppColors.greyLight),
                   ),
-                  child: const Text(
-                    '2023-02-25',
+                  child: Text(
+                    '+ ${AppStrings.chooseCustomer}',
                     style: TextStyle(
+                      color: AppColors.blueAccentShade700,
                       fontSize: 16.0,
                     ),
                   ),
                 ),
-              ],
-            ),
-            AppSizedBox.sizedBoxH15,
-            const TitleWithTextFormField(titleText: 'titleText'),
-            AppSizedBox.sizedBoxH15,
-            FittedBox(
-              child: DataTable(
-                columnSpacing: 10.0,
-                dataRowHeight: 70.0,
-                headingRowHeight: 30.0,
-                headingRowColor: MaterialStateColor.resolveWith(
-                  (states) {
-                    return const Color(0xFFE7E7E7);
+                AppSizedBox.sizedBoxH15,
+                DropdownButtonFormField<int>(
+                  value: mainSaleCtrl.selectedsaleTransaction,
+                  onChanged: (newValue) {
+                    setState(() {
+                      mainSaleCtrl.selectedsaleTransaction = newValue!;
+                    });
                   },
+                  items: mainSaleCtrl.saleTransactionsType.map((expenseType) {
+                    return DropdownMenuItem<int>(
+                      value: expenseType.saleTransactionId,
+                      child: Text(expenseType.name!),
+                    );
+                  }).toList(),
+                  decoration: dropDownDecoration(),
                 ),
-                columns: const [
-                  DataColumn(
-                    label: Text(''),
-                  ),
-                  DataColumn(
-                    label: Text('No.'),
-                  ),
-                  DataColumn(
-                    label: Text('Details'),
-                  ),
-                  DataColumn(
-                    label: Text('Qty'),
-                  ),
-                  DataColumn(
-                    label: Text('Prices'),
-                  ),
-                  DataColumn(
-                    label: Text('Total'),
-                  ),
-                  DataColumn(
-                    label: Text(''),
-                  ),
-                ],
-                rows: List.generate(
-                  getValues.length,
-                  (index) => DataRow(
-                    cells: [
-                      DataCell(
-                        GestureDetector(
-                          onTap: () => Get.dialog(
-                            const EditDialog(),
-                            barrierDismissible: false,
-                          ),
-                          child: SvgPicture.asset(
-                            'assets/icons/pen.svg',
-                            height: 20.0,
-                          ),
-                        ),
-                      ),
-                      DataCell(
-                        Text(getValues[index]['no']),
-                      ),
-                      DataCell(
-                        SizedBox(
-                          width: 120.0,
-                          child: Text(
-                            getValues[index]['details'],
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 3,
-                          ),
-                        ),
-                      ),
-                      DataCell(
-                        Text(
-                          getValues[index]['qty'],
-                          style: TextStyle(
-                            color: AppColors.kPrimaryColor,
-                            fontWeight: FontWeight.bold,
-                            decorationStyle: TextDecorationStyle.double,
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                      ),
-                      DataCell(
-                        Text(getValues[index]['prices']),
-                      ),
-                      DataCell(
-                        Text(getValues[index]['total']),
-                      ),
-                      const DataCell(
-                        Icon(
-                          Icons.delete,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            const Divider(),
-            Table(
-              children: const [
-                TableRow(children: [
-                  TableCell(
-                    child: SizedBox(
-                      width: 200.0,
-                    ),
-                  ),
-                  TableCell(
-                    child: Text(
-                      'Total',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                      ),
-                    ),
-                  ),
-                  TableCell(
-                    child: Text(
-                      '1000',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                      ),
-                    ),
-                  ),
-                ]),
+                AppSizedBox.sizedBoxH15,
+               AnimatedCrossFade(firstChild: goodsView(), secondChild: moneyView(), crossFadeState: CrossFadeState.showFirst, duration: Duration(milliseconds: 300),),
               ],
             ),
-            const Divider(),
-            // const Text('Discount'),
-            // Switch(
-            //     activeColor: Colors.green, value: true, onChanged: (value) {}),
-          ],
+          ),
         ),
       ),
     );
@@ -248,6 +93,179 @@ class _AddSaleState extends State<AddSale> {
       ),
     );
   }
+  Widget goodsView()=> Column(
+    children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          ElevatedButton(
+            onPressed: () => Get.dialog(
+              const AddProductDialog(),
+              barrierDismissible: false,
+            ),
+            child: Padding(
+              padding: CustomPadding.padding14,
+              child: Text(
+                '+ ${AppStrings.addProduct}',
+                style: TextStyle(
+                  color: AppColors.white,
+                  fontSize: 16.0,
+                ),
+              ),
+            ),
+          ),
+          Container(
+            padding: CustomPadding.padding14,
+            decoration: BoxDecoration(
+              borderRadius: CustomBorderRadius.borderRadius5,
+              color: AppColors.greyLight,
+              border: Border.all(color: AppColors.grey),
+            ),
+            child: const Text(
+              '2023-02-25',
+              style: TextStyle(
+                fontSize: 16.0,
+              ),
+            ),
+          ),
+        ],
+      ),
+      AppSizedBox.sizedBoxH15,
+      TitleWithTextFormField(
+        titleText: 'Order Notes',
+        controller: mainSaleCtrl.orderNotes,
+      ),
+      TitleWithTextFormField(
+        titleText: 'Given Amount',
+        controller: mainSaleCtrl.customerGiven,
+      ),
+      AppSizedBox.sizedBoxH15,
+      FittedBox(
+        child: DataTable(
+          columnSpacing: 10.0,
+          dataRowHeight: 70.0,
+          headingRowHeight: 30.0,
+          headingRowColor: MaterialStateColor.resolveWith(
+                (states) {
+              return const Color(0xFFE7E7E7);
+            },
+          ),
+          columns: const [
+            DataColumn(
+              label: Text(''),
+            ),
+            DataColumn(
+              label: Text('No.'),
+            ),
+            DataColumn(
+              label: Text('Details'),
+            ),
+            DataColumn(
+              label: Text('Qty'),
+            ),
+            DataColumn(
+              label: Text('Prices'),
+            ),
+            DataColumn(
+              label: Text('Total'),
+            ),
+            DataColumn(
+              label: Text(''),
+            ),
+          ],
+          rows: List.generate(
+            getValues.length,
+                (index) => DataRow(
+              cells: [
+                DataCell(
+                  GestureDetector(
+                    onTap: () => Get.dialog(
+                      const EditDialog(),
+                      barrierDismissible: false,
+                    ),
+                    child: SvgPicture.asset(
+                      'assets/icons/pen.svg',
+                      height: 20.0,
+                    ),
+                  ),
+                ),
+                DataCell(
+                  Text(getValues[index]['no']),
+                ),
+                DataCell(
+                  SizedBox(
+                    width: 120.0,
+                    child: Text(
+                      getValues[index]['details'],
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 3,
+                    ),
+                  ),
+                ),
+                DataCell(
+                  Text(
+                    getValues[index]['qty'],
+                    style: TextStyle(
+                      color: AppColors.kPrimaryColor,
+                      fontWeight: FontWeight.bold,
+                      decorationStyle: TextDecorationStyle.double,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+                DataCell(
+                  Text(getValues[index]['prices']),
+                ),
+                DataCell(
+                  Text(getValues[index]['total']),
+                ),
+                const DataCell(
+                  Icon(
+                    Icons.delete,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      const Divider(),
+      Table(
+        children: const [
+          TableRow(children: [
+            TableCell(
+              child: SizedBox(
+                width: 200.0,
+              ),
+            ),
+            TableCell(
+              child: Text(
+                'Total',
+                style: TextStyle(
+                  fontSize: 20.0,
+                ),
+              ),
+            ),
+            TableCell(
+              child: Text(
+                '1000',
+                style: TextStyle(
+                  fontSize: 20.0,
+                ),
+              ),
+            ),
+          ]),
+        ],
+      ),
+      const Divider(),
+    ],
+  );
+  Widget moneyView()=> Column(
+    children: [
+
+    ],
+  );
 }
 
 List getValues = [
@@ -478,71 +496,52 @@ class _AddProductDialogState extends State<AddProductDialog> {
                     ),
                     AppSizedBox.sizedBoxH10,
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          children: [
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'Cost : ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18.0,
-                                      color: AppColors.kPrimaryColor,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: '2000',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15.0,
-                                      color: AppColors.kPrimaryColor,
-                                    ),
-                                  ),
-                                ],
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Cost : ',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18.0,
+                                  color: AppColors.kPrimaryColor,
+                                ),
                               ),
-                            ),
-                            AppSizedBox.sizedBoxW10,
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'Sell : ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18.0,
-                                      color: AppColors.kPrimaryColor,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: '10,000',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15.0,
-                                      color: AppColors.kPrimaryColor,
-                                    ),
-                                  ),
-                                ],
+                              TextSpan(
+                                text: '2000',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15.0,
+                                  color: AppColors.kPrimaryColor,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 4.0, horizontal: 15.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20.0),
-                            color: AppColors.kPrimaryColor,
+                        AppSizedBox.sizedBoxW10,
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Sell : ',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18.0,
+                                  color: AppColors.kPrimaryColor,
+                                ),
+                              ),
+                              TextSpan(
+                                text: '10,000',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15.0,
+                                  color: AppColors.kPrimaryColor,
+                                ),
+                              ),
+                            ],
                           ),
-                          child: Text(
-                            '234',
-                            style: TextStyle(
-                              color: AppColors.white,
-                            ),
-                          ),
-                        )
+                        ),
                       ],
                     ),
                     const Divider(),
