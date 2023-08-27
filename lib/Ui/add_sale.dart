@@ -11,6 +11,8 @@ import 'package:trader_app/screens/shared_widgets/custom_text.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
 import 'package:trader_app/screens/shared_widgets/title_with_text_form_field.dart';
 
+import '../screens/shared_widgets/custom_btn.dart';
+
 class AddSale extends StatefulWidget {
   const AddSale({Key? key}) : super(key: key);
 
@@ -19,7 +21,6 @@ class AddSale extends StatefulWidget {
 }
 
 class _AddSaleState extends State<AddSale> {
-  final saleCtrl = Get.put(SaleOrderCashController());
   final mainSaleCtrl = Get.put(MainSaleOrderController());
   @override
   Widget build(BuildContext context) {
@@ -31,18 +32,21 @@ class _AddSaleState extends State<AddSale> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: CustomPadding.padding20,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.0),
-                    border: Border.all(color: AppColors.greyLight),
-                  ),
-                  child: Text(
-                    '+ ${AppStrings.chooseCustomer}',
-                    style: TextStyle(
-                      color: AppColors.blueAccentShade700,
-                      fontSize: 16.0,
+                GestureDetector(
+                  onTap: ()=>{_showCustomerListDialog(context)},
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: CustomPadding.padding20,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5.0),
+                      border: Border.all(color: AppColors.greyLight),
+                    ),
+                    child: Text(mainSaleCtrl.selectedCustomer.value.customerID==0?
+                      '+ ${AppStrings.chooseCustomer}':mainSaleCtrl.selectedCustomer.value.customerName,
+                      style: TextStyle(
+                        color: AppColors.blueAccentShade700,
+                        fontSize: 16.0,
+                      ),
                     ),
                   ),
                 ),
@@ -76,6 +80,12 @@ class _AddSaleState extends State<AddSale> {
                     crossFadeState:mainSaleCtrl.IsMoney()?CrossFadeState.showFirst:CrossFadeState.showSecond,
                   ),
                 ),
+               CustomBtn(
+                    label: "Save",
+                    action: ()  {
+                   mainSaleCtrl.saveAndNavigate();
+                    },
+                  )
               ],
             ),
           ),
@@ -83,6 +93,50 @@ class _AddSaleState extends State<AddSale> {
       ),
     );
   }
+
+
+  void _showCustomerListDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return _buildCustomerListDialog(context);
+      },
+    );
+  }
+AlertDialog _buildCustomerListDialog(BuildContext context) {
+  return AlertDialog(
+    title: Text('Customer List'),
+    content: Container(
+      width: double.maxFinite,
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: mainSaleCtrl.customerList.length,
+        itemBuilder: (context, index) {
+          var customer = mainSaleCtrl.customerList[index];
+          return GestureDetector(
+            child: ListTile(
+              title: Text(customer.customerName),
+              subtitle: Text(customer.villageName),
+              onTap: () {
+               mainSaleCtrl.selectedCustomer.value=customer;
+               Get.back(closeOverlays: true);
+              },
+            ),
+          );
+        },
+      ),
+    ),
+    actions: <Widget>[
+      TextButton(
+        onPressed: () {
+          Get.back(closeOverlays: true);
+        },
+        child: Text('Close'),
+      ),
+    ],
+  );
+}
+
 
   AppBar buildAppBar() {
     return AppBar(
@@ -469,6 +523,7 @@ class AddProductDialog extends StatefulWidget {
 class _AddProductDialogState extends State<AddProductDialog> {
   @override
   Widget build(BuildContext context) {
+    final mainSaleCtrl = Get.find<MainSaleOrderController>();
     return Dialog(
       child: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -486,7 +541,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () => Get.back(),
+                  onTap: () => Get.back(closeOverlays: true),
                   child: const Icon(Icons.clear),
                 ),
               ],
@@ -525,86 +580,80 @@ class _AddProductDialogState extends State<AddProductDialog> {
             AppSizedBox.sizedBoxH10,
             Expanded(
               child: ListView.builder(
-                itemCount: 8,
+                itemCount: mainSaleCtrl.productList.length,
                 shrinkWrap: true,
-                itemBuilder: (context, index) => Column(
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
-                            border: Border.all(
-                              color: AppColors.black,
+                itemBuilder: (context, index) =>                 
+                 GestureDetector(
+                  onTap: ()=>{mainSaleCtrl.selectedProduct.value=mainSaleCtrl.productList[index]},
+                   child: Column(
+                    children: [
+                      Row(
+                        children: [
+                           Text(
+                            mainSaleCtrl.productList[index].producTName ?? '',
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 4,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20.0,
+                            ),
+                          )
+                        ],
+                      ),
+                      AppSizedBox.sizedBoxH10,
+                      Row(
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'Cost : ',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0,
+                                    color: AppColors.kPrimaryColor,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: mainSaleCtrl.productList[index].producTCost.toString(),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15.0,
+                                    color: AppColors.kPrimaryColor,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          child: const FlutterLogo(size: 130),
-                        ),
-                        AppSizedBox.sizedBoxW10,
-                        const Text(
-                          'data',
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 4,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20.0,
+                          AppSizedBox.sizedBoxW10,
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'Sell : ',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0,
+                                    color: AppColors.kPrimaryColor,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: mainSaleCtrl.productList[index].sellinGCost.toString(),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15.0,
+                                    color: AppColors.kPrimaryColor,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        )
-                      ],
-                    ),
-                    AppSizedBox.sizedBoxH10,
-                    Row(
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: 'Cost : ',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18.0,
-                                  color: AppColors.kPrimaryColor,
-                                ),
-                              ),
-                              TextSpan(
-                                text: '2000',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15.0,
-                                  color: AppColors.kPrimaryColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        AppSizedBox.sizedBoxW10,
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: 'Sell : ',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18.0,
-                                  color: AppColors.kPrimaryColor,
-                                ),
-                              ),
-                              TextSpan(
-                                text: '10,000',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15.0,
-                                  color: AppColors.kPrimaryColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Divider(),
-                  ],
-                ),
+                        ],
+                      ),
+                      const Divider(),
+                    ],
+                                 ),
+                 ),
               ),
             ),
           ],
