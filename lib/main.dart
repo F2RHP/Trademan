@@ -1,5 +1,4 @@
 import 'package:trader_app/Ui/dashboard.dart';
-import 'package:trader_app/Ui/products/add_product.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/env/routing.dart';
 import 'package:flutter/material.dart';
@@ -7,10 +6,8 @@ import 'package:get/get.dart';
 import 'package:trader_app/models/customer_model/customer_search_model.dart';
 import 'package:trader_app/services/customerservice.dart';
 
-import 'Ui/Expense/expense_list.dart';
 
 void main() {
-  //testAPi();
   runApp(getApp());
 }
 

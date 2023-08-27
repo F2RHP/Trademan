@@ -41,11 +41,32 @@ class _AddSaleState extends State<AddSale> {
               ),
             ),
             AppSizedBox.sizedBoxH15,
+            // DropdownButtonFormField<String>(
+            //   // autovalidateMode: AutovalidateMode.onUserInteraction,
+            //   // value: ctrl.selectedProductType,
+            //   items: ctrl.productType
+            //       .map((label) => DropdownMenuItem<String>(
+            //     value: label,
+            //     child: Text(label.name!),
+            //   ))
+            //       .toList(),
+            //   hint: const Text(AppStrings.ProductType),
+            //   onChanged: (value) {
+            //     setState(() {
+            //       // ctrl.selectedProductType = value!;
+            //     });
+            //   },
+            //   decoration: dropDownDecoration(),
+            // ),
+            AppSizedBox.sizedBoxH15,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () => Get.dialog(
+                    const AddProductDialog(),
+                    barrierDismissible: false,
+                  ),
                   child: Padding(
                     padding: CustomPadding.padding14,
                     child: Text(
@@ -73,6 +94,8 @@ class _AddSaleState extends State<AddSale> {
                 ),
               ],
             ),
+            AppSizedBox.sizedBoxH15,
+            const TitleWithTextFormField(titleText: 'titleText'),
             AppSizedBox.sizedBoxH15,
             FittedBox(
               child: DataTable(
@@ -137,7 +160,15 @@ class _AddSaleState extends State<AddSale> {
                         ),
                       ),
                       DataCell(
-                        Text(getValues[index]['qty']),
+                        Text(
+                          getValues[index]['qty'],
+                          style: TextStyle(
+                            color: AppColors.kPrimaryColor,
+                            fontWeight: FontWeight.bold,
+                            decorationStyle: TextDecorationStyle.double,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
                       ),
                       DataCell(
                         Text(getValues[index]['prices']),
@@ -145,8 +176,11 @@ class _AddSaleState extends State<AddSale> {
                       DataCell(
                         Text(getValues[index]['total']),
                       ),
-                      DataCell(
-                        SvgPicture.asset('assets/icons/pen.svg', height: 20.0),
+                      const DataCell(
+                        Icon(
+                          Icons.delete,
+                          color: Colors.grey,
+                        ),
                       ),
                     ],
                   ),
@@ -182,9 +216,9 @@ class _AddSaleState extends State<AddSale> {
               ],
             ),
             const Divider(),
-            const Text('Discount'),
-            Switch(
-                activeColor: Colors.green, value: true, onChanged: (value) {}),
+            // const Text('Discount'),
+            // Switch(
+            //     activeColor: Colors.green, value: true, onChanged: (value) {}),
           ],
         ),
       ),
@@ -291,11 +325,13 @@ class _EditDialogState extends State<EditDialog> {
                     children: [
                       const Text(
                         'Product Name',
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 5,
                         style: TextStyle(
                           fontSize: 20.0,
                         ),
                       ),
-                      const SizedBox(height: 10.0),
+                      const SizedBox(height: 15.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -310,8 +346,8 @@ class _EditDialogState extends State<EditDialog> {
                                   color: AppColors.red,
                                   shape: BoxShape.rectangle,
                                 ),
-                                child: Icon(Icons.remove,
-                                    color: AppColors.white)),
+                                child:
+                                    Icon(Icons.remove, color: AppColors.white)),
                           ),
                           Text(saleCtrl.quantity.value.toString()),
                           GestureDetector(
@@ -332,23 +368,9 @@ class _EditDialogState extends State<EditDialog> {
                         ],
                       ),
                       const SizedBox(height: 10.0),
-                      const TitleWithTextFormField(titleText: 'Product cost(per unit)'),
+                      const TitleWithTextFormField(
+                          titleText: 'Product cost(per unit)'),
                       const TitleWithTextFormField(titleText: 'Selling Price'),
-                      Align(
-                        alignment: Alignment.bottomLeft,
-                        child: OutlinedButton(
-                          onPressed: () {},
-                          child: const Text('+ Add Product'),
-                        ),
-                      ),
-                      const Divider(),
-                      const Text(
-                        'Profit: 456',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
                       ElevatedButton(
                           onPressed: () {}, child: const Text('Save')),
                     ],
@@ -358,5 +380,179 @@ class _EditDialogState extends State<EditDialog> {
             ),
           ),
         ));
+  }
+}
+
+class AddProductDialog extends StatefulWidget {
+  const AddProductDialog({super.key});
+
+  @override
+  State<AddProductDialog> createState() => _AddProductDialogState();
+}
+
+class _AddProductDialogState extends State<AddProductDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Product',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => Get.back(),
+                  child: const Icon(Icons.clear),
+                ),
+              ],
+            ),
+            const Divider(),
+            TextFormField(
+              // onChanged: ctrl.onSearch,
+              decoration: InputDecoration(
+                hintText: 'Search...',
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+              ),
+            ),
+            AppSizedBox.sizedBoxH10,
+            // DropdownButtonFormField<String>(
+            //   // autovalidateMode: AutovalidateMode.onUserInteraction,
+            //   // value: ctrl.selectedProductType,
+            //   items: ctrl.productType
+            //       .map((label) => DropdownMenuItem<String>(
+            //     value: label,
+            //     child: Text(label.name!),
+            //   ))
+            //       .toList(),
+            //   hint: const Text(AppStrings.ProductType),
+            //   onChanged: (value) {
+            //     setState(() {
+            //       // ctrl.selectedProductType = value!;
+            //     });
+            //   },
+            //   decoration: dropDownDecoration(),
+            // ),
+            AppSizedBox.sizedBoxH10,
+            Expanded(
+              child: ListView.builder(
+                itemCount: 8,
+                shrinkWrap: true,
+                itemBuilder: (context, index) => Column(
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            border: Border.all(
+                              color: AppColors.black,
+                            ),
+                          ),
+                          child: const FlutterLogo(size: 130),
+                        ),
+                        AppSizedBox.sizedBoxW10,
+                        const Text(
+                          'data',
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 4,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20.0,
+                          ),
+                        )
+                      ],
+                    ),
+                    AppSizedBox.sizedBoxH10,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Cost : ',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18.0,
+                                      color: AppColors.kPrimaryColor,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: '2000',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15.0,
+                                      color: AppColors.kPrimaryColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            AppSizedBox.sizedBoxW10,
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Sell : ',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18.0,
+                                      color: AppColors.kPrimaryColor,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: '10,000',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15.0,
+                                      color: AppColors.kPrimaryColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 4.0, horizontal: 15.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.0),
+                            color: AppColors.kPrimaryColor,
+                          ),
+                          child: Text(
+                            '234',
+                            style: TextStyle(
+                              color: AppColors.white,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    const Divider(),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
