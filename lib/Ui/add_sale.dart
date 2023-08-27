@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:trader_app/Ui/Common_Codes/common_codes.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
-import 'package:trader_app/controllers/saleorder/SaleOrderController.dart';
+import 'package:trader_app/controllers/saleorder/SaleOrderCashController.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
 import 'package:trader_app/screens/shared_widgets/title_with_text_form_field.dart';
 
@@ -16,7 +16,7 @@ class AddSale extends StatefulWidget {
 }
 
 class _AddSaleState extends State<AddSale> {
-  final saleCtrl = Get.put(SaleOrderController());
+  final saleCtrl = Get.put(SaleOrderCashController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -259,7 +259,7 @@ class EditDialog extends StatefulWidget {
 }
 
 class _EditDialogState extends State<EditDialog> {
-  final saleCtrl = Get.put(SaleOrderController());
+  final saleCtrl = Get.put(SaleOrderCashController());
   @override
   Widget build(BuildContext context) {
     return Obx(() => Dialog(

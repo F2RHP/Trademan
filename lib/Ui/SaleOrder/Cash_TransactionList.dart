@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../constants/colors.dart';
 import '../../constants/strings.dart';
-import '../../controllers/saleorder/SaleOrderController.dart';
+import '../../controllers/saleorder/SaleOrderCashController.dart';
 import '../../screens/shared_widgets/sized_box.dart';
 
 class Cash_TransactionList extends StatelessWidget {
-  final SaleOrderController controller = Get.put(SaleOrderController());
+  final SaleOrderCashController controller = Get.put(SaleOrderCashController());
 
   @override
   Widget build(BuildContext context) {
