@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import '../../constants/colors.dart';
 import '../../constants/strings.dart';
 import '../../controllers/saleorder/CustomerOrderController.dart';
-import '../../controllers/saleorder/SaleOrderController.dart';
+import '../../controllers/saleorder/SaleOrderCashController.dart';
 import '../../models/SaleOrders/customerorder.dart';
 import '../../screens/shared_widgets/sized_box.dart';
 

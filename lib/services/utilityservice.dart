@@ -83,7 +83,7 @@ Future<List<ProductTypeModel>> getMockProductTypes() async {
 
 }
 
-Future<List<SaleTransactionTypeModel>> getMockSaleTransactionTypes() async {
+Future<List<SaleTransactionTypeModel>> getSaleTransactionTypes() async {
   // return [
   //   SaleTransactionTypeModel(
   //     saleTransactionId: 1,
@@ -112,7 +112,7 @@ Future<List<SaleTransactionTypeModel>> getMockSaleTransactionTypes() async {
     }
 }
 
-Future<List<TransactionTypeModel>> getMockTransactionTypes() async {
+Future<List<TransactionTypeModel>> getTransactionTypes() async {
   // return [
   //   TransactionTypeModel(
   //     transactionTypeId: 1,

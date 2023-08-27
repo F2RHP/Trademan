@@ -3,7 +3,7 @@ import 'package:trader_app/services/saleorderservice.dart';
 import '../../models/SaleOrders/cash_transaction.dart';
 import '../base_controller.dart';
 
-class SaleOrderController extends BaseController {
+class SaleOrderCashController extends BaseController {
   final cashTransactions = <Cash_Transaction>[].obs;
   late SaleOrderService service;
   RxInt quantity = 0.obs;
