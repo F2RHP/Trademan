@@ -72,8 +72,8 @@ class _AddSaleState extends State<AddSale> {
                   child: AnimatedCrossFade(
                     firstChild: moneyView(),
                     secondChild: goodsView(),
-                    crossFadeState: CrossFadeState.showFirst,
                     duration: const Duration(milliseconds: 300),
+                    crossFadeState:mainSaleCtrl.IsMoney()?CrossFadeState.showFirst:CrossFadeState.showSecond,
                   ),
                 ),
               ],

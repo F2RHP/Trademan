@@ -38,7 +38,7 @@ class _AllProductsState extends State<AllProducts> {
                   children: [
                     topSection(),
                     AppSizedBox.sizedBoxH20,
-                    ClipRRect(
+                  /*  ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: GroupButton(
                           options: GroupButtonOptions(
@@ -55,23 +55,19 @@ class _AllProductsState extends State<AllProducts> {
                             'In Stock',
                             'Stock Out'
                           ]),
-                    ),
+                    ),*/
                     AppSizedBox.sizedBoxH20,
                     ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: ctrl.isSearch
-                          ? ctrl.products.length
-                          : ctrl.searchList.length,
+                      itemCount: ctrl.filteredProducts.length,
                       itemBuilder: (context, index) {
                         var dateTime = DateTime.parse(
                             ctrl.products[index].purchasEDate.toString());
                         DateFormat dateFormat = DateFormat('yyy-MM-dd');
                         var nowDate = dateFormat.format(dateTime);
                         return listMenu(
-                            ctrl.isSearch
-                                ? ctrl.products[index]
-                                : ctrl.searchList[index],
+                            ctrl.filteredProducts[index],
                             nowDate);
                       },
                     ),
@@ -259,56 +255,7 @@ class _AllProductsState extends State<AllProducts> {
       children: [
         const KPRTraders(),
         SizedBox(height: Dimensions.calcH(20.0)),
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 13.0),
-          decoration: BoxDecoration(
-            color: Colors.blueAccent,
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              SizedBox(height: Dimensions.calcH(10.0)),
-              const Text(
-                'All',
-                selectionColor: Colors.black26,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22.0,
-                ),
-              ),
-              SizedBox(width: Dimensions.calcW(15.0)),
-              const Text(
-                'In Stock',
-                selectionColor: Colors.black26,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22.0,
-                ),
-              ),
-              SizedBox(width: Dimensions.calcW(15.0)),
-              const Text(
-                'Stock Out',
-                selectionColor: Colors.black26,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22.0,
-                ),
-              ),
-              SizedBox(width: Dimensions.calcW(15.0)),
-              const Text(
-                'A-Z',
-                selectionColor: Colors.black26,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22.0,
-                ),
-              ),
-              SizedBox(height: Dimensions.calcH(10.0)),
-            ],
-          ),
-        ),
-        SizedBox(height: Dimensions.calcH(10.0)),
+        /*
         const Align(
           alignment: Alignment.topLeft,
           child: Text(
@@ -341,9 +288,9 @@ class _AllProductsState extends State<AllProducts> {
                 borderRadius: BorderRadius.circular(5.0),
               )),
         ),
-        SizedBox(height: Dimensions.calcH(15)),
+        SizedBox(height: Dimensions.calcH(15)),*/
         TextFormField(
-          onChanged: ctrl.onSearch,
+           onChanged: (value) => ctrl.filterText.value = value,
           decoration: InputDecoration(
             hintText: 'Search...',
             focusedBorder: OutlineInputBorder(

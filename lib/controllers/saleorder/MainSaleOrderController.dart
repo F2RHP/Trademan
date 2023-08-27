@@ -51,10 +51,32 @@ final saleProductList= <SaleProduct>[].obs;
     super.onInit();
   }
 
-  Future<void> LoadAllSaleTransactiontype() async {
+   Future<void> LoadAllSaleTransactiontype() async {
     isLoading.value = true;
     saleTransactionsType.value = await utService.getSaleTransactionTypes();
+    if (saleTransactionsType.isNotEmpty) {
+      SaleTransactionTypeModel defaultSelectedItem = saleTransactionsType
+          .firstWhere((type) => type.name!.toUpperCase() == "MONEY");
+      selectedsaleTransaction = defaultSelectedItem.saleTransactionId;
+    }
     isLoading.value = false;
+  }
+
+  bool IsMoney()
+  {
+    if(saleTransactionsType.isEmpty)
+  {
+    return true;
+  }
+    SaleTransactionTypeModel currentItem = saleTransactionsType
+          .firstWhere((type) => type.saleTransactionId == selectedsaleTransaction);
+          if(currentItem.name!.toLowerCase()=="money")
+          {
+            return true;
+          }
+          else{
+            return false;
+          }
   }
 
    Future<void> LoadAllTransactiontype() async {
