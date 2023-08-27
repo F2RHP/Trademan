@@ -41,28 +41,28 @@ final saleProductList= <SaleProduct>[].obs;
     utService=utilityService();
 
     isLoading.value = true;
-    loadAllSaleTransactionType();
+    LoadAllSaleTransactiontype();
     LoadSaleCustomers();
-    loadAllTransactionType();
-    loadAllProducts();
+    LoadAllTransactiontype();
+    LoadAllProducts();
     isLoading.value = false;
 
     super.onInit();
   }
 
-  Future<void> loadAllSaleTransactionType() async {
+  Future<void> LoadAllSaleTransactiontype() async {
     isLoading.value = true;
     saleTransactionsType.value = await utService.getSaleTransactionTypes();
     isLoading.value = false;
   }
 
-   Future<void> loadAllTransactionType() async {
+   Future<void> LoadAllTransactiontype() async {
     isLoading.value = true;
     transactionType.value = await utService.getTransactionTypes();
     isLoading.value = false;
   }
 
-  Future<void>loadAllProducts() async
+  Future<void>LoadAllProducts() async
 {
   isLoading.value=true;
     productList.value = await service.getAllProducts();
@@ -78,9 +78,9 @@ final saleProductList= <SaleProduct>[].obs;
 
 
 
- SaleProduct fromProduct(Product product) {
-    return SaleProduct(
-      sno: product.producTId, // Assuming you map sno to productId
+ void addProdcut(Product product) {
+    var sp= SaleProduct(
+      sno: saleProductList.length, // Assuming you map sno to producTId
       productId: product.producTId,
       productName: product.producTName!,
       quantity: product.nOOfQuantity,
@@ -88,6 +88,8 @@ final saleProductList= <SaleProduct>[].obs;
       sellingPrice: product.sellinGCost,
       total: product.sellinGCost * product.nOOfQuantity,
     );
+
+    saleProductList.add(sp);
   }
 
   void UpdateSerialnumber()
