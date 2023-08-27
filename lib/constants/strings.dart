@@ -146,5 +146,7 @@ class AppStrings {
 
 //SALEORDER SCREEN STRINGS
   static const String CashTransactionList = "Cash Transaction";
+  static const String customerOrderList = "Customer Order";
+   static const String customerOrderDetails = "Order Details";
 
 }

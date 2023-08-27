@@ -7,6 +7,7 @@ class ServiceHelper {
 
   // Product related API
   static String productGetUrl = "Products/GetAllProducts";
+  static String productById ="Products/GetProductByID";
 
   //Customer related API
   static String listCustomer = 'Customer/GetAllCustomer';
@@ -28,5 +29,7 @@ static String listAllSuppliers = 'Suppliers/GetSuppliers';
 
   // Sale Order
   static String cashTransactionGetUrl = "CustomerOrder/GetAllCustomerCashTransaction";
+   static String customerOrderGetUrl = "CustomerOrder/GetAllCustomerOrders";
+   static String customerOrderDetailsGetUrl = "CustomerOrder/GetAllCustomerOrdersDetailsByOrderID";
 
 }

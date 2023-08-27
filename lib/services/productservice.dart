@@ -17,8 +17,10 @@ class ProductService extends BaseService {
   }
 
   Future<ProductObject?> getProductByID(int productId) async {
-    ProductObject product =
-        await get<ProductObject>("Uri.parse(ServiceHelper.productGetUrl");
+    Map<String, dynamic> jsonMap =
+        await get<dynamic>("${ServiceHelper.productById}?productId=$productId");
+
+    ProductObject product = ProductObject.fromMap(jsonMap);
 
     return product;
   }

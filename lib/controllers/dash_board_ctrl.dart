@@ -6,6 +6,7 @@ import 'package:trader_app/Ui/add_sale.dart';
 import 'package:trader_app/Ui/products/add_product.dart';
 import 'package:trader_app/Ui/products/all_products.dart';
 import 'package:trader_app/controllers/Expense/list_expense_controller.dart';
+import '../Ui/SaleOrder/CustomerOrderListScreen.dart';
 import 'customers/list_customers_ctrl.dart';
 
 class DashBoardCtrl extends GetxController {
@@ -51,6 +52,11 @@ class DashBoardCtrl extends GetxController {
       case "cashTransaction":
         {
           Get.to(Cash_TransactionList());
+        }
+        break;
+       case "productTransaction":
+        {
+          Get.to(CustomerOrderListScreen());
         }
         break;
       default:
