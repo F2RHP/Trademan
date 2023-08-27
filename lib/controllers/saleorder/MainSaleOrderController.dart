@@ -13,6 +13,7 @@ class MainSaleOrderController extends BaseController {
  //Controllers
   TextEditingController customerGiven = TextEditingController();
   TextEditingController orderNotes = TextEditingController();
+  TextEditingController dataController = TextEditingController();
 
    TextEditingController transactionAmount = TextEditingController();
    TextEditingController transactionNotes = TextEditingController();
