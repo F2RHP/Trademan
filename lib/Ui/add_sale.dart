@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:trader_app/Ui/Common_Codes/common_codes.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
-import 'package:trader_app/screens/shared_widgets/custom_text.dart';
+import 'package:trader_app/controllers/saleorder/SaleOrderController.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
 import 'package:trader_app/screens/shared_widgets/title_with_text_form_field.dart';
 
@@ -16,6 +16,7 @@ class AddSale extends StatefulWidget {
 }
 
 class _AddSaleState extends State<AddSale> {
+  final saleCtrl = Get.put(SaleOrderController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,7 +113,10 @@ class _AddSaleState extends State<AddSale> {
                     cells: [
                       DataCell(
                         GestureDetector(
-                          onTap: () => Get.dialog(editDialog,barrierDismissible: false,),
+                          onTap: () => Get.dialog(
+                            const EditDialog(),
+                            barrierDismissible: false,
+                          ),
                           child: SvgPicture.asset(
                             'assets/icons/pen.svg',
                             height: 20.0,
@@ -247,90 +251,112 @@ List getValues = [
   }
 ];
 
-Dialog editDialog = Dialog(
+class EditDialog extends StatefulWidget {
+  const EditDialog({super.key});
 
-  child: Column(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              'Product',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            GestureDetector(
-              onTap: () => Get.back(),
-              child: const Icon(Icons.clear),
-            ),
-          ],
-        ),
-      ),
-      const Divider(),
-      Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            const Text(
-              'Product Namme',
-              style: TextStyle(
-                fontSize: 20.0,
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  @override
+  State<EditDialog> createState() => _EditDialogState();
+}
+
+class _EditDialogState extends State<EditDialog> {
+  final saleCtrl = Get.put(SaleOrderController());
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() => Dialog(
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.red,
-                        shape: BoxShape.rectangle,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Product',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
                       ),
-                      child: Icon(Icons.subject, color: AppColors.white)),
+                    ),
+                    GestureDetector(
+                      onTap: () => Get.back(),
+                      child: const Icon(Icons.clear),
+                    ),
+                  ],
                 ),
-                const Text('data'),
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.kPrimaryColor,
-                      shape: BoxShape.rectangle,
-                    ),
-                    child: Icon(
-                      Icons.add,
-                      color: AppColors.white,
-                    ),
+                const Divider(),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    children: [
+                      const Text(
+                        'Product Name',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                        ),
+                      ),
+                      const SizedBox(height: 10.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          GestureDetector(
+                            onTap: saleCtrl.quantity.value == 0
+                                ? null
+                                : () {
+                                    saleCtrl.quantity.value--;
+                                  },
+                            child: Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.red,
+                                  shape: BoxShape.rectangle,
+                                ),
+                                child: Icon(Icons.remove,
+                                    color: AppColors.white)),
+                          ),
+                          Text(saleCtrl.quantity.value.toString()),
+                          GestureDetector(
+                            onTap: () {
+                              saleCtrl.quantity.value++;
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: AppColors.kPrimaryColor,
+                                shape: BoxShape.rectangle,
+                              ),
+                              child: Icon(
+                                Icons.add,
+                                color: AppColors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10.0),
+                      const TitleWithTextFormField(titleText: 'Product cost(per unit)'),
+                      const TitleWithTextFormField(titleText: 'Selling Price'),
+                      Align(
+                        alignment: Alignment.bottomLeft,
+                        child: OutlinedButton(
+                          onPressed: () {},
+                          child: const Text('+ Add Product'),
+                        ),
+                      ),
+                      const Divider(),
+                      const Text(
+                        'Profit: 456',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      ElevatedButton(
+                          onPressed: () {}, child: const Text('Save')),
+                    ],
                   ),
                 ),
               ],
             ),
-            const TitleWithTextFormField(titleText: 'titleText'),
-            const TitleWithTextFormField(titleText: 'titleText'),
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: OutlinedButton(
-                onPressed: () {},
-                child: const Text('+ Add Product'),
-              ),
-            ),
-            const Divider(),
-            const Text(
-              'Profit: 456',
-              style: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            ElevatedButton(onPressed: (){}, child: const Text('Save')),
-          ],
-        ),
-      ),
-    ],
-  ),
-);
+          ),
+        ));
+  }
+}

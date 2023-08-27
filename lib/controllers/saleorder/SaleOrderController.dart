@@ -7,6 +7,7 @@ import '../base_controller.dart';
 class SaleOrderController extends BaseController {
   final cashTransactions = <Cash_Transaction>[].obs;
   late SaleOrderService service;
+  RxInt quantity = 0.obs;
 
   @override
   void onInit() {
