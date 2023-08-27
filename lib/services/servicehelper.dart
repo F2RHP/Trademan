@@ -24,4 +24,9 @@ static String listAlltransactionType = 'Utility/GetAllTransactionTypes';
 
 static String listAllSuppliers = 'Suppliers/GetSuppliers';
 
+
+
+  // Sale Order
+  static String cashTransactionGetUrl = "CustomerOrder/GetAllCustomerCashTransaction";
+
 }

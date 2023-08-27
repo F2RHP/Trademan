@@ -36,6 +36,11 @@ class _DashBoardState extends State<DashBoard> {
       'caption':'Sale',
       'name': 'addSale',
     },
+            {
+      'icons': Icons.satellite_alt,
+      'caption':'Cash Transaction',
+      'name': 'cashTransaction',
+    },
   ];
 
   @override
