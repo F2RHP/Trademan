@@ -12,6 +12,7 @@ import '../base_controller.dart';
 class MainSaleOrderController extends BaseController {
  //Controllers
   TextEditingController customerGiven = TextEditingController();
+  TextEditingController orderNotes = TextEditingController();
 
    TextEditingController transactionAmount = TextEditingController();
    TextEditingController transactionNotes = TextEditingController();
@@ -77,9 +78,9 @@ final saleProductList= <SaleProduct>[].obs;
 
 
 
- SaleProduct fromProduct(Product product) {
-    return SaleProduct(
-      sno: product.producTId, // Assuming you map sno to producTId
+ void addProdcut(Product product) {
+    var sp= SaleProduct(
+      sno: saleProductList.length, // Assuming you map sno to producTId
       productId: product.producTId,
       productName: product.producTName!,
       quantity: product.nOOfQuantity,
@@ -87,6 +88,8 @@ final saleProductList= <SaleProduct>[].obs;
       sellingPrice: product.sellinGCost,
       total: product.sellinGCost * product.nOOfQuantity,
     );
+
+    saleProductList.add(sp);
   }
 
   void UpdateSerialnumber()
