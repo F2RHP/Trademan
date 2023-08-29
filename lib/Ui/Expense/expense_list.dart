@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:trader_app/Ui/Common_Codes/common_codes.dart';
 import 'package:trader_app/Ui/Expense/add_expense.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
+import 'package:trader_app/controllers/Expense/add_expense_controller.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
 
 import '../../controllers/Expense/list_expense_controller.dart';
@@ -13,12 +16,13 @@ class ExpenseList extends StatelessWidget {
   ExpenseList({Key? key}) : super(key: key);
 
   final ctrl = Get.put(ListExpenseCtrl());
+  final ctrlExpenseType = Get.put(AddExpenseCtrl());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(context),
-      body: Obx(() => ctrl.isLoading.value || ctrl.expenseList.isEmpty 
+      body: Obx(() => ctrl.isLoading.value || ctrl.expenseList.isEmpty
           ? const Center(
               child: CircularProgressIndicator(),
             )
@@ -29,9 +33,12 @@ class ExpenseList extends StatelessWidget {
                   ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: ctrl.expenseList.length,
-                      itemBuilder: (context, index) =>
-                          expenseDetail(ctrl.expenseList[index])),
+                      itemCount: ctrl.isFiltered.value
+                          ? ctrl.filteredExpenseList.length
+                          : ctrl.expenseList.length,
+                      itemBuilder: (context, index) => ctrl.isFiltered.value
+                          ? expenseDetail(ctrl.filteredExpenseList[index])
+                          : expenseDetail(ctrl.expenseList[index])),
                 ],
               ),
             )),
@@ -47,100 +54,128 @@ class ExpenseList extends StatelessWidget {
     );
   }
 
-void _showDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      String selectedDateRange = 'Today';
-      String selectedName = 'John';
+  void _showDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        String? selectedDateRange = ctrl.selectedDate.value ?? "Today";
+        int? selectedExpenseTypeId = ctrl.selectedExpenseTypeId.value ?? 0;
 
-      return AlertDialog(
-        title:const Text('Select Options'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('Date Range:'),
-            ListTile(
-              title: Text('Today'),
-              onTap: () {
-                selectedDateRange = 'Today';
-                Navigator.of(context).pop(selectedDateRange);
-              },
+        return AlertDialog(
+          title: const Text('Select Options'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('Date Range:'),
+                ListTile(
+                  title: Text('Today'),
+                  onTap: () {
+                    selectedDateRange = 'Today';
+                    ctrl.selectedDate.value = selectedDateRange!;
+                    // Navigator.of(context).pop(selectedDateRange);
+                  },
+                ),
+                ListTile(
+                  title: Text('Last Week'),
+                  onTap: () {
+                    selectedDateRange = 'Last Week';
+                    ctrl.selectedDate.value = selectedDateRange!;
+                    // Navigator.of(context).pop(selectedDateRange);
+                  },
+                ),
+                ListTile(
+                  title: Text('Last Month'),
+                  onTap: () {
+                    selectedDateRange = 'Last Month';
+                    ctrl.selectedDate.value = selectedDateRange!;
+                    // Navigator.of(context).pop(selectedDateRange);
+                  },
+                ),
+                SizedBox(height: 20),
+                Text('Select Expense Type:'),
+                SizedBox(
+                  height: 10,
+                ),
+                // Obx(()=>Container(
+                //   width: MediaQuery.of(context).size.width,
+                //   child: DropdownButtonHideUnderline(child:DropdownButton<int>(
+                //     iconDisabledColor: Colors.amber,
+                //     value: selectedExpenseTypeId,
+                //     onChanged: (value) {
+                //       ctrl.selectedExpenseTypeId.value = value!;
+                //       // Navigator.of(context).pop(selectedName);
+                //     },
+                //     items:ctrlExpenseType.expenseType.value.map((expenseTypeObj) {
+                //
+                //       return DropdownMenuItem<int>(
+                //         value: expenseTypeObj.expenseTypeID,
+                //         child: Text(expenseTypeObj.expenseName!),
+                //       );
+                //     }).toList(),
+                //   ),)
+                // ))
+              ],
             ),
-            ListTile(
-              title: Text('Last Week'),
-              onTap: () {
-                selectedDateRange = 'Last Week';
-                Navigator.of(context).pop(selectedDateRange);
-              },
-            ),
-            ListTile(
-              title: Text('Last Month'),
-              onTap: () {
-                selectedDateRange = 'Last Month';
-                Navigator.of(context).pop(selectedDateRange);
-              },
-            ),
-            SizedBox(height: 20),
-            Text('Select Name:'),
-            DropdownButton<String>(
-              value: selectedName,
-              onChanged: (value) {
-                selectedName = value!;
-                Navigator.of(context).pop(selectedName);
-              },
-              items: ['John', 'Jane', 'Alice', 'Bob'].map((String name) {
-                return DropdownMenuItem<String>(
-                  value: name,
-                  child: Text(name),
-                );
-              }).toList(),
+          ),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    ctrl.isFiltered.value = false;
+                    Navigator.of(context).pop(); // Close the dialog
+                  },
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    log("name: ${selectedExpenseTypeId.toString()}");
+                    log("date: ${selectedDateRange}");
+                    if (selectedExpenseTypeId != 0 || selectedDateRange != '') {
+                      ctrl.isFiltered.value = true;
+                      ctrl.selectedExpenseTypeId.value = selectedExpenseTypeId!;
+                      ctrl.selectedDate.value = selectedDateRange!;
+                      ctrl.loadFilteredExpenseList(
+                          selectedExpenseTypeId, selectedDateRange);
+                    } else {
+                      ctrl.isFiltered.value = false;
+                    }
+
+                    Navigator.of(context)
+                        .pop(); // Close the dialog and return the selected values
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
             ),
           ],
-        ),
-        actions: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
-                },
-                child:const Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(selectedDateRange); // Close the dialog and return the selected values
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        ],
-      );
-    },
-  );
-}
+        );
+      },
+    );
+  }
 
-
- Widget _buildButtonRow(BuildContext context) {
+  Widget _buildButtonRow(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ElevatedButton(
-          onPressed: (){_showDialog(context);},
+          onPressed: () {
+            _showDialog(context);
+          },
           child: const Text('Filter'),
         ),
-       const SizedBox(width: 20), // Adding space between buttons
+        const SizedBox(width: 20), // Adding space between buttons
         ElevatedButton(
-          onPressed: (){},
+          onPressed: () {
+            ctrl.isFiltered.value = false;
+          },
           child: const Text('Clear'),
         ),
       ],
     );
   }
-
-
 
   topWidgets() {
     //  AppSizedBox.sizedBoxH8,
@@ -178,7 +213,7 @@ void _showDialog(BuildContext context) {
     //                   AppSizedBox.sizedBoxH15,
   }
 
- AppBar buildAppBar(BuildContext context) {
+  AppBar buildAppBar(BuildContext context) {
     return AppBar(
       elevation: 0,
       leading: GestureDetector(
@@ -196,7 +231,7 @@ void _showDialog(BuildContext context) {
         GestureDetector(
           onTap: () {
             Get.to(
-                ()=>const AddExpense(),
+              () => const AddExpense(),
             );
           },
           child: Icon(
@@ -223,8 +258,8 @@ void _showDialog(BuildContext context) {
       child: GestureDetector(
         onTap: () => {
           //Get.to(DestinationScreen(), arguments: ExpenseArguments(name, amount));
-          Get.to(const AddExpense(),arguments:item)
-          },
+          Get.to(const AddExpense(), arguments: item)
+        },
         child: Container(
           padding: CustomPadding.padding18,
           decoration: BoxDecoration(
@@ -255,8 +290,8 @@ void _showDialog(BuildContext context) {
               Row(
                 children: [
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 5.0),
                     decoration: BoxDecoration(
                       color: AppColors.yellowDark,
                       borderRadius: CustomBorderRadius.borderRadius13,
@@ -270,8 +305,8 @@ void _showDialog(BuildContext context) {
                   ),
                   AppSizedBox.sizedBoxW10,
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 5.0),
                     decoration: BoxDecoration(
                       color: AppColors.kPrimaryColor,
                       borderRadius: CustomBorderRadius.borderRadius13,
