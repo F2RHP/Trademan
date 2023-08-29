@@ -28,7 +28,7 @@ class _AllProductsState extends State<AllProducts> {
     return Scaffold(
       appBar: buildAppBar(context),
       body: Obx(
-        () => ctrl.isLoading.value
+        () => (ctrl.isLoading.value|| ctrl.products.isEmpty)
             ? const Center(child: CircularProgressIndicator())
             : Padding(
               padding: const EdgeInsets.all(20.0),

@@ -63,6 +63,25 @@ class MainSaleOrderController extends BaseController {
   late utilityService utService;
   RxInt quantity = 0.obs;
 
+  final filterText = "".obs;
+
+  double get totalprodctAmount {
+    return saleProductList.fold(
+        0, (sum, product) => sum + product.sellingPrice);
+  }
+
+  List<Product> get filteredProducts {
+    if (filterText.isEmpty) {
+      return productList;
+    } else {
+      return productList.where((prod) {
+        return prod.producTName!
+            .toLowerCase()
+            .contains(filterText.value.toLowerCase());
+      }).toList();
+    }
+  }
+
   @override
   void onInit() {
     service = SaleOrderService();
@@ -120,15 +139,15 @@ class MainSaleOrderController extends BaseController {
     isLoading.value = false;
   }
 
-  void addProdcut(Product product) {
+  void addSaleProdcut(Product product) {
     var sp = SaleProduct(
-      sno: saleProductList.length, // Assuming you map sno to producTId
+      sno: saleProductList.length + 1, // Assuming you map sno to producTId
       productId: product.producTId,
       productName: product.producTName!,
-      quantity: product.nOOfQuantity,
+      quantity: 1,
       productPrice: product.producTCost,
       sellingPrice: product.sellinGCost,
-      total: product.sellinGCost * product.nOOfQuantity,
+      total: product.sellinGCost * 1,
     );
 
     saleProductList.add(sp);
@@ -147,6 +166,17 @@ class MainSaleOrderController extends BaseController {
     } else {}
   }
 
+  addSaleProductList(Product product) {
+    selectedProduct.value = product;
+    addSaleProdcut(product);
+  }
+
+  void refreshList() {
+final saleProductListTemp = saleProductList.toList();
+    saleProductList.value=saleProductListTemp;
+
+  }
+
   // Future<bool> addCustomer() async {
   //   CashTransactionData  customer=CashTransactionData(actionCode: 'I',transactionAmount: );
   //   const endpoint = 'Customer/AddCustomer';
@@ -161,5 +191,3 @@ class MainSaleOrderController extends BaseController {
   //   }
   // }
 }
-
-

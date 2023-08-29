@@ -7,10 +7,12 @@ import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/controllers/saleorder/MainSaleOrderController.dart';
 import 'package:trader_app/controllers/saleorder/SaleOrderCashController.dart';
+import 'package:trader_app/models/product/product_model.dart';
 import 'package:trader_app/screens/shared_widgets/custom_text.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
 import 'package:trader_app/screens/shared_widgets/title_with_text_form_field.dart';
 
+import '../models/SaleOrders/Saleproduct.dart';
 import '../screens/shared_widgets/custom_btn.dart';
 
 class AddSale extends StatefulWidget {
@@ -33,7 +35,7 @@ class _AddSaleState extends State<AddSale> {
             child: Column(
               children: [
                 GestureDetector(
-                  onTap: ()=>{_showCustomerListDialog(context)},
+                  onTap: () => {_showCustomerListDialog(context)},
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     padding: CustomPadding.padding20,
@@ -41,8 +43,10 @@ class _AddSaleState extends State<AddSale> {
                       borderRadius: BorderRadius.circular(5.0),
                       border: Border.all(color: AppColors.greyLight),
                     ),
-                    child: Text(mainSaleCtrl.selectedCustomer.value.customerID==0?
-                      '+ ${AppStrings.chooseCustomer}':mainSaleCtrl.selectedCustomer.value.customerName,
+                    child: Text(
+                      mainSaleCtrl.selectedCustomer.value.customerID == 0
+                          ? '+ ${AppStrings.chooseCustomer}'
+                          : mainSaleCtrl.selectedCustomer.value.customerName,
                       style: TextStyle(
                         color: AppColors.blueAccentShade700,
                         fontSize: 16.0,
@@ -77,15 +81,17 @@ class _AddSaleState extends State<AddSale> {
                     firstChild: moneyView(),
                     secondChild: goodsView(),
                     duration: const Duration(milliseconds: 300),
-                    crossFadeState:mainSaleCtrl.IsMoney()?CrossFadeState.showFirst:CrossFadeState.showSecond,
+                    crossFadeState: mainSaleCtrl.IsMoney()
+                        ? CrossFadeState.showFirst
+                        : CrossFadeState.showSecond,
                   ),
                 ),
-               CustomBtn(
-                    label: "Save",
-                    action: ()  {
-                   mainSaleCtrl.saveAndNavigate();
-                    },
-                  )
+                CustomBtn(
+                  label: "Save",
+                  action: () {
+                    mainSaleCtrl.saveAndNavigate();
+                  },
+                )
               ],
             ),
           ),
@@ -93,7 +99,6 @@ class _AddSaleState extends State<AddSale> {
       ),
     );
   }
-
 
   void _showCustomerListDialog(BuildContext context) {
     showDialog(
@@ -103,40 +108,40 @@ class _AddSaleState extends State<AddSale> {
       },
     );
   }
-AlertDialog _buildCustomerListDialog(BuildContext context) {
-  return AlertDialog(
-    title: Text('Customer List'),
-    content: Container(
-      width: double.maxFinite,
-      child: ListView.builder(
-        shrinkWrap: true,
-        itemCount: mainSaleCtrl.customerList.length,
-        itemBuilder: (context, index) {
-          var customer = mainSaleCtrl.customerList[index];
-          return GestureDetector(
-            child: ListTile(
-              title: Text(customer.customerName),
-              subtitle: Text(customer.villageName),
-              onTap: () {
-               mainSaleCtrl.selectedCustomer.value=customer;
-               Get.back(closeOverlays: true);
-              },
-            ),
-          );
-        },
-      ),
-    ),
-    actions: <Widget>[
-      TextButton(
-        onPressed: () {
-          Get.back(closeOverlays: true);
-        },
-        child: Text('Close'),
-      ),
-    ],
-  );
-}
 
+  AlertDialog _buildCustomerListDialog(BuildContext context) {
+    return AlertDialog(
+      title: Text('Customer List'),
+      content: Container(
+        width: double.maxFinite,
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: mainSaleCtrl.customerList.length,
+          itemBuilder: (context, index) {
+            var customer = mainSaleCtrl.customerList[index];
+            return GestureDetector(
+              child: ListTile(
+                title: Text(customer.customerName),
+                subtitle: Text(customer.villageName),
+                onTap: () {
+                  mainSaleCtrl.selectedCustomer.value = customer;
+                  Get.back(closeOverlays: true);
+                },
+              ),
+            );
+          },
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            Get.back(closeOverlays: true);
+          },
+          child: Text('Close'),
+        ),
+      ],
+    );
+  }
 
   AppBar buildAppBar() {
     return AppBar(
@@ -210,105 +215,116 @@ AlertDialog _buildCustomerListDialog(BuildContext context) {
           ),
           AppSizedBox.sizedBoxH15,
           FittedBox(
-            child: DataTable(
-              columnSpacing: 10.0,
-              dataRowHeight: 70.0,
-              headingRowHeight: 30.0,
-              headingRowColor: MaterialStateColor.resolveWith(
-                (states) {
-                  return const Color(0xFFE7E7E7);
-                },
-              ),
-              columns: const [
-                DataColumn(
-                  label: Text(''),
-                ),
-                DataColumn(
-                  label: Text('No.'),
-                ),
-                DataColumn(
-                  label: Text('Details'),
-                ),
-                DataColumn(
-                  label: Text('Qty'),
-                ),
-                DataColumn(
-                  label: Text('Prices'),
-                ),
-                DataColumn(
-                  label: Text('Total'),
-                ),
-                DataColumn(
-                  label: Text(''),
-                ),
-              ],
-              rows: List.generate(
-                getValues.length,
-                (index) => DataRow(
-                  cells: [
-                    DataCell(
-                      GestureDetector(
-                        onTap: () => Get.dialog(
-                          const EditDialog(),
-                          barrierDismissible: false,
-                        ),
-                        child: SvgPicture.asset(
-                          'assets/icons/pen.svg',
-                          height: 20.0,
-                        ),
-                      ),
+            child: Obx(() => DataTable(
+                  columnSpacing: 10.0,
+                  headingRowHeight: 30.0,
+                  headingRowColor: MaterialStateColor.resolveWith(
+                    (states) {
+                      return const Color(0xFFE7E7E7);
+                    },
+                  ),
+                  columns: const [
+                    DataColumn(
+                      label: Text(''),
                     ),
-                    DataCell(
-                      Text(getValues[index]['no']),
+                    DataColumn(
+                      label: Text('No.'),
                     ),
-                    DataCell(
-                      SizedBox(
-                        width: 120.0,
-                        child: Text(
-                          getValues[index]['details'],
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 3,
-                        ),
-                      ),
+                    DataColumn(
+                      label: Text('Details'),
                     ),
-                    DataCell(
-                      Text(
-                        getValues[index]['qty'],
-                        style: TextStyle(
-                          color: AppColors.kPrimaryColor,
-                          fontWeight: FontWeight.bold,
-                          decorationStyle: TextDecorationStyle.double,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
+                    DataColumn(
+                      label: Text('Qty'),
                     ),
-                    DataCell(
-                      Text(getValues[index]['prices']),
+                    DataColumn(
+                      label: Text('Prices'),
                     ),
-                    DataCell(
-                      Text(getValues[index]['total']),
+                    DataColumn(
+                      label: Text('Total'),
                     ),
-                    const DataCell(
-                      Icon(
-                        Icons.delete,
-                        color: Colors.grey,
-                      ),
+                    DataColumn(
+                      label: Text(''),
                     ),
                   ],
-                ),
-              ),
-            ),
+                  rows: List.generate(
+                    mainSaleCtrl.saleProductList.length,
+                    (index) => DataRow(
+                      cells: [
+                        DataCell(
+                          GestureDetector(
+                            onTap: () => {
+                              if(true)
+                              {
+
+                              },
+                              showDialog(
+                                context: context,
+                                builder: (context) => EditDialog(
+                                    product:
+                                        mainSaleCtrl.saleProductList[index]),
+                              )
+                            },
+                            child: SvgPicture.asset(
+                              'assets/icons/pen.svg',
+                              height: 20.0,
+                            ),
+                          ),
+                        ),
+                        DataCell(
+                          Text(mainSaleCtrl.saleProductList[index].sno
+                              .toString()),
+                        ),
+                        DataCell(
+                          SizedBox(
+                            width: 120.0,
+                            child: Text(
+                              mainSaleCtrl.saleProductList[index].productName,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
+                            ),
+                          ),
+                        ),
+                        DataCell(
+                          Text(
+                            mainSaleCtrl.saleProductList[index].quantity
+                                .toString(),
+                            style: TextStyle(
+                              color: AppColors.kPrimaryColor,
+                              fontWeight: FontWeight.bold,
+                              decorationStyle: TextDecorationStyle.double,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                        DataCell(
+                          Text(mainSaleCtrl.saleProductList[index].sellingPrice
+                              .toString()),
+                        ),
+                        DataCell(
+                          Text(mainSaleCtrl.saleProductList[index].total
+                              .toString()),
+                        ),
+                        const DataCell(
+                          Icon(
+                            Icons.delete,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )),
           ),
           const Divider(),
           Table(
-            children: const [
+            children: [
               TableRow(children: [
-                TableCell(
+                const TableCell(
                   child: SizedBox(
                     width: 200.0,
                   ),
                 ),
-                TableCell(
+                const TableCell(
                   child: Text(
                     'Total',
                     style: TextStyle(
@@ -318,8 +334,8 @@ AlertDialog _buildCustomerListDialog(BuildContext context) {
                 ),
                 TableCell(
                   child: Text(
-                    '1000',
-                    style: TextStyle(
+                    mainSaleCtrl.totalprodctAmount.toString(),
+                    style: const TextStyle(
                       fontSize: 20.0,
                     ),
                   ),
@@ -331,7 +347,7 @@ AlertDialog _buildCustomerListDialog(BuildContext context) {
         ],
       );
   Widget moneyView() => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const CustomText(text: 'Transaction Type'),
           AppSizedBox.sizedBoxH10,
@@ -415,101 +431,133 @@ List getValues = [
   }
 ];
 
-class EditDialog extends StatefulWidget {
-  const EditDialog({super.key});
+class EditDialog extends StatelessWidget {
+  final SaleProduct product;
 
-  @override
-  State<EditDialog> createState() => _EditDialogState();
-}
+  EditDialog({
+    required this.product,
+    Key? key,
+  }) : super(key: key);
 
-class _EditDialogState extends State<EditDialog> {
-  final saleCtrl = Get.put(SaleOrderCashController());
+  String qu="";
+
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Dialog(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+    
+    return Dialog(
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Product',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () => Get.back(),
-                      child: const Icon(Icons.clear),
-                    ),
-                  ],
-                ),
-                const Divider(),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Column(
-                    children: [
-                      const Text(
-                        'Product Name',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 5,
-                        style: TextStyle(
-                          fontSize: 20.0,
-                        ),
-                      ),
-                      const SizedBox(height: 15.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          GestureDetector(
-                            onTap: saleCtrl.quantity.value == 0
-                                ? null
-                                : () {
-                                    saleCtrl.quantity.value--;
-                                  },
-                            child: Container(
-                                decoration: BoxDecoration(
-                                  color: AppColors.red,
-                                  shape: BoxShape.rectangle,
-                                ),
-                                child:
-                                    Icon(Icons.remove, color: AppColors.white)),
-                          ),
-                          Text(saleCtrl.quantity.value.toString()),
-                          GestureDetector(
-                            onTap: () {
-                              saleCtrl.quantity.value++;
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: AppColors.kPrimaryColor,
-                                shape: BoxShape.rectangle,
-                              ),
-                              child: Icon(
-                                Icons.add,
-                                color: AppColors.white,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10.0),
-                      const TitleWithTextFormField(
-                          titleText: 'Product cost(per unit)'),
-                      const TitleWithTextFormField(titleText: 'Selling Price'),
-                      ElevatedButton(
-                          onPressed: () {}, child: const Text('Save')),
-                    ],
+                const Text(
+                  "Product",
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
                   ),
+                ),
+                GestureDetector(
+                  onTap: () => Get.back(),
+                  child: const Icon(Icons.clear),
                 ),
               ],
             ),
-          ),
-        ));
+            const Divider(),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: [
+                  Text(
+                    product.productName,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 5,
+                    style: TextStyle(
+                      fontSize: 20.0,
+                    ),
+                  ),
+                  const SizedBox(height: 15.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      GestureDetector(
+                        onTap: () => {
+                          if (product.quantity == 0)
+                            {product.quantity = 0,
+                            qu=product.quantity.toString()}
+                          else
+                            {product.quantity--,qu=product.quantity.toString()}
+                        },
+                        child: Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.red,
+                              shape: BoxShape.rectangle,
+                            ),
+                            child: Icon(Icons.remove, color: AppColors.white)),
+                      ),
+                      Text(qu.isEmpty? product.quantity.toString():qu),
+                      GestureDetector(
+                        onTap: () {
+                          product.quantity++;
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.kPrimaryColor,
+                            shape: BoxShape.rectangle,
+                          ),
+                          child: Icon(
+                            Icons.add,
+                            color: AppColors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10.0),
+                  TitleWithTextFormField(
+                      controller: TextEditingController(
+                          text: product.productPrice.toString()),
+                      onChanged: (p0) {
+                        double? parsedValue = double.tryParse(p0);
+                        if (parsedValue != null) {
+                          product.productPrice = parsedValue;
+                        } else {
+                          product.productPrice = 0;
+                        }
+                      },
+                      titleText: 'Product cost(per unit)'),
+                  TitleWithTextFormField(
+                      controller: TextEditingController(
+                          text: product.sellingPrice.toString()),
+                      onChanged: (p0) {
+                        double? parsedValue = double.tryParse(p0);
+                        if (parsedValue != null) {
+                          product.sellingPrice = parsedValue;
+                        } else {
+                          product.sellingPrice = 0;
+                        }
+                      },
+                      titleText: 'Selling Price'),
+                  ElevatedButton(
+                      onPressed: () {
+
+                        final mainSaleCtrl = Get.put(MainSaleOrderController());
+
+                        product.total = product.quantity * product.sellingPrice;
+                        mainSaleCtrl.refreshList();
+                        Get.back();
+                      },
+                      child: const Text('Save')),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -541,14 +589,14 @@ class _AddProductDialogState extends State<AddProductDialog> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () => Get.back(closeOverlays: true),
+                  onTap: () => Get.back(),
                   child: const Icon(Icons.clear),
                 ),
               ],
             ),
             const Divider(),
             TextFormField(
-              // onChanged: ctrl.onSearch,
+              onChanged: (value) => mainSaleCtrl.filterText.value = value,
               decoration: InputDecoration(
                 hintText: 'Search...',
                 focusedBorder: OutlineInputBorder(
@@ -580,17 +628,21 @@ class _AddProductDialogState extends State<AddProductDialog> {
             AppSizedBox.sizedBoxH10,
             Expanded(
               child: ListView.builder(
-                itemCount: mainSaleCtrl.productList.length,
+                itemCount: mainSaleCtrl.filteredProducts.length,
                 shrinkWrap: true,
-                itemBuilder: (context, index) =>                 
-                 GestureDetector(
-                  onTap: ()=>{mainSaleCtrl.selectedProduct.value=mainSaleCtrl.productList[index]},
-                   child: Column(
+                itemBuilder: (context, index) => GestureDetector(
+                  onTap: () => {
+                    mainSaleCtrl.addSaleProductList(
+                        mainSaleCtrl.filteredProducts[index]),
+                    Get.back()
+                  },
+                  child: Column(
                     children: [
                       Row(
                         children: [
-                           Text(
-                            mainSaleCtrl.productList[index].producTName ?? '',
+                          Text(
+                            mainSaleCtrl.filteredProducts[index].producTName ??
+                                '',
                             overflow: TextOverflow.ellipsis,
                             maxLines: 4,
                             style: TextStyle(
@@ -615,7 +667,9 @@ class _AddProductDialogState extends State<AddProductDialog> {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: mainSaleCtrl.productList[index].producTCost.toString(),
+                                  text: mainSaleCtrl
+                                      .filteredProducts[index].producTCost
+                                      .toString(),
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15.0,
@@ -638,7 +692,9 @@ class _AddProductDialogState extends State<AddProductDialog> {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: mainSaleCtrl.productList[index].sellinGCost.toString(),
+                                  text: mainSaleCtrl
+                                      .filteredProducts[index].sellinGCost
+                                      .toString(),
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15.0,
@@ -652,8 +708,8 @@ class _AddProductDialogState extends State<AddProductDialog> {
                       ),
                       const Divider(),
                     ],
-                                 ),
-                 ),
+                  ),
+                ),
               ),
             ),
           ],
