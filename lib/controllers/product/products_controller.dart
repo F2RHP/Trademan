@@ -13,22 +13,12 @@ class AllProductCtrl extends BaseController {
   late ProductService service;
   late utilityService utService;
 
-
-  bool isSearch = true;
-
+ var filterText = ''.obs;
 
   TextEditingController ctrlProductName = TextEditingController();
   TextEditingController ctrlNoQuantity = TextEditingController();
   TextEditingController ctrlProductType = TextEditingController();
 
-  onSearch(value) {
-    isSearch = false;
-    searchList = products
-        .where((getValue) =>
-    getValue.producTName!.contains(value) ||
-        getValue.supplieRName!.contains(value))
-        .toList();
-  }
 
   @override
   void onInit() async {
@@ -36,7 +26,7 @@ class AllProductCtrl extends BaseController {
     service=ProductService();
     utService=utilityService();
     isLoading.value=true;
-    LoadAllProducts;
+    LoadAllProducts();
     isLoading.value=false;
   }
 
@@ -46,5 +36,18 @@ Future<void>LoadAllProducts() async
     products.value = await service.getAllProducts();
     isLoading.value=false;
 }
+
+ List<Product> get filteredProducts {
+    if (filterText.isEmpty) {
+      return products;
+    } else {
+      return products.where((prod) {
+        
+        return prod.producTName!.toLowerCase().contains(filterText.value.toLowerCase());
+      }
+      
+      ).toList();
+    }
+ }
 
 }

@@ -144,6 +144,9 @@ class AppStrings {
   static const String notes = "Notes";
 
 
-
+//SALEORDER SCREEN STRINGS
+  static const String CashTransactionList = "Cash Transaction";
+  static const String customerOrderList = "Customer Order";
+   static const String customerOrderDetails = "Order Details";
 
 }

@@ -53,6 +53,7 @@ class _CustomersListState extends State<CustomersList> {
                       ),
                       AppSizedBox.sizedBoxH20,
                       TextFormField(
+                        onChanged: (value) => ctrl.filterText.value = value,
                         decoration: InputDecoration(
                           hintText: 'Search...',
                           focusedBorder: OutlineInputBorder(
@@ -81,13 +82,13 @@ class _CustomersListState extends State<CustomersList> {
     return ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: ctrl.customersList.length,
+      itemCount: ctrl.filteredCustomers.length,
       itemBuilder: (context, index) {
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 13.0),
           child: GestureDetector(
             onTap: () {
-              Get.to(const CustomerRegistration(), arguments:  ctrl.customersList[index]);
+              Get.to(const CustomerRegistration(), arguments:  ctrl.filteredCustomers[index]);
             },
             child: Container(
               padding: CustomPadding.padding14,

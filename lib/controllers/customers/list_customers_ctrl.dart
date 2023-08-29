@@ -6,6 +6,7 @@ import 'package:trader_app/services/customerservice.dart';
 import 'add_kpr_customer_controller.dart';
 
 class ListCustomersCtrl extends BaseController {
+  var filterText = ''.obs;
   RxList<CustomersList> customersList = <CustomersList>[].obs;
   RxList searchList = [].obs;
   late CustomerService service;
@@ -32,4 +33,17 @@ class ListCustomersCtrl extends BaseController {
   Future<void> getAllListCustomersList() async {
     customersList.value = await service.getAllListCustomers();
   }
+
+   List<CustomersList> get filteredCustomers {
+    if (filterText.isEmpty) {
+      return customersList;
+    } else {
+      return customersList.where((customer) {
+        
+        return customer.customeRName!.toLowerCase().contains(filterText.value.toLowerCase());
+      }
+      
+      ).toList();
+    }
+   }
 }
