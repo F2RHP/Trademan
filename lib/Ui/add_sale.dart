@@ -453,123 +453,125 @@ class _EditDialogState extends State<EditDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  "Product",
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () => Get.back(),
-                  child: const Icon(Icons.clear),
-                ),
-              ],
-            ),
-            const Divider(),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    widget.product.productName,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 5,
+                  const Text(
+                    "Product",
                     style: TextStyle(
                       fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 15.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          if (widget.product.quantity == 0) {
-                            widget.product.quantity = 0;
-                          } else {
-                            widget.product.quantity--;
-                          }
-                          setState(() {
-                            qu = widget.product.quantity.toString();
-                          });
-                        },
-                        child: Container(
-                            decoration: BoxDecoration(
-                              color: AppColors.red,
-                              shape: BoxShape.rectangle,
-                            ),
-                            child: Icon(Icons.remove, color: AppColors.white)),
-                      ),
-                      Text(
-                          qu.isEmpty ? widget.product.quantity.toString() : qu),
-                      GestureDetector(
-                        onTap: () {
-                          widget.product.quantity++;
-                          setState(() {
-                            qu = widget.product.quantity.toString();
-                          });
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: AppColors.kPrimaryColor,
-                            shape: BoxShape.rectangle,
-                          ),
-                          child: Icon(
-                            Icons.add,
-                            color: AppColors.white,
-                          ),
-                        ),
-                      ),
-                    ],
+                  GestureDetector(
+                    onTap: () => Get.back(),
+                    child: const Icon(Icons.clear),
                   ),
-                  const SizedBox(height: 10.0),
-                  TitleWithTextFormField(
-                      controller: TextEditingController(
-                          text: widget.product.productPrice.toString()),
-                      onChanged: (p0) {
-                        double? parsedValue = double.tryParse(p0);
-                        if (parsedValue != null) {
-                          widget.product.productPrice = parsedValue;
-                        } else {
-                          widget.product.productPrice = 0;
-                        }
-                      },
-                      titleText: 'Product cost(per unit)'),
-                  TitleWithTextFormField(
-                      controller: TextEditingController(
-                          text: widget.product.sellingPrice.toString()),
-                      onChanged: (p0) {
-                        double? parsedValue = double.tryParse(p0);
-                        if (parsedValue != null) {
-                          widget.product.sellingPrice = parsedValue;
-                        } else {
-                          widget.product.sellingPrice = 0;
-                        }
-                      },
-                      titleText: 'Selling Price'),
-                  ElevatedButton(
-                      onPressed: () {
-                        final mainSaleCtrl = Get.put(MainSaleOrderController());
-
-                        widget.product.total = widget.product.quantity *
-                            widget.product.sellingPrice;
-                        mainSaleCtrl.refreshList();
-                        Get.back();
-                      },
-                      child: const Text('Save')),
                 ],
               ),
-            ),
-          ],
+              const Divider(),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  children: [
+                    Text(
+                      widget.product.productName,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 5,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                      ),
+                    ),
+                    const SizedBox(height: 15.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            if (widget.product.quantity == 0) {
+                              widget.product.quantity = 0;
+                            } else {
+                              widget.product.quantity--;
+                            }
+                            setState(() {
+                              qu = widget.product.quantity.toString();
+                            });
+                          },
+                          child: Container(
+                              decoration: BoxDecoration(
+                                color: AppColors.red,
+                                shape: BoxShape.rectangle,
+                              ),
+                              child: Icon(Icons.remove, color: AppColors.white)),
+                        ),
+                        Text(
+                            qu.isEmpty ? widget.product.quantity.toString() : qu),
+                        GestureDetector(
+                          onTap: () {
+                            widget.product.quantity++;
+                            setState(() {
+                              qu = widget.product.quantity.toString();
+                            });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.kPrimaryColor,
+                              shape: BoxShape.rectangle,
+                            ),
+                            child: Icon(
+                              Icons.add,
+                              color: AppColors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10.0),
+                    TitleWithTextFormField(
+                        controller: TextEditingController(
+                            text: widget.product.productPrice.toString()),
+                        onChanged: (p0) {
+                          double? parsedValue = double.tryParse(p0);
+                          if (parsedValue != null) {
+                            widget.product.productPrice = parsedValue;
+                          } else {
+                            widget.product.productPrice = 0;
+                          }
+                        },
+                        titleText: 'Product cost(per unit)'),
+                    TitleWithTextFormField(
+                        controller: TextEditingController(
+                            text: widget.product.sellingPrice.toString()),
+                        onChanged: (p0) {
+                          double? parsedValue = double.tryParse(p0);
+                          if (parsedValue != null) {
+                            widget.product.sellingPrice = parsedValue;
+                          } else {
+                            widget.product.sellingPrice = 0;
+                          }
+                        },
+                        titleText: 'Selling Price'),
+                    ElevatedButton(
+                        onPressed: () {
+                          final mainSaleCtrl = Get.put(MainSaleOrderController());
+      
+                          widget.product.total = widget.product.quantity *
+                              widget.product.sellingPrice;
+                          mainSaleCtrl.refreshList();
+                          Get.back();
+                        },
+                        child: const Text('Save')),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
