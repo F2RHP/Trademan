@@ -1,3 +1,4 @@
+import 'package:trader_app/models/SaleOrders/CashTransactionInput.dart';
 import 'package:trader_app/services/servicebase.dart';
 import 'package:trader_app/services/servicehelper.dart';
 
@@ -76,5 +77,21 @@ class SaleOrderService extends BaseService {
     } catch (e) {
       return <Product>[];
     }
+  }
+
+  Future<bool> addMoneyDetails(CashTransactionData customer)async {
+ 
+
+    var endpoint = ServiceHelper.PostMoneyDetails;
+    final body = customer.toJson();
+
+    try {
+      final response = await post(endpoint, body);
+      return true;
+    } catch (e) {
+      //print('Error occurred: $e');
+      return false;
+    }
+
   }
 }

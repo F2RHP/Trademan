@@ -32,4 +32,6 @@ static String listAllSuppliers = 'Suppliers/GetSuppliers';
    static String customerOrderGetUrl = "CustomerOrder/GetAllCustomerOrders";
    static String customerOrderDetailsGetUrl = "CustomerOrder/GetAllCustomerOrdersDetailsByOrderID";
 static String SalecustomersDetails ="Customer/GetAllCustomerDetails";
+
+static String PostMoneyDetails ="CustomerOrder/PostCashInorOut";
 }

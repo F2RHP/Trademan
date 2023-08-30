@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart';
 import 'package:trader_app/models/SaleOrders/SaleCustomer.dart';
 import 'package:trader_app/services/saleorderservice.dart';
 import 'package:trader_app/services/utilityservice.dart';
@@ -166,7 +167,8 @@ class MainSaleOrderController extends BaseController {
   }
 
   void saveAndNavigate() {
-    if (IsMoney()) {
+    if (IsMoney())
+     {addMoneyDetails();
     } else {}
   }
 
@@ -183,17 +185,18 @@ final saleProductListTemp = saleProductList.toList();
 
   }
 
-  // Future<bool> addCustomer() async {
-  //   CashTransactionData  customer=CashTransactionData(actionCode: 'I',transactionAmount: );
-  //   const endpoint = 'Customer/AddCustomer';
-  //   final body = customer.toJson();
+  Future<bool> addMoneyDetails() async {
+    
+       CashTransactionData  customer=
+    CashTransactionData(actionCode: "I",
+    transactionAmount:transactionAmount.text,
+    transactionId: 0,
+    transactionTypeId: selectedsaleTransaction.value,
+    transactionDate: '2022-11-11',
+    customerId: selectedCustomer.value.customerID ,comments: transactionNotes.text);
 
-  //   try {
-  //     final response = await post(endpoint, body);
-  //     return response > 0;
-  //   } catch (e) {
-  //     print('Error occurred: $e');
-  //     return false;
-  //   }
-  // }
+return service.addMoneyDetails(customer);
+
+
+  }
 }
