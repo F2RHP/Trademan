@@ -301,12 +301,14 @@ class _AddSaleState extends State<AddSale> {
                           Text(mainSaleCtrl.saleProductList[index].total
                               .toString()),
                         ),
-                         DataCell(
+                        DataCell(
                           GestureDetector(
-                            onTap: (){mainSaleCtrl.saleProductList.remove(mainSaleCtrl.saleProductList[index]);
-                            mainSaleCtrl.refreshList();
-                             },
-                            child:const Icon(
+                            onTap: () {
+                              mainSaleCtrl.saleProductList
+                                  .remove(mainSaleCtrl.saleProductList[index]);
+                              mainSaleCtrl.refreshList();
+                            },
+                            child: const Icon(
                               Icons.delete,
                               color: Colors.grey,
                             ),
@@ -512,7 +514,7 @@ class _EditDialogState extends State<EditDialog> {
                       GestureDetector(
                         onTap: () {
                           widget.product.quantity++;
-                           setState(() {
+                          setState(() {
                             qu = widget.product.quantity.toString();
                           });
                         },
@@ -585,149 +587,151 @@ class _AddProductDialogState extends State<AddProductDialog> {
   @override
   Widget build(BuildContext context) {
     final mainSaleCtrl = Get.find<MainSaleOrderController>();
-    return Dialog(
-      child: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Obx(() => Dialog(
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
-                  'Product',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Product',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => Get.back(),
+                      child: const Icon(Icons.clear),
+                    ),
+                  ],
+                ),
+                const Divider(),
+                TextFormField(
+                  onChanged: (value) => mainSaleCtrl.filterText.value = value,
+                  decoration: InputDecoration(
+                    hintText: 'Search...',
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () => Get.back(),
-                  child: const Icon(Icons.clear),
+                AppSizedBox.sizedBoxH10,
+                // DropdownButtonFormField<String>(
+                //   // autovalidateMode: AutovalidateMode.onUserInteraction,
+                //   // value: ctrl.selectedProductType,
+                //   items: ctrl.productType
+                //       .map((label) => DropdownMenuItem<String>(
+                //     value: label,
+                //     child: Text(label.name!),
+                //   ))
+                //       .toList(),
+                //   hint: const Text(AppStrings.ProductType),
+                //   onChanged: (value) {
+                //     setState(() {
+                //       // ctrl.selectedProductType = value!;
+                //     });
+                //   },
+                //   decoration: dropDownDecoration(),
+                // ),
+                AppSizedBox.sizedBoxH10,
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: mainSaleCtrl.filteredProducts.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) => GestureDetector(
+                      onTap: () {
+                        mainSaleCtrl.addSaleProductList(
+                            mainSaleCtrl.filteredProducts[index]);
+                            mainSaleCtrl.filterText.value='';
+                        Get.back();
+                      },
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                mainSaleCtrl
+                                        .filteredProducts[index].producTName ??
+                                    '',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 4,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20.0,
+                                ),
+                              )
+                            ],
+                          ),
+                          AppSizedBox.sizedBoxH10,
+                          Row(
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: 'Cost : ',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18.0,
+                                        color: AppColors.kPrimaryColor,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: mainSaleCtrl
+                                          .filteredProducts[index].producTCost
+                                          .toString(),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15.0,
+                                        color: AppColors.kPrimaryColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              AppSizedBox.sizedBoxW10,
+                              RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: 'Sell : ',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18.0,
+                                        color: AppColors.kPrimaryColor,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: mainSaleCtrl
+                                          .filteredProducts[index].sellinGCost
+                                          .toString(),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15.0,
+                                        color: AppColors.kPrimaryColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Divider(),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
-            const Divider(),
-            TextFormField(
-              onChanged: (value) => mainSaleCtrl.filterText.value = value,
-              decoration: InputDecoration(
-                hintText: 'Search...',
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-              ),
-            ),
-            AppSizedBox.sizedBoxH10,
-            // DropdownButtonFormField<String>(
-            //   // autovalidateMode: AutovalidateMode.onUserInteraction,
-            //   // value: ctrl.selectedProductType,
-            //   items: ctrl.productType
-            //       .map((label) => DropdownMenuItem<String>(
-            //     value: label,
-            //     child: Text(label.name!),
-            //   ))
-            //       .toList(),
-            //   hint: const Text(AppStrings.ProductType),
-            //   onChanged: (value) {
-            //     setState(() {
-            //       // ctrl.selectedProductType = value!;
-            //     });
-            //   },
-            //   decoration: dropDownDecoration(),
-            // ),
-            AppSizedBox.sizedBoxH10,
-            Expanded(
-              child: ListView.builder(
-                itemCount: mainSaleCtrl.filteredProducts.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) => GestureDetector(
-                  onTap: () => {
-                    mainSaleCtrl.addSaleProductList(
-                        mainSaleCtrl.filteredProducts[index]),
-                    Get.back()
-                  },
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            mainSaleCtrl.filteredProducts[index].producTName ??
-                                '',
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 4,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20.0,
-                            ),
-                          )
-                        ],
-                      ),
-                      AppSizedBox.sizedBoxH10,
-                      Row(
-                        children: [
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'Cost : ',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18.0,
-                                    color: AppColors.kPrimaryColor,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: mainSaleCtrl
-                                      .filteredProducts[index].producTCost
-                                      .toString(),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15.0,
-                                    color: AppColors.kPrimaryColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          AppSizedBox.sizedBoxW10,
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'Sell : ',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18.0,
-                                    color: AppColors.kPrimaryColor,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: mainSaleCtrl
-                                      .filteredProducts[index].sellinGCost
-                                      .toString(),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15.0,
-                                    color: AppColors.kPrimaryColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      const Divider(),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+          ),
+        ));
   }
 }
