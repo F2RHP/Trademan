@@ -253,10 +253,7 @@ class _AddSaleState extends State<AddSale> {
                         DataCell(
                           GestureDetector(
                             onTap: () => {
-                              if(true)
-                              {
-
-                              },
+                              if (true) {},
                               showDialog(
                                 context: context,
                                 builder: (context) => EditDialog(
@@ -304,10 +301,15 @@ class _AddSaleState extends State<AddSale> {
                           Text(mainSaleCtrl.saleProductList[index].total
                               .toString()),
                         ),
-                        const DataCell(
-                          Icon(
-                            Icons.delete,
-                            color: Colors.grey,
+                         DataCell(
+                          GestureDetector(
+                            onTap: (){mainSaleCtrl.saleProductList.remove(mainSaleCtrl.saleProductList[index]);
+                            mainSaleCtrl.refreshList();
+                             },
+                            child:const Icon(
+                              Icons.delete,
+                              color: Colors.grey,
+                            ),
                           ),
                         ),
                       ],
@@ -334,7 +336,7 @@ class _AddSaleState extends State<AddSale> {
                 ),
                 TableCell(
                   child: Text(
-                    mainSaleCtrl.totalprodctAmount.toString(),
+                    mainSaleCtrl.totalProductAmount.value.toString(),
                     style: const TextStyle(
                       fontSize: 20.0,
                     ),
@@ -431,7 +433,7 @@ List getValues = [
   }
 ];
 
-class EditDialog extends StatelessWidget {
+class EditDialog extends StatefulWidget {
   final SaleProduct product;
 
   EditDialog({
@@ -439,11 +441,15 @@ class EditDialog extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  String qu="";
+  @override
+  State<EditDialog> createState() => _EditDialogState();
+}
+
+class _EditDialogState extends State<EditDialog> {
+  String qu = "";
 
   @override
   Widget build(BuildContext context) {
-    
     return Dialog(
       child: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -472,7 +478,7 @@ class EditDialog extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    product.productName,
+                    widget.product.productName,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 5,
                     style: TextStyle(
@@ -484,12 +490,15 @@ class EditDialog extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       GestureDetector(
-                        onTap: () => {
-                          if (product.quantity == 0)
-                            {product.quantity = 0,
-                            qu=product.quantity.toString()}
-                          else
-                            {product.quantity--,qu=product.quantity.toString()}
+                        onTap: () {
+                          if (widget.product.quantity == 0) {
+                            widget.product.quantity = 0;
+                          } else {
+                            widget.product.quantity--;
+                          }
+                          setState(() {
+                            qu = widget.product.quantity.toString();
+                          });
                         },
                         child: Container(
                             decoration: BoxDecoration(
@@ -498,10 +507,14 @@ class EditDialog extends StatelessWidget {
                             ),
                             child: Icon(Icons.remove, color: AppColors.white)),
                       ),
-                      Text(qu.isEmpty? product.quantity.toString():qu),
+                      Text(
+                          qu.isEmpty ? widget.product.quantity.toString() : qu),
                       GestureDetector(
                         onTap: () {
-                          product.quantity++;
+                          widget.product.quantity++;
+                           setState(() {
+                            qu = widget.product.quantity.toString();
+                          });
                         },
                         child: Container(
                           decoration: BoxDecoration(
@@ -519,34 +532,34 @@ class EditDialog extends StatelessWidget {
                   const SizedBox(height: 10.0),
                   TitleWithTextFormField(
                       controller: TextEditingController(
-                          text: product.productPrice.toString()),
+                          text: widget.product.productPrice.toString()),
                       onChanged: (p0) {
                         double? parsedValue = double.tryParse(p0);
                         if (parsedValue != null) {
-                          product.productPrice = parsedValue;
+                          widget.product.productPrice = parsedValue;
                         } else {
-                          product.productPrice = 0;
+                          widget.product.productPrice = 0;
                         }
                       },
                       titleText: 'Product cost(per unit)'),
                   TitleWithTextFormField(
                       controller: TextEditingController(
-                          text: product.sellingPrice.toString()),
+                          text: widget.product.sellingPrice.toString()),
                       onChanged: (p0) {
                         double? parsedValue = double.tryParse(p0);
                         if (parsedValue != null) {
-                          product.sellingPrice = parsedValue;
+                          widget.product.sellingPrice = parsedValue;
                         } else {
-                          product.sellingPrice = 0;
+                          widget.product.sellingPrice = 0;
                         }
                       },
                       titleText: 'Selling Price'),
                   ElevatedButton(
                       onPressed: () {
-
                         final mainSaleCtrl = Get.put(MainSaleOrderController());
 
-                        product.total = product.quantity * product.sellingPrice;
+                        widget.product.total = widget.product.quantity *
+                            widget.product.sellingPrice;
                         mainSaleCtrl.refreshList();
                         Get.back();
                       },

@@ -65,9 +65,11 @@ class MainSaleOrderController extends BaseController {
 
   final filterText = "".obs;
 
-  double get totalprodctAmount {
-    return saleProductList.fold(
-        0, (sum, product) => sum + product.sellingPrice);
+  final totalProductAmount = 0.0.obs;
+
+  void CalculateTotalprodctAmount() {
+     totalProductAmount.value=saleProductList.fold(
+        0, (sum, product) => sum + product.total);
   }
 
   List<Product> get filteredProducts {
@@ -151,6 +153,8 @@ class MainSaleOrderController extends BaseController {
     );
 
     saleProductList.add(sp);
+    UpdateSerialnumber();
+    CalculateTotalprodctAmount();
   }
 
   void UpdateSerialnumber() {
@@ -174,6 +178,8 @@ class MainSaleOrderController extends BaseController {
   void refreshList() {
 final saleProductListTemp = saleProductList.toList();
     saleProductList.value=saleProductListTemp;
+    UpdateSerialnumber();
+    CalculateTotalprodctAmount();
 
   }
 
