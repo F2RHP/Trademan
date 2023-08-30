@@ -384,8 +384,8 @@ class _AddSaleState extends State<AddSale> {
                     DateFormat('yyyy-MM-dd').format(value!);
               });
             },
-            titleText: AppStrings.Data_Birth,
-            hintText: AppStrings.Data_Birth,
+            titleText: AppStrings.Trans_Date,
+            hintText: AppStrings.Trans_Date,
             controller: mainSaleCtrl.dataController,
           ),
           TitleWithTextFormField(

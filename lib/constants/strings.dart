@@ -148,5 +148,5 @@ class AppStrings {
   static const String CashTransactionList = "Cash Transaction";
   static const String customerOrderList = "Customer Order";
    static const String customerOrderDetails = "Order Details";
-
+static const String Trans_Date = "Transaction Date";
 }

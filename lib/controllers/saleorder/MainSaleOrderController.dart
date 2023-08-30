@@ -191,11 +191,21 @@ final saleProductListTemp = saleProductList.toList();
     CashTransactionData(actionCode: "I",
     transactionAmount:transactionAmount.text,
     transactionId: 0,
-    transactionTypeId: selectedsaleTransaction.value,
-    transactionDate: '2022-11-11',
+    transactionTypeId: selectedsaleTransaction,
+    transactionDate: dataController.text,
     customerId: selectedCustomer.value.customerID ,comments: transactionNotes.text);
 
-return service.addMoneyDetails(customer);
+ if(await service.addMoneyDetails(customer))
+ {
+  Get.snackbar("Information", "Saved sucessfullly");
+  dataController.text="";
+  transactionNotes.text="";
+  return true;
+   }
+ else{
+  Get.snackbar("Information", "Failed to save");
+   return false;
+ }
 
 
   }
