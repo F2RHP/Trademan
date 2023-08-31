@@ -7,8 +7,28 @@ import '../../controllers/saleorder/SaleOrderCashController.dart';
 import '../../models/SaleOrders/customerorder.dart';
 import '../../screens/shared_widgets/sized_box.dart';
 
-class CustomerOrderListScreen extends StatelessWidget {
+class CustomerOrderListScreen extends StatefulWidget {
+  @override
+  State<CustomerOrderListScreen> createState() => _CustomerOrderListScreenState();
+}
+
+class _CustomerOrderListScreenState extends State<CustomerOrderListScreen> {
   final controller = Get.put(CustomerOrderController());
+
+int? arguments = Get.arguments as int?;
+
+  @override
+  void initState() {
+    if (arguments!=null && arguments!>0) {
+      controller.Bycustomer = true;
+      controller.customerId = arguments!;
+    }  else {
+      controller.Bycustomer = false;
+      controller.customerId = 0;
+    }
+    controller.LoadCustomerOrderTransactions();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +147,6 @@ class CustomerOrderListScreen extends StatelessWidget {
     },
   );
 }
-
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(

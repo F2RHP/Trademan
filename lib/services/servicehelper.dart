@@ -34,4 +34,8 @@ static String listAllSuppliers = 'Suppliers/GetSuppliers';
 static String SalecustomersDetails ="Customer/GetAllCustomerDetails";
 
 static String PostMoneyDetails ="CustomerOrder/PostCashInorOut";
+
+  static var customerOrderDetailsGetUrlByCustomer="CustomerOrder/GetAllCustomerOrdersByCustomer";
+
+  static var customerCashTransactionGetUrlByCustomer="CustomerOrder/GetAllCustomerCashTransactionByCustomer";
 }

@@ -98,6 +98,7 @@ class AppStrings {
 
   //Customers
   static const String Customer = "Customer";
+  static const String Customer_List = "Customer List";
   static const String AddCustomer = "Add customer";
   static const String Customer_Name = "Name";
   static const String Nick_Name = "Nick Name";
