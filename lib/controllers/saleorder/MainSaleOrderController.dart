@@ -197,7 +197,7 @@ final saleProductListTemp = saleProductList.toList();
 
  if(await service.addMoneyDetails(customer))
  {
-  Get.snackbar("Information", "Saved sucessfullly");
+  Get.snackbar("Information", "Saved successfully");
   dataController.text="";
   transactionNotes.text="";
   return true;

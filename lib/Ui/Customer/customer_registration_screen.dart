@@ -109,7 +109,7 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
           hintText: AppStrings.Father_Name,
         ),
         // Title product ID
-        const CustomText(text: AppStrings.Gender),
+        const CustomText(text: AppStrings.Gender,isRequired: true,),
         AppSizedBox.sizedBoxH10,
         Obx(
           () => DropdownButtonFormField(
@@ -154,7 +154,6 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
         // Title SELLING_COST
         TitleWithTextFormField(
           isRequired: true,
-
           titleText: AppStrings.Address1,
           hintText: AppStrings.Address1,
           controller: ctrl.address1Controller,
