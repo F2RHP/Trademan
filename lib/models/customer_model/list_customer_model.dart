@@ -29,9 +29,9 @@ class CustomersList {
     this.gender,
     this.pincode,
     this.dob,
-    this.amounTDue,
-    this.amounTOwed,
-    this.balance,
+    this.amounT_PRODUCT,
+    this.amounT_CASH,
+    this.totaL_BALANCE,
     this.email,
   });
 
@@ -53,9 +53,9 @@ class CustomersList {
     String? gender;
     String? pincode;
     dynamic dob;
-    int? amounTDue;
-    int? amounTOwed;
-    int? balance;
+    int? amounT_PRODUCT;
+    int? amounT_CASH;
+    int? totaL_BALANCE;
     String? email;
 
   factory CustomersList.fromMap(Map<String, dynamic> json) => CustomersList(
@@ -77,9 +77,9 @@ class CustomersList {
         gender: json["gender"],
         pincode: json["pincode"],
         dob: json["dob"],
-        amounTDue: json["amounT_DUE"],
-        amounTOwed: json["amounT_OWED"],
-        balance: json["balance"],
+        amounT_PRODUCT: json["amounT_PRODUCT"],
+        amounT_CASH: json["amounT_CASH"],
+        totaL_BALANCE: json["totaL_BALANCE"],
         email: json["email"],
       );
 
@@ -102,9 +102,9 @@ class CustomersList {
         "gender": gender,
         "pincode": pincode,
         "dob": dob,
-        "amounT_DUE": amounTDue,
-        "amounT_OWED": amounTOwed,
-        "balance": balance,
+        "amounT_PRODUCT": amounT_PRODUCT,
+        "amounT_CASH": amounT_CASH,
+        "totaL_BALANCE": totaL_BALANCE,
         "email": email,
       };
 }
