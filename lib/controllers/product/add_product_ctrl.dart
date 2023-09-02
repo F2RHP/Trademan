@@ -56,15 +56,14 @@ class AddProductCtrl extends BaseController {
     isLoading.value=false;
   }
   Future<void> saveData() async{
-    if (productNameCtrl.text.isEmpty ||
-        productDecCtrl.text.isEmpty ||
-        productNotesCtrl.text.isEmpty ||
-        productCostCtrl.text.isEmpty ||
+    if (productNameCtrl.text.isEmpty||
         sellingCostCtrl.text.isEmpty ||
-        purchaseNotesCtrl.text.isEmpty||
+        supplierList.isEmpty ||
+        productNoOfquantityCtrl.text.isEmpty||
+        productCostCtrl.text.isEmpty||
         selectedQuantity ==null||
-        selectedProductType==null||
-        selectedSupplier==null
+        productType.isEmpty||
+        quantityType.isEmpty
         ) {
       Get.snackbar(
         "Error",

@@ -195,6 +195,7 @@ class MainSaleOrderController extends BaseController {
   }
 
   Future<bool> addMoneyDetails() async {
+
     CashTransactionData customer = CashTransactionData(
         actionCode: "I",
         transactionAmount: transactionAmount.text,
@@ -214,6 +215,7 @@ class MainSaleOrderController extends BaseController {
       return false;
     }
   }
+
 
     Future<bool> addProductOrderDetails() async {
 
