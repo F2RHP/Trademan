@@ -8,12 +8,16 @@ class SaleOrderCashController extends BaseController {
   late SaleOrderService service;
   RxInt quantity = 0.obs;
 
+  var Bycustomer=false;
+
+  var customerId=0;
+
   @override
   void onInit() {
     service = SaleOrderService();
 
     isLoading.value = true;
-    LoadAllCashTransactions();
+    //LoadAllCashTransactions();
     isLoading.value = false;
 
     super.onInit();
@@ -21,7 +25,12 @@ class SaleOrderCashController extends BaseController {
 
   Future<void> LoadAllCashTransactions() async {
     isLoading.value = true;
-    cashTransactions.value = await service.getAllCashTransaction();
+    if (Bycustomer) {
+      cashTransactions.value =
+          await service.getAllCashTransaction_ByCustomer(customerId);
+    } else {
+      cashTransactions.value = await service.getAllCashTransaction();
+    }
     isLoading.value = false;
   }
 }

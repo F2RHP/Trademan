@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:group_button/group_button.dart';
 import 'package:trader_app/Ui/Common_Codes/common_codes.dart';
+import 'package:trader_app/Ui/SaleOrder/Cash_TransactionList.dart';
+import 'package:trader_app/Ui/SaleOrder/CustomerOrderListScreen.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/controllers/customers/list_customers_ctrl.dart';
+import 'package:trader_app/controllers/saleorder/CustomerOrderController.dart';
+import 'package:trader_app/controllers/saleorder/SaleOrderCashController.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
 
+import '../../screens/shared_widgets/custom_btn.dart';
 import 'customer_registration_screen.dart';
 
 class CustomersList extends StatefulWidget {
@@ -26,53 +31,53 @@ class _CustomersListState extends State<CustomersList> {
         () => Padding(
           padding: const EdgeInsets.all(13.0),
           child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      AppSizedBox.sizedBoxH10,
-                      const KPRTraders(),
-                      AppSizedBox.sizedBoxH20,
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10.0),
-                        child: GroupButton(
-                          buttons: const [
-                            'A-Z',
-                            'Z-A',
-                            'Due',
-                          ],
-                          options: GroupButtonOptions(
-                            unselectedColor: AppColors.blueAccentShade700,
-                            selectedColor: AppColors.blue,
-                            spacing: 0,
-                            buttonWidth: 100,
-                            buttonHeight: 50,
-                            unselectedTextStyle: TextStyle(
-                              color: AppColors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                      AppSizedBox.sizedBoxH20,
-                      TextFormField(
-                        onChanged: (value) => ctrl.filterText.value = value,
-                        decoration: InputDecoration(
-                          hintText: 'Search...',
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                        ),
-                      ),
-                      AppSizedBox.sizedBoxH5,
-                      ctrl.isLoading.value
-                          ? const Center(
-                              child: CircularProgressIndicator(color: Colors.red),
-                            )
-                          : customerCard(),
+            child: Column(
+              children: [
+                AppSizedBox.sizedBoxH10,
+                const KPRTraders(),
+                AppSizedBox.sizedBoxH20,
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10.0),
+                  child: GroupButton(
+                    buttons: const [
+                      'A-Z',
+                      'Z-A',
+                      'Due',
                     ],
+                    options: GroupButtonOptions(
+                      unselectedColor: AppColors.blueAccentShade700,
+                      selectedColor: AppColors.blue,
+                      spacing: 0,
+                      buttonWidth: 100,
+                      buttonHeight: 50,
+                      unselectedTextStyle: TextStyle(
+                        color: AppColors.white,
+                      ),
+                    ),
                   ),
                 ),
+                AppSizedBox.sizedBoxH20,
+                TextFormField(
+                  onChanged: (value) => ctrl.filterText.value = value,
+                  decoration: InputDecoration(
+                    hintText: 'Search...',
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                ),
+                AppSizedBox.sizedBoxH5,
+                ctrl.isLoading.value
+                    ? const Center(
+                        child: CircularProgressIndicator(color: Colors.red),
+                      )
+                    : customerCard(),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -88,7 +93,8 @@ class _CustomersListState extends State<CustomersList> {
           padding: const EdgeInsets.symmetric(vertical: 13.0),
           child: GestureDetector(
             onTap: () {
-              Get.to(const CustomerRegistration(), arguments:  ctrl.filteredCustomers[index]);
+              Get.to(const CustomerRegistration(),
+                  arguments: ctrl.filteredCustomers[index]);
             },
             child: Container(
               padding: CustomPadding.padding14,
@@ -149,6 +155,20 @@ class _CustomersListState extends State<CustomersList> {
                             fontSize: 14.0,
                           ),
                         ),
+                        Column(
+                          children: [
+                            CustomBtn(
+                              label: "Customer Order",
+                              action: () {Get.to( CustomerOrderListScreen(),
+                               arguments:  ctrl.customersList[index].customeRId);},
+                            ),
+                            CustomBtn(
+                              label: "Cash Transaction",
+                             action: () {Get.to( Cash_TransactionList(),
+                               arguments:  ctrl.customersList[index].customeRId);},
+                            )
+                          ],
+                        )
                       ],
                     ),
                   ),
@@ -229,7 +249,7 @@ class _CustomersListState extends State<CustomersList> {
       ),
       centerTitle: true,
       title: Text(
-        AppStrings.AddCustomer,
+        AppStrings.Customer_List,
         style: TextStyle(
           color: AppColors.kSecondaryColor,
         ),

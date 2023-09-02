@@ -23,10 +23,40 @@ class SaleOrderService extends BaseService {
     }
   }
 
+  Future<List<Cash_Transaction>> getAllCashTransaction_ByCustomer(
+      int customerId) async {
+    try {
+      var response = await get<List<dynamic>>(
+          "${ServiceHelper.customerCashTransactionGetUrlByCustomer}?customerId=$customerId");
+
+      List<Cash_Transaction> countryReportList = response
+          .map((mapElement) => Cash_Transaction.fromMap(mapElement))
+          .toList();
+
+      return countryReportList;
+    } catch (e) {
+      return <Cash_Transaction>[];
+    }
+  }
+
   Future<List<CustomerOrder>> getAllCustomerOrder() async {
     try {
       var response =
           await get<List<dynamic>>(ServiceHelper.customerOrderGetUrl);
+      List<CustomerOrder> countryReportList = response
+          .map((mapElement) => CustomerOrder.fromMap(mapElement))
+          .toList();
+
+      return countryReportList;
+    } catch (e) {
+      return <CustomerOrder>[];
+    }
+  }
+
+   Future<List<CustomerOrder>> getAllCustomerOrder_ByCustomer(int customerId) async {
+    try {
+      var response = await get<List<dynamic>>(
+          "${ServiceHelper.customerOrderDetailsGetUrlByCustomer}?customerId=$customerId");
       List<CustomerOrder> countryReportList = response
           .map((mapElement) => CustomerOrder.fromMap(mapElement))
           .toList();
@@ -53,9 +83,10 @@ class SaleOrderService extends BaseService {
   }
 
   //
-    Future<List<SaleCustomer>> getSaleCustomerDetails() async {
+  Future<List<SaleCustomer>> getSaleCustomerDetails() async {
     try {
-      var response =  await get<List<dynamic>>(ServiceHelper.SalecustomersDetails);
+      var response =
+          await get<List<dynamic>>(ServiceHelper.SalecustomersDetails);
 
       List<SaleCustomer> customerList = response
           .map((mapElement) => SaleCustomer.fromMap(mapElement))
@@ -65,9 +96,9 @@ class SaleOrderService extends BaseService {
     } catch (e) {
       return <SaleCustomer>[];
     }
-    }
+  }
 
-     Future<List<Product>> getAllProducts() async {
+  Future<List<Product>> getAllProducts() async {
     try {
       var response = await get<List<dynamic>>(ServiceHelper.productGetUrl);
       List<Product> countryReportList =
@@ -79,9 +110,7 @@ class SaleOrderService extends BaseService {
     }
   }
 
-  Future<bool> addMoneyDetails(CashTransactionData customer)async {
- 
-
+  Future<bool> addMoneyDetails(CashTransactionData customer) async {
     var endpoint = ServiceHelper.PostMoneyDetails;
     final body = customer.toJson();
 
@@ -92,6 +121,5 @@ class SaleOrderService extends BaseService {
       //print('Error occurred: $e');
       return false;
     }
-
   }
 }

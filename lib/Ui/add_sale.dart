@@ -167,8 +167,38 @@ class _AddSaleState extends State<AddSale> {
     );
   }
 
+Widget getBuyOrSale()
+{
+  return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          RadioListTile(
+            title:const Text('Buy'),
+            value: 'Buy',
+            groupValue: mainSaleCtrl.selectedOption.value,
+            onChanged: (value) {
+              setState(() {
+                mainSaleCtrl.selectedOption.value = value.toString();
+              });
+            },
+          ),
+          RadioListTile(
+            title:const Text('Sale'),
+            value: 'Sale',
+            groupValue: mainSaleCtrl.selectedOption.value,
+            onChanged: (value) {
+              setState(() {
+                mainSaleCtrl.selectedOption.value = value.toString();
+              });
+            },
+          ),
+        ],
+      );
+}
+
   Widget goodsView() => Column(
         children: [
+          getBuyOrSale(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -399,6 +429,8 @@ class _AddSaleState extends State<AddSale> {
         ],
       );
 }
+
+
 
 List getValues = [
   {

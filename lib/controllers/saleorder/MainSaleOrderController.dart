@@ -72,6 +72,7 @@ class MainSaleOrderController extends BaseController {
      totalProductAmount.value=saleProductList.fold(
         0, (sum, product) => sum + product.total);
   }
+final selectedOption = 'Buy'.obs;
 
   List<Product> get filteredProducts {
     if (filterText.isEmpty) {
