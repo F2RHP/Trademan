@@ -1,10 +1,11 @@
 import 'package:trader_app/models/SaleOrders/CashTransactionInput.dart';
+import 'package:trader_app/models/SaleOrders/new_order_input.dart' as n;
 import 'package:trader_app/services/servicebase.dart';
 import 'package:trader_app/services/servicehelper.dart';
 
 import '../models/SaleOrders/SaleCustomer.dart';
 import '../models/SaleOrders/cash_transaction.dart';
-import '../models/SaleOrders/customerorder.dart';
+import '../models/SaleOrders/customerorder.dart' ;
 import '../models/SaleOrders/OrderDetails.dart';
 import '../models/product/product_model.dart';
 
@@ -113,6 +114,19 @@ class SaleOrderService extends BaseService {
   Future<bool> addMoneyDetails(CashTransactionData customer) async {
     var endpoint = ServiceHelper.PostMoneyDetails;
     final body = customer.toJson();
+
+    try {
+      final response = await post(endpoint, body);
+      return true;
+    } catch (e) {
+      //print('Error occurred: $e');
+      return false;
+    }
+  }
+
+  addProductOrderDetails(n.ProductOrder productOrder)async {
+    var endpoint = ServiceHelper.PostCustomerOrderDetails;
+    final body = productOrder.toJson();
 
     try {
       final response = await post(endpoint, body);

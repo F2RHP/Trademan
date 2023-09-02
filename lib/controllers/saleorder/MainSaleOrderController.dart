@@ -7,6 +7,7 @@ import 'package:trader_app/services/utilityservice.dart';
 import '../../models/SaleOrders/CashTransactionInput.dart';
 import '../../models/SaleOrders/Saleproduct.dart';
 import '../../models/SaleOrders/cash_transaction.dart';
+import '../../models/SaleOrders/new_order_input.dart';
 import '../../models/product/product_model.dart';
 import '../../models/utility/utility_models.dart';
 import '../base_controller.dart';
@@ -69,10 +70,11 @@ class MainSaleOrderController extends BaseController {
   final totalProductAmount = 0.0.obs;
 
   void CalculateTotalprodctAmount() {
-     totalProductAmount.value=saleProductList.fold(
-        0, (sum, product) => sum + product.total);
+    totalProductAmount.value =
+        saleProductList.fold(0, (sum, product) => sum + product.total);
   }
-final selectedOption = 'Buy'.obs;
+
+  final selectedOption = 'Buy'.obs;
 
   List<Product> get filteredProducts {
     if (filterText.isEmpty) {
@@ -125,6 +127,11 @@ final selectedOption = 'Buy'.obs;
     }
   }
 
+  bool Isbuy()
+  {
+    return selectedOption.value.toLowerCase()=="buy";
+  }
+
   Future<void> LoadAllTransactiontype() async {
     isLoading.value = true;
     transactionType.value = await utService.getTransactionTypes();
@@ -168,9 +175,11 @@ final selectedOption = 'Buy'.obs;
   }
 
   void saveAndNavigate() {
-    if (IsMoney())
-     {addMoneyDetails();
-    } else {}
+    isLoading.value=true;
+    if (IsMoney()) {
+      addMoneyDetails();
+    } else {addProductOrderDetails();}
+    isLoading.value=false;
   }
 
   addSaleProductList(Product product) {
@@ -179,35 +188,61 @@ final selectedOption = 'Buy'.obs;
   }
 
   void refreshList() {
-final saleProductListTemp = saleProductList.toList();
-    saleProductList.value=saleProductListTemp;
+    final saleProductListTemp = saleProductList.toList();
+    saleProductList.value = saleProductListTemp;
     UpdateSerialnumber();
     CalculateTotalprodctAmount();
-
   }
 
   Future<bool> addMoneyDetails() async {
-    
-       CashTransactionData  customer=
-    CashTransactionData(actionCode: "I",
-    transactionAmount:transactionAmount.text,
-    transactionId: 0,
-    transactionTypeId: selectedsaleTransaction,
-    transactionDate: dataController.text,
-    customerId: selectedCustomer.value.customerID ,comments: transactionNotes.text);
+    CashTransactionData customer = CashTransactionData(
+        actionCode: "I",
+        transactionAmount: transactionAmount.text,
+        transactionId: 0,
+        transactionTypeId: selectedsaleTransaction,
+        transactionDate: dataController.text,
+        customerId: selectedCustomer.value.customerID,
+        comments: transactionNotes.text);
 
- if(await service.addMoneyDetails(customer))
- {
-  Get.snackbar("Information", "Saved sucessfullly");
-  dataController.text="";
-  transactionNotes.text="";
-  return true;
-   }
- else{
-  Get.snackbar("Information", "Failed to save");
-   return false;
- }
+    if (await service.addMoneyDetails(customer)) {
+      Get.snackbar("Information", "Saved sucessfullly");
+      dataController.text = "";
+      transactionNotes.text = "";
+      return true;
+    } else {
+      Get.snackbar("Information", "Failed to save");
+      return false;
+    }
+  }
 
+    Future<bool> addProductOrderDetails() async {
 
+Customer customer=Customer(customerId: selectedCustomer.value.customerID, name: selectedCustomer.value.customerName, email: '');
+
+List<OrderDetail> order_information =[];
+for (var element in saleProductList) {
+  OrderDetail d=OrderDetail(productId: element.productId,
+   productPrice: element.productPrice, 
+   sellingPrice: element.sellingPrice, 
+   quantity: element.quantity);
+   order_information.add(d);
+}
+OrderDetails order_details=OrderDetails(orderDetail: order_information);
+
+double? customerGiv = double.tryParse(customerGiven.text);
+var customerOrder =  CustomerOrder(customerGiven:customerGiv!,
+orderDate: DateTime.now(),isBuyOrder: Isbuy()?1:0,orderDetails: order_details,orderNotes: orderNotes.text);
+
+ProductOrder productOrder=ProductOrder(customer: customer, customerOrder: customerOrder);
+
+    if (await service.addProductOrderDetails(productOrder)) {
+      Get.snackbar("Information", "Saved sucessfullly");
+      dataController.text = "";
+      transactionNotes.text = "";
+      return true;
+    } else {
+      Get.snackbar("Information", "Failed to save");
+      return false;
+    }
   }
 }
