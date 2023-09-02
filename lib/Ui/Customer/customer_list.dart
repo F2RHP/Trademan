@@ -174,7 +174,7 @@ class _CustomersListState extends State<CustomersList> {
                               borderRadius: CustomBorderRadius.borderRadius8,
                             ),
                             child: Text(
-                              'Rs.${ctrl.filteredCustomers[index].amounTDue}',
+                              'Rs.${ctrl.filteredCustomers[index].amounT_PRODUCT}',
                               style: TextStyle(
                                 fontSize: 14.0,
                                 color: AppColors.white,
@@ -190,7 +190,7 @@ class _CustomersListState extends State<CustomersList> {
                               borderRadius: CustomBorderRadius.borderRadius8,
                             ),
                             child: Text(
-                              'Rs.${ctrl.filteredCustomers[index].amounTOwed}',
+                              'Rs.${ctrl.filteredCustomers[index].amounT_CASH}',
                               style: TextStyle(
                                 fontSize: 14.0,
                                 color: AppColors.white,
@@ -206,7 +206,7 @@ class _CustomersListState extends State<CustomersList> {
                               borderRadius: CustomBorderRadius.borderRadius8,
                             ),
                             child: Text(
-                              'Rs.${ctrl.filteredCustomers[index].balance}',
+                              'Rs.${ctrl.filteredCustomers[index].totaL_BALANCE}',
                               style: TextStyle(
                                 fontSize: 14.0,
                                 color: AppColors.white,

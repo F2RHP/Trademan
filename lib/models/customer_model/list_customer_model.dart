@@ -40,7 +40,7 @@ class CustomersList {
     String? customeRNickname;
     String? fatheRName;
     String? villagename;
-    dynamic contactnumber;
+    String? contactnumber;
     String? customeRNotes;
     int? brancHId;
     String? brancHName;
@@ -64,7 +64,7 @@ class CustomersList {
         customeRNickname: json["customeR_NICKNAME"],
         fatheRName: json["fatheR_NAME"],
         villagename: json["villagename"],
-        contactnumber: '',//json["contactnumber"]
+        contactnumber: json["customeR_CONTACT"],
         customeRNotes: json["customeR_NOTES"],
         brancHId: json["brancH_ID"],
         brancHName: json["brancH_NAME"],
@@ -89,7 +89,7 @@ class CustomersList {
         "customeR_NICKNAME": customeRNickname,
         "fatheR_NAME": fatheRName,
         "villagename": villagename,
-        "contactnumber": contactnumber,
+        "customeR_CONTACT": contactnumber,
         "customeR_NOTES": customeRNotes,
         "brancH_ID": brancHId,
         "brancH_NAME": brancHName,
