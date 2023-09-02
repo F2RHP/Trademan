@@ -127,9 +127,8 @@ class MainSaleOrderController extends BaseController {
     }
   }
 
-  bool Isbuy()
-  {
-    return selectedOption.value.toLowerCase()=="buy";
+  bool Isbuy() {
+    return selectedOption.value.toLowerCase() == "buy";
   }
 
   Future<void> LoadAllTransactiontype() async {
@@ -175,11 +174,13 @@ class MainSaleOrderController extends BaseController {
   }
 
   void saveAndNavigate() {
-    isLoading.value=true;
+    isLoading.value = true;
     if (IsMoney()) {
       addMoneyDetails();
-    } else {addProductOrderDetails();}
-    isLoading.value=false;
+    } else {
+      addProductOrderDetails();
+    }
+    isLoading.value = false;
   }
 
   addSaleProductList(Product product) {
@@ -195,7 +196,6 @@ class MainSaleOrderController extends BaseController {
   }
 
   Future<bool> addMoneyDetails() async {
-
     CashTransactionData customer = CashTransactionData(
         actionCode: "I",
         transactionAmount: transactionAmount.text,
@@ -209,6 +209,7 @@ class MainSaleOrderController extends BaseController {
       Get.snackbar("Information", "Saved sucessfullly");
       dataController.text = "";
       transactionNotes.text = "";
+      transactionAmount.text = "";
       return true;
     } else {
       Get.snackbar("Information", "Failed to save");
@@ -216,31 +217,40 @@ class MainSaleOrderController extends BaseController {
     }
   }
 
+  Future<bool> addProductOrderDetails() async {
+    Customer customer = Customer(
+        customerId: selectedCustomer.value.customerID,
+        name: selectedCustomer.value.customerName,
+        email: '');
 
-    Future<bool> addProductOrderDetails() async {
+    List<OrderDetail> order_information = [];
+    for (var element in saleProductList) {
+      OrderDetail d = OrderDetail(
+          productId: element.productId,
+          productPrice: element.productPrice,
+          sellingPrice: element.sellingPrice,
+          quantity: element.quantity);
+      order_information.add(d);
+    }
+    OrderDetails order_details = OrderDetails(orderDetail: order_information);
 
-Customer customer=Customer(customerId: selectedCustomer.value.customerID, name: selectedCustomer.value.customerName, email: '');
+    double? customerGiv = double.tryParse(customerGiven.text);
+    var customerOrder = CustomerOrder(
+        customerGiven: customerGiv!,
+        orderDate: DateTime.now(),
+        isBuyOrder: Isbuy() ? 1 : 0,
+        orderDetails: order_details,
+        orderNotes: orderNotes.text);
 
-List<OrderDetail> order_information =[];
-for (var element in saleProductList) {
-  OrderDetail d=OrderDetail(productId: element.productId,
-   productPrice: element.productPrice, 
-   sellingPrice: element.sellingPrice, 
-   quantity: element.quantity);
-   order_information.add(d);
-}
-OrderDetails order_details=OrderDetails(orderDetail: order_information);
-
-double? customerGiv = double.tryParse(customerGiven.text);
-var customerOrder =  CustomerOrder(customerGiven:customerGiv!,
-orderDate: DateTime.now(),isBuyOrder: Isbuy()?1:0,orderDetails: order_details,orderNotes: orderNotes.text);
-
-ProductOrder productOrder=ProductOrder(customer: customer, customerOrder: customerOrder);
+    ProductOrder productOrder =
+        ProductOrder(customer: customer, customerOrder: customerOrder);
 
     if (await service.addProductOrderDetails(productOrder)) {
       Get.snackbar("Information", "Saved sucessfullly");
-      dataController.text = "";
-      transactionNotes.text = "";
+      orderNotes.text = "";
+      customerGiven.text = "";
+      totalProductAmount.value=0;
+      saleProductList.clear();
       return true;
     } else {
       Get.snackbar("Information", "Failed to save");

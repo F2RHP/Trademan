@@ -124,7 +124,7 @@ class _CustomersListState extends State<CustomersList> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Name : ${ctrl.customersList[index].customeRName!}',
+                          'Name : ${ctrl.filteredCustomers[index].customeRName!}',
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
@@ -132,7 +132,7 @@ class _CustomersListState extends State<CustomersList> {
                           ),
                         ),
                         Text(
-                          'Father : ${ctrl.customersList[index].fatheRName!}',
+                          'Father : ${ctrl.filteredCustomers[index].fatheRName!}',
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
@@ -140,7 +140,7 @@ class _CustomersListState extends State<CustomersList> {
                           ),
                         ),
                         Text(
-                          'Village : ${ctrl.customersList[index].villagename!}',
+                          'Village : ${ctrl.filteredCustomers[index].villagename!}',
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
@@ -148,7 +148,7 @@ class _CustomersListState extends State<CustomersList> {
                           ),
                         ),
                         Text(
-                          'Phone No : ${ctrl.customersList[index].contactnumber!}',
+                          'Phone No : ${ctrl.filteredCustomers[index].contactnumber!}',
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
@@ -160,12 +160,12 @@ class _CustomersListState extends State<CustomersList> {
                             CustomBtn(
                               label: "Customer Order",
                               action: () {Get.to( CustomerOrderListScreen(),
-                               arguments:  ctrl.customersList[index].customeRId);},
+                               arguments:  ctrl.filteredCustomers[index].customeRId);},
                             ),
                             CustomBtn(
                               label: "Cash Transaction",
                              action: () {Get.to( Cash_TransactionList(),
-                               arguments:  ctrl.customersList[index].customeRId);},
+                               arguments:  ctrl.filteredCustomers[index].customeRId);},
                             )
                           ],
                         )
@@ -182,7 +182,7 @@ class _CustomersListState extends State<CustomersList> {
                           borderRadius: CustomBorderRadius.borderRadius8,
                         ),
                         child: Text(
-                          'Rs.${ctrl.customersList[index].amounTDue}',
+                          'Rs.${ctrl.filteredCustomers[index].amounTDue}',
                           style: TextStyle(
                             fontSize: 14.0,
                             color: AppColors.white,
@@ -198,7 +198,7 @@ class _CustomersListState extends State<CustomersList> {
                           borderRadius: CustomBorderRadius.borderRadius8,
                         ),
                         child: Text(
-                          'Rs.${ctrl.customersList[index].amounTOwed}',
+                          'Rs.${ctrl.filteredCustomers[index].amounTOwed}',
                           style: TextStyle(
                             fontSize: 14.0,
                             color: AppColors.white,
@@ -214,7 +214,7 @@ class _CustomersListState extends State<CustomersList> {
                           borderRadius: CustomBorderRadius.borderRadius8,
                         ),
                         child: Text(
-                          'Rs.${ctrl.customersList[index].balance}',
+                          'Rs.${ctrl.filteredCustomers[index].balance}',
                           style: TextStyle(
                             fontSize: 14.0,
                             color: AppColors.white,
