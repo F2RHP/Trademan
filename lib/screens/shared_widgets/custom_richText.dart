@@ -12,7 +12,7 @@ class CustomRichText extends StatelessWidget {
   final double height;
   final Color color;
   final TextAlign align;
-  final FontWeight weight;
+  final FontWeight fontWeight;
   final List<TextSpan> children;
   final TextDirection? direction;
   const CustomRichText({
@@ -25,7 +25,7 @@ class CustomRichText extends StatelessWidget {
     this.height = 1,
     this.color = Colors.black,
     this.align = TextAlign.center,
-    this.weight = FontWeight.normal,
+    this.fontWeight = FontWeight.normal,
   }) : super(key: key);
 
   @override
@@ -33,12 +33,14 @@ class CustomRichText extends StatelessWidget {
     return RichText(
       textAlign: align,
       textDirection: direction,
+      maxLines: 2,
+      overflow: TextOverflow.ellipsis,
       text: TextSpan(
         text: text,
         style: GoogleFonts.nunito(
           color: color,
           fontSize: fontSize ?? Dimensions.calcH(18),
-          fontWeight: weight,
+          fontWeight: fontWeight,
           letterSpacing: spacing,
           height: height,
         ),

@@ -7,8 +7,7 @@ import 'package:trader_app/Ui/SaleOrder/CustomerOrderListScreen.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/controllers/customers/list_customers_ctrl.dart';
-import 'package:trader_app/controllers/saleorder/CustomerOrderController.dart';
-import 'package:trader_app/controllers/saleorder/SaleOrderCashController.dart';
+import 'package:trader_app/screens/shared_widgets/custom_richText.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
 
 import '../../screens/shared_widgets/custom_btn.dart';
@@ -102,125 +101,170 @@ class _CustomersListState extends State<CustomersList> {
                 borderRadius: CustomBorderRadius.borderRadius10,
                 border: Border.all(),
               ),
-              child: Row(
+              child: Column(
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(),
-                    ),
-                    child: Padding(
-                      padding: CustomPadding.padding5,
-                      child: const Icon(
-                        Icons.person,
-                        size: 40.0,
-                      ),
-                    ),
-                  ),
-                  AppSizedBox.sizedBoxW8,
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 2.03,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Name : ${ctrl.filteredCustomers[index].customeRName!}',
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 14.0,
-                          ),
-                        ),
-                        Text(
-                          'Father : ${ctrl.filteredCustomers[index].fatheRName!}',
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 14.0,
-                          ),
-                        ),
-                        Text(
-                          'Village : ${ctrl.filteredCustomers[index].villagename!}',
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 14.0,
-                          ),
-                        ),
-                        Text(
-                          'Phone No : ${ctrl.filteredCustomers[index].contactnumber!}',
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 14.0,
-                          ),
-                        ),
-                        Column(
-                          children: [
-                            CustomBtn(
-                              label: "Customer Order",
-                              action: () {Get.to( CustomerOrderListScreen(),
-                               arguments:  ctrl.filteredCustomers[index].customeRId);},
-                            ),
-                            CustomBtn(
-                              label: "Cash Transaction",
-                             action: () {Get.to( Cash_TransactionList(),
-                               arguments:  ctrl.filteredCustomers[index].customeRId);},
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  AppSizedBox.sizedBoxW8,
-                  Column(
+                  Row(
                     children: [
                       Container(
-                        padding: CustomPadding.padding8,
                         decoration: BoxDecoration(
-                          color: AppColors.red,
-                          borderRadius: CustomBorderRadius.borderRadius8,
+                          shape: BoxShape.circle,
+                          border: Border.all(),
                         ),
-                        child: Text(
-                          'Rs.${ctrl.filteredCustomers[index].amounT_PRODUCT}',
-                          style: TextStyle(
-                            fontSize: 14.0,
-                            color: AppColors.white,
-                            fontWeight: FontWeight.bold,
+                        child: Padding(
+                          padding: CustomPadding.padding5,
+                          child: const Icon(
+                            Icons.person,
+                            size: 40.0,
                           ),
                         ),
                       ),
-                      AppSizedBox.sizedBoxH5,
-                      Container(
-                        padding: CustomPadding.padding8,
-                        decoration: BoxDecoration(
-                          color: AppColors.red,
-                          borderRadius: CustomBorderRadius.borderRadius8,
-                        ),
-                        child: Text(
-                          'Rs.${ctrl.filteredCustomers[index].amounT_CASH}',
-                          style: TextStyle(
-                            fontSize: 14.0,
-                            color: AppColors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      AppSizedBox.sizedBoxW8,
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 2.03,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomRichText(
+                                text: 'Name : ',
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                children: [
+                                  TextSpan(
+                                    text: ctrl
+                                        .filteredCustomers[index].customeRName!,
+                                    style: const TextStyle(
+                                      fontSize: 12.0,
+                                    ),
+                                  ),
+                                ]),
+                            Text(
+                              'Father : ${ctrl.filteredCustomers[index].fatheRName!}',
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 14.0,
+                              ),
+                            ),
+                            Text(
+                              'Village : ${ctrl.filteredCustomers[index].villagename!}',
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 14.0,
+                              ),
+                            ),
+                            Text(
+                              'Phone No : ${ctrl.filteredCustomers[index].contactnumber!}',
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 14.0,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      AppSizedBox.sizedBoxH5,
-                      Container(
-                        padding: CustomPadding.padding8,
-                        decoration: BoxDecoration(
-                          color: AppColors.red,
-                          borderRadius: CustomBorderRadius.borderRadius8,
-                        ),
-                        child: Text(
-                          'Rs.${ctrl.filteredCustomers[index].totaL_BALANCE}',
-                          style: TextStyle(
-                            fontSize: 14.0,
-                            color: AppColors.white,
-                            fontWeight: FontWeight.bold,
+                      AppSizedBox.sizedBoxW8,
+                      Column(
+                        children: [
+                          Container(
+                            padding: CustomPadding.padding8,
+                            decoration: BoxDecoration(
+                              color: AppColors.red,
+                              borderRadius: CustomBorderRadius.borderRadius8,
+                            ),
+                            child: Text(
+                              'Rs.${ctrl.filteredCustomers[index].amounTDue}',
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                color: AppColors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
-                        ),
+                          AppSizedBox.sizedBoxH5,
+                          Container(
+                            padding: CustomPadding.padding8,
+                            decoration: BoxDecoration(
+                              color: AppColors.red,
+                              borderRadius: CustomBorderRadius.borderRadius8,
+                            ),
+                            child: Text(
+                              'Rs.${ctrl.filteredCustomers[index].amounTOwed}',
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                color: AppColors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          AppSizedBox.sizedBoxH5,
+                          Container(
+                            padding: CustomPadding.padding8,
+                            decoration: BoxDecoration(
+                              color: AppColors.red,
+                              borderRadius: CustomBorderRadius.borderRadius8,
+                            ),
+                            child: Text(
+                              'Rs.${ctrl.filteredCustomers[index].balance}',
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                color: AppColors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Row(
+
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Get.to(CustomerOrderListScreen(),
+                              arguments:
+                                  ctrl.filteredCustomers[index].customeRId);
+                        },
+                        child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.kPrimaryColor,
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: Text(
+                              'Customer Order',
+                              style: TextStyle(
+                                color: AppColors.white,
+                              ),
+                            )),
+                      ),
+                      AppSizedBox.sizedBoxW10,
+                      GestureDetector(
+                        onTap: () {
+                          Get.to(Cash_TransactionList(),
+                              arguments:
+                              ctrl.filteredCustomers[index].customeRId);
+                        },
+                        child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.kPrimaryColor,
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: Text(
+                              'Cash Transaction',
+                              style: TextStyle(
+                                color: AppColors.white,
+                              ),
+                            )),
                       ),
                     ],
                   ),

@@ -53,9 +53,9 @@ class CustomersList {
     String? gender;
     String? pincode;
     dynamic dob;
-    int? amounT_PRODUCT;
-    int? amounT_CASH;
-    int? totaL_BALANCE;
+    double? amounT_PRODUCT;
+    double? amounT_CASH;
+    double? totaL_BALANCE;
     String? email;
 
   factory CustomersList.fromMap(Map<String, dynamic> json) => CustomersList(
@@ -64,7 +64,7 @@ class CustomersList {
         customeRNickname: json["customeR_NICKNAME"],
         fatheRName: json["fatheR_NAME"],
         villagename: json["villagename"],
-        contactnumber: json["contactnumber"],
+        contactnumber: '',//json["contactnumber"]
         customeRNotes: json["customeR_NOTES"],
         brancHId: json["brancH_ID"],
         brancHName: json["brancH_NAME"],
