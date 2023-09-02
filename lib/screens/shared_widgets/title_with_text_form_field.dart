@@ -17,6 +17,7 @@ class TitleWithTextFormField extends StatelessWidget {
   final bool? readOnly;
   final double? height;
   final int? maxLines;
+  final int? maxLength;
   const TitleWithTextFormField({
     required this.titleText,
     this.controller,
@@ -28,7 +29,7 @@ class TitleWithTextFormField extends StatelessWidget {
     this.isRequired = false,
     this.readOnly = false,
     Key? key,
-    this.maxLines,
+    this.maxLines, this.maxLength,
   }) : super(key: key);
 
   @override
@@ -52,6 +53,7 @@ class TitleWithTextFormField extends StatelessWidget {
         ),
         AppSizedBox.sizedBoxH8,
         TextFormField(
+          maxLength: maxLength,
           maxLines: maxLines,
           controller: controller,
           keyboardType: type,

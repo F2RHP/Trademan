@@ -26,7 +26,7 @@ class AddKPRCustomerController extends BaseController {
   TextEditingController address1Controller = TextEditingController();
   TextEditingController address2Controller = TextEditingController();
   TextEditingController fatherNameController = TextEditingController();
-  TextEditingController genderController = TextEditingController();
+
   TextEditingController villageNameController = TextEditingController();
   TextEditingController pinCodeController = TextEditingController();
   TextEditingController contactNumberController = TextEditingController();
@@ -37,7 +37,7 @@ class AddKPRCustomerController extends BaseController {
   bool customerFormValidate() {
     if (nameController.text.isEmpty ||
         fatherNameController.text.isEmpty ||
-        genderController.text.isEmpty ||
+        genderDropdownvalue.isEmpty||
         villageNameController.text.isEmpty ||
         contactNumberController.text.isEmpty ||
         address1Controller.text.isEmpty) {
@@ -90,7 +90,7 @@ class AddKPRCustomerController extends BaseController {
     pinCodeController.text = m?.pincode ?? "";
     contactNumberController.text = m?.contactnumber ?? "";
     emailController.text = m?.email ?? "";
-    genderController.text = m?.gender ?? "";
+    genderDropdownvalue.value = m?.gender ?? "";
     dOBController.text = m?.dob! ?? '1899-01-01'; //m.dob;
     DateTime dateTime = DateTime.parse(m?.dob);
     dOBController.text = DateFormat('yyyy-MM-dd').format(dateTime); //m.dob;
