@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/controllers/product/add_product_ctrl.dart';
+import 'package:trader_app/models/product/product_model.dart';
 import 'package:trader_app/models/supplier/supplier.dart';
 import 'package:trader_app/models/utility/utility_models.dart';
 import 'package:trader_app/screens/shared_widgets/custom_btn.dart';
@@ -22,6 +23,18 @@ class _AddProductState extends State<AddProduct> {
   AddProductCtrl ctrl = Get.put(
     AddProductCtrl(),
   );
+   Product? arguments = Get.arguments as Product?;
+
+  @override
+  void initState() {
+    if (arguments != null) {
+      ctrl.action.value = "Edit";
+      ctrl.updateproduct(arguments);
+    } else {
+      ctrl.action.value = "Save";
+    }
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
