@@ -9,6 +9,7 @@ class AppColors {
   static Color kPrimaryDark = Color(0xFF1f302d);
   static Color red = Color(0xFFf2535b);
   static Color grey = Colors.grey;
+  static Color green = Colors.green;
   static Color greyLight = Colors.grey.shade300;
   static Color white = Colors.white;
   static Color blue = Colors.blue;

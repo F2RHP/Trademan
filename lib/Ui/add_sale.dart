@@ -167,34 +167,33 @@ class _AddSaleState extends State<AddSale> {
     );
   }
 
-Widget getBuyOrSale()
-{
-  return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          RadioListTile(
-            title:const Text('Buy'),
-            value: 'Buy',
-            groupValue: mainSaleCtrl.selectedOption.value,
-            onChanged: (value) {
-              setState(() {
-                mainSaleCtrl.selectedOption.value = value.toString();
-              });
-            },
-          ),
-          RadioListTile(
-            title:const Text('Sale'),
-            value: 'Sale',
-            groupValue: mainSaleCtrl.selectedOption.value,
-            onChanged: (value) {
-              setState(() {
-                mainSaleCtrl.selectedOption.value = value.toString();
-              });
-            },
-          ),
-        ],
-      );
-}
+  Widget getBuyOrSale() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        RadioListTile(
+          title: const Text('Buy'),
+          value: 'Buy',
+          groupValue: mainSaleCtrl.selectedOption.value,
+          onChanged: (value) {
+            setState(() {
+              mainSaleCtrl.selectedOption.value = value.toString();
+            });
+          },
+        ),
+        RadioListTile(
+          title: const Text('Sale'),
+          value: 'Sale',
+          groupValue: mainSaleCtrl.selectedOption.value,
+          onChanged: (value) {
+            setState(() {
+              mainSaleCtrl.selectedOption.value = value.toString();
+            });
+          },
+        ),
+      ],
+    );
+  }
 
   Widget goodsView() => Column(
         children: [
@@ -240,7 +239,9 @@ Widget getBuyOrSale()
             controller: mainSaleCtrl.orderNotes,
           ),
           TitleWithTextFormField(
-            titleText: 'Given Amount',
+            titleText: mainSaleCtrl.selectedOption.value == 'Sale'
+                ? 'Customer Given'
+                : 'Trader Given',
             controller: mainSaleCtrl.customerGiven,
           ),
           AppSizedBox.sizedBoxH15,
@@ -430,8 +431,6 @@ Widget getBuyOrSale()
       );
 }
 
-
-
 List getValues = [
   {
     'no': '1',
@@ -540,10 +539,12 @@ class _EditDialogState extends State<EditDialog> {
                                 color: AppColors.red,
                                 shape: BoxShape.rectangle,
                               ),
-                              child: Icon(Icons.remove, color: AppColors.white)),
+                              child:
+                                  Icon(Icons.remove, color: AppColors.white)),
                         ),
-                        Text(
-                            qu.isEmpty ? widget.product.quantity.toString() : qu),
+                        Text(qu.isEmpty
+                            ? widget.product.quantity.toString()
+                            : qu),
                         GestureDetector(
                           onTap: () {
                             widget.product.quantity++;
@@ -591,8 +592,9 @@ class _EditDialogState extends State<EditDialog> {
                         titleText: 'Selling Price'),
                     ElevatedButton(
                         onPressed: () {
-                          final mainSaleCtrl = Get.put(MainSaleOrderController());
-      
+                          final mainSaleCtrl =
+                              Get.put(MainSaleOrderController());
+
                           widget.product.total = widget.product.quantity *
                               widget.product.sellingPrice;
                           mainSaleCtrl.refreshList();
@@ -683,7 +685,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
                       onTap: () {
                         mainSaleCtrl.addSaleProductList(
                             mainSaleCtrl.filteredProducts[index]);
-                            mainSaleCtrl.filterText.value='';
+                        mainSaleCtrl.filterText.value = '';
                         Get.back();
                       },
                       child: Column(

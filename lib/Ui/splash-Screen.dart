@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/get_core.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
 
@@ -15,11 +17,9 @@ class _SplashScreenState extends State<SplashScreen> {
   Future splashScreen() async {
     Future.delayed(
       const Duration(seconds: 4),
-      () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const DashBoard(),
-          )),
+      () => Get.off(
+        () => const DashBoard(),
+      ),
     );
   }
 
