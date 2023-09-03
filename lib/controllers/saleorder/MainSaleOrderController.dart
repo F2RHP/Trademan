@@ -200,7 +200,7 @@ class MainSaleOrderController extends BaseController {
         actionCode: "I",
         transactionAmount: transactionAmount.text,
         transactionId: 0,
-        transactionTypeId: selectedsaleTransaction,
+        transactionTypeId: selectedtransactionType,
         transactionDate: dataController.text,
         customerId: selectedCustomer.value.customerID,
         comments: transactionNotes.text);
