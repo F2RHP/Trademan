@@ -219,7 +219,6 @@ class _CustomersListState extends State<CustomersList> {
                     ],
                   ),
                   Row(
-
                     children: [
                       GestureDetector(
                         onTap: () {

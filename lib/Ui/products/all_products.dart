@@ -28,53 +28,47 @@ class _AllProductsState extends State<AllProducts> {
     return Scaffold(
       appBar: buildAppBar(context),
       body: Obx(
-        () => (ctrl.isLoading.value|| ctrl.products.isEmpty)
+        () => (ctrl.isLoading.value || ctrl.products.isEmpty)
             ? const Center(child: CircularProgressIndicator())
             : Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    topSection(),
-                    AppSizedBox.sizedBoxH20,
-                  /*  ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: GroupButton(
-                          options: GroupButtonOptions(
-                              spacing: 0,
-                              buttonWidth: 100,
-                              buttonHeight: 50,
-                              selectedColor: AppColors.kPrimaryColor,
-                              unselectedColor: AppColors.blueAccentShade700,
-                              unselectedTextStyle: TextStyle(
-                                color: AppColors.white,
-                              )),
-                          buttons: const <String>[
-                            'All',
-                            'In Stock',
-                            'Stock Out'
-                          ]),
-                    ),*/
-                    AppSizedBox.sizedBoxH20,
-                    ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: ctrl.filteredProducts.length,
-                      itemBuilder: (context, index) {
-                        var dateTime = DateTime.parse(
-                            ctrl.products[index].purchasEDate.toString());
-                        DateFormat dateFormat = DateFormat('yyy-MM-dd');
-                        var nowDate = dateFormat.format(dateTime);
-                        return listMenu(
-                            ctrl.filteredProducts[index],
-                            nowDate);
-                      },
-                    ),
-                  ],
+                padding: const EdgeInsets.all(20.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      topSection(),
+                      AppSizedBox.sizedBoxH20,
+                      AppSizedBox.sizedBoxH20,
+                      ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: ctrl.filteredProducts.length,
+                        itemBuilder: (context, index) {
+                          var dateTime = DateTime.parse(
+                              ctrl.products[index].purchasEDate.toString());
+                          DateFormat dateFormat = DateFormat('yyy-MM-dd');
+                          var nowDate = dateFormat.format(dateTime);
+                          return listMenu(
+                              ctrl.filteredProducts[index], nowDate);
+                        },
+                      ),
+                      AppSizedBox.sizedBoxH20,
+                    ],
+                  ),
                 ),
               ),
-            ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.to(
+            () => const AddProduct(),
+          );
+        },
+        child: Icon(
+          Icons.add,
+          size: 40.0,
+          color: AppColors.white,
+        ),
       ),
     );
   }
@@ -226,20 +220,6 @@ class _AllProductsState extends State<AllProducts> {
           ),
         ),
       ),
-      actions: [
-        GestureDetector(
-          onTap: () {
-            Get.to(
-                ()=>const AddProduct(),
-            );
-          },
-          child: Icon(
-            Icons.add,
-            color: AppColors.white,
-          ),
-        ),
-        AppSizedBox.sizedBoxW10,
-      ],
       centerTitle: true,
       title: Text(
         AppStrings.ProductList,
@@ -290,7 +270,7 @@ class _AllProductsState extends State<AllProducts> {
         ),
         SizedBox(height: Dimensions.calcH(15)),*/
         TextFormField(
-           onChanged: (value) => ctrl.filterText.value = value,
+          onChanged: (value) => ctrl.filterText.value = value,
           decoration: InputDecoration(
             hintText: 'Search...',
             focusedBorder: OutlineInputBorder(

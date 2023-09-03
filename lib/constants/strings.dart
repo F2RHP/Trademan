@@ -14,6 +14,7 @@ class AppStrings {
   static const String DOWNLOAD_BTN = "DOWNLOAD";
   static const String You_are_viewing_store = "You are viewing store";
   static const String KPR_Traders = "\"KPR Traders\"";
+  static const String KPR_TradersTitle = "KPR Traders";
 
   /// Splash screen STRINGS
   static const String APP_NAME = "FATURA";

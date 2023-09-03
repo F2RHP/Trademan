@@ -5,7 +5,6 @@ import 'package:trader_app/Ui/Common_Codes/common_codes.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/screens/shared_widgets/custom_btn.dart';
-import 'package:trader_app/screens/shared_widgets/custom_richText.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
 import 'package:trader_app/screens/shared_widgets/title_with_text_form_field.dart';
 import '../../controllers/Expense/add_expense_controller.dart';
@@ -119,7 +118,6 @@ class _AddExpenseState extends State<AddExpense> {
         ),
         AppSizedBox.sizedBoxH15,
         // loadDropdown(),
-
         DropdownButtonFormField<int>(
           value: ctrl.dropDownExpenseType,
           onChanged: (newValue) {
@@ -135,7 +133,6 @@ class _AddExpenseState extends State<AddExpense> {
           }).toList(),
           decoration: dropDownDecoration(),
         ),
-
         AppSizedBox.sizedBoxH25,
         TitleWithTextFormField(
           isRequired: true,
@@ -155,11 +152,6 @@ class _AddExpenseState extends State<AddExpense> {
           hintText: AppStrings.ExpenseDate,
           controller: ctrl.dateController,
         ),
-        // TitleWithTextFormField(
-        //   controller: ctrl.dateController,
-        //   titleText: AppStrings.Data,
-        //   hintText: AppStrings.DataType,
-        // ),
         TitleWithTextFormField(
           isRequired: true,
           type: TextInputType.number,
