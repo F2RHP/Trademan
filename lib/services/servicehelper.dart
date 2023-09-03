@@ -10,7 +10,7 @@ class ServiceHelper {
   static String productById ="Products/GetProductByID";
 
   //Customer related API
-  static String listCustomer = 'Customer/GetAllCustomer';
+  static String listCustomer = 'Customer/GetAllCustomersWithBalance';
   static String getCustomerById = 'Customer/GetCustomerByID';
 
   //Expense related API

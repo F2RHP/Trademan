@@ -76,131 +76,137 @@ class _AllProductsState extends State<AllProducts> {
   Widget listMenu(listMenu, String nowDate) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
-      child: Container(
-        padding: const EdgeInsets.all(
-          15.0,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(13.0),
-          border: Border.all(
-            color: Colors.black,
+      child: GestureDetector(
+        onTap: () {
+              // Get.to(const AddProduct(),
+              //     arguments: listMenu);
+            },
+        child: Container(
+          padding: const EdgeInsets.all(
+            15.0,
           ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-                padding: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.black54,
-                  ),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.account_box_outlined,
-                  size: 50.0,
-                )),
-            AppSizedBox.sizedBoxW15,
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    listMenu.producTName.toString(),
-                    style: const TextStyle(
-                      fontSize: 20.0,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(13.0),
+            border: Border.all(
+              color: Colors.black,
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                  padding: const EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black54,
                     ),
+                    shape: BoxShape.circle,
                   ),
-                  AppSizedBox.sizedBoxH15,
-                  Row(
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontStyle: FontStyle.italic,
-                            ),
-                            text: 'Cost: ',
-                            children: [
-                              TextSpan(
-                                  text: listMenu.producTCost.toString(),
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                            ]),
+                  child: const Icon(
+                    Icons.account_box_outlined,
+                    size: 50.0,
+                  )),
+              AppSizedBox.sizedBoxW15,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      listMenu.producTName.toString(),
+                      style: const TextStyle(
+                        fontSize: 20.0,
                       ),
-                      AppSizedBox.sizedBoxW15,
-                      RichText(
-                        text: TextSpan(
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontStyle: FontStyle.italic,
-                            ),
-                            text: 'Sell: ',
-                            children: [
-                              TextSpan(
-                                  text: listMenu.sellinGCost.toString(),
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                            ]),
-                      ),
-                    ],
-                  ),
-                  AppSizedBox.sizedBoxH15,
-                  Text(
-                    listMenu.supplieRName.toString(),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                    style: const TextStyle(
-                      fontSize: 20.0,
                     ),
-                  ),
-                  AppSizedBox.sizedBoxH15,
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                            color: Colors.cyan,
-                            borderRadius: BorderRadius.circular(18.0)),
-                        child: Text(
-                          '${listMenu.nOOfQuantity} ${listMenu.quantitYTypeName}',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                    AppSizedBox.sizedBoxH15,
+                    Row(
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontStyle: FontStyle.italic,
+                              ),
+                              text: 'Cost: ',
+                              children: [
+                                TextSpan(
+                                    text: listMenu.producTCost.toString(),
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ]),
+                        ),
+                        AppSizedBox.sizedBoxW15,
+                        RichText(
+                          text: TextSpan(
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontStyle: FontStyle.italic,
+                              ),
+                              text: 'Sell: ',
+                              children: [
+                                TextSpan(
+                                    text: listMenu.sellinGCost.toString(),
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ]),
+                        ),
+                      ],
+                    ),
+                    AppSizedBox.sizedBoxH15,
+                    Text(
+                      listMenu.supplieRName.toString(),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      style: const TextStyle(
+                        fontSize: 20.0,
+                      ),
+                    ),
+                    AppSizedBox.sizedBoxH15,
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                              color: Colors.cyan,
+                              borderRadius: BorderRadius.circular(18.0)),
+                          child: Text(
+                            '${listMenu.nOOfQuantity} ${listMenu.quantitYTypeName}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
-                      AppSizedBox.sizedBoxW8,
-                      // Container(
-                      //   padding: const EdgeInsets.all(8.0),
-                      //   decoration: BoxDecoration(
-                      //       color: Colors.red,
-                      //       borderRadius:
-                      //           BorderRadius.circular(18.0)),
-                      //   child: Text(
-                      //     ctrl.products[index].nOOfQuantity
-                      //         .toString(),
-                      //     style: const TextStyle(
-                      //       color: Colors.white,
-                      //       fontWeight: FontWeight.bold,
-                      //     ),
-                      //   ),
-                      // ),
-                      const Spacer(),
-                      Text(
-                        nowDate,
-                      ),
-                    ],
-                  ),
-                ],
+                        AppSizedBox.sizedBoxW8,
+                        // Container(
+                        //   padding: const EdgeInsets.all(8.0),
+                        //   decoration: BoxDecoration(
+                        //       color: Colors.red,
+                        //       borderRadius:
+                        //           BorderRadius.circular(18.0)),
+                        //   child: Text(
+                        //     ctrl.products[index].nOOfQuantity
+                        //         .toString(),
+                        //     style: const TextStyle(
+                        //       color: Colors.white,
+                        //       fontWeight: FontWeight.bold,
+                        //     ),
+                        //   ),
+                        // ),
+                        const Spacer(),
+                        Text(
+                          nowDate,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -29,9 +29,9 @@ class CustomersList {
     this.gender,
     this.pincode,
     this.dob,
-    this.amounTDue,
-    this.amounTOwed,
-    this.balance,
+    this.amounT_PRODUCT,
+    this.amounT_CASH,
+    this.totaL_BALANCE,
     this.email,
   });
 
@@ -40,7 +40,7 @@ class CustomersList {
     String? customeRNickname;
     String? fatheRName;
     String? villagename;
-    dynamic contactnumber;
+    String? contactnumber;
     String? customeRNotes;
     int? brancHId;
     String? brancHName;
@@ -53,9 +53,9 @@ class CustomersList {
     String? gender;
     String? pincode;
     dynamic dob;
-    int? amounTDue;
-    int? amounTOwed;
-    int? balance;
+    double? amounT_PRODUCT;
+    double? amounT_CASH;
+    double? totaL_BALANCE;
     String? email;
 
   factory CustomersList.fromMap(Map<String, dynamic> json) => CustomersList(
@@ -64,7 +64,7 @@ class CustomersList {
         customeRNickname: json["customeR_NICKNAME"],
         fatheRName: json["fatheR_NAME"],
         villagename: json["villagename"],
-        contactnumber: json["contactnumber"],
+        contactnumber: json["customeR_CONTACT"],
         customeRNotes: json["customeR_NOTES"],
         brancHId: json["brancH_ID"],
         brancHName: json["brancH_NAME"],
@@ -77,9 +77,9 @@ class CustomersList {
         gender: json["gender"],
         pincode: json["pincode"],
         dob: json["dob"],
-        amounTDue: json["amounT_DUE"],
-        amounTOwed: json["amounT_OWED"],
-        balance: json["balance"],
+        amounT_PRODUCT: json["amounT_PRODUCT"],
+        amounT_CASH: json["amounT_CASH"],
+        totaL_BALANCE: json["totaL_BALANCE"],
         email: json["email"],
       );
 
@@ -89,7 +89,7 @@ class CustomersList {
         "customeR_NICKNAME": customeRNickname,
         "fatheR_NAME": fatheRName,
         "villagename": villagename,
-        "contactnumber": contactnumber,
+        "customeR_CONTACT": contactnumber,
         "customeR_NOTES": customeRNotes,
         "brancH_ID": brancHId,
         "brancH_NAME": brancHName,
@@ -102,9 +102,9 @@ class CustomersList {
         "gender": gender,
         "pincode": pincode,
         "dob": dob,
-        "amounT_DUE": amounTDue,
-        "amounT_OWED": amounTOwed,
-        "balance": balance,
+        "amounT_PRODUCT": amounT_PRODUCT,
+        "amounT_CASH": amounT_CASH,
+        "totaL_BALANCE": totaL_BALANCE,
         "email": email,
       };
 }
