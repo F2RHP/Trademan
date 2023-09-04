@@ -34,6 +34,44 @@ class _CustomersListState extends State<CustomersList> {
               children: [
                 AppSizedBox.sizedBoxH10,
                 const KPRTraders(),
+AppSizedBox.sizedBoxH10,
+                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.red,
+                    borderRadius: CustomBorderRadius.borderRadius8,
+                  ),
+                  child: Text(
+                    'Trader -> Customer',
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      color: AppColors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.green,
+                    borderRadius: CustomBorderRadius.borderRadius8,
+                  ),
+                  child: Text(
+                    'Customer -> Trader',
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      color: AppColors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )],),
+
                 // AppSizedBox.sizedBoxH20,
                 // ClipRRect(
                 //   borderRadius: BorderRadius.circular(10.0),
@@ -91,9 +129,8 @@ class _CustomersListState extends State<CustomersList> {
         var isGoods = ctrl.filteredCustomers[index].amounT_PRODUCT
             .toString()
             .contains('-');
-        var isCash = ctrl.filteredCustomers[index].amounT_CASH
-            .toString()
-            .contains('-');
+        var isCash =
+            ctrl.filteredCustomers[index].amounT_CASH.toString().contains('-');
         var isTotal = ctrl.filteredCustomers[index].totaL_BALANCE
             .toString()
             .contains('-');
@@ -189,7 +226,7 @@ class _CustomersListState extends State<CustomersList> {
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
-                              color: AppColors.kPrimaryColor,
+                              color: AppColors.kPrimaryLight,
                               borderRadius: BorderRadius.circular(8.0),
                             ),
                             child: Column(
@@ -239,7 +276,7 @@ class _CustomersListState extends State<CustomersList> {
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
-                              color: AppColors.kPrimaryColor,
+                              color: AppColors.kPrimaryLight,
                               borderRadius: BorderRadius.circular(8.0),
                             ),
                             child: Column(
@@ -248,6 +285,8 @@ class _CustomersListState extends State<CustomersList> {
                                   'Cash',
                                   style: TextStyle(
                                     color: AppColors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14.0,
                                   ),
                                 ),
                                 AppSizedBox.sizedBoxH10,
@@ -277,9 +316,9 @@ class _CustomersListState extends State<CustomersList> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Get.to(Cash_TransactionList(),
-                              arguments:
-                                  ctrl.filteredCustomers[index].customeRId);
+                          // Get.to(Cash_TransactionList(),
+                          //     arguments:
+                          //         ctrl.filteredCustomers[index].customeRId);
                         },
                         child: Container(
                             padding: const EdgeInsets.symmetric(
@@ -297,6 +336,7 @@ class _CustomersListState extends State<CustomersList> {
                                   style: TextStyle(
                                     color: AppColors.white,
                                     fontWeight: FontWeight.bold,
+                                    fontSize: 16.0,
                                   ),
                                 ),
                                 AppSizedBox.sizedBoxH10,
@@ -315,7 +355,7 @@ class _CustomersListState extends State<CustomersList> {
                                   child: Text(
                                     'Rs.${ctrl.filteredCustomers[index].totaL_BALANCE}',
                                     style: TextStyle(
-                                      fontSize: 14.0,
+                                      fontSize: 20.0,
                                       color: AppColors.white,
                                       fontWeight: FontWeight.bold,
                                     ),
