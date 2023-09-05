@@ -52,7 +52,7 @@ class _CustomersListState extends State<CustomersList> {
                         ),
                       ),
                       AppSizedBox.sizedBoxH20,
-                      TextFormField(
+                     Obx(() => TextFormField(
                         onChanged: (value) => ctrl.filterText.value = value,
                         decoration: InputDecoration(
                           hintText: 'Search...',
@@ -63,7 +63,7 @@ class _CustomersListState extends State<CustomersList> {
                             borderRadius: BorderRadius.circular(5.0),
                           ),
                         ),
-                      ),
+                      ),),
                       AppSizedBox.sizedBoxH5,
                       ctrl.isLoading.value
                           ? const Center(
@@ -79,7 +79,7 @@ class _CustomersListState extends State<CustomersList> {
   }
 
   Widget customerCard() {
-    return ListView.builder(
+    return Obx(()=> ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: ctrl.filteredCustomers.length,
@@ -210,7 +210,7 @@ class _CustomersListState extends State<CustomersList> {
           ),
         );
       },
-    );
+    ));
   }
 
   AppBar buildAppBar(BuildContext context) {
