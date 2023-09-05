@@ -14,6 +14,7 @@ class AppStrings {
   static const String DOWNLOAD_BTN = "DOWNLOAD";
   static const String You_are_viewing_store = "You are viewing store";
   static const String KPR_Traders = "\"KPR Traders\"";
+  static const String KPR_TradersTitle = "KPR Traders";
 
   /// Splash screen STRINGS
   static const String APP_NAME = "FATURA";
@@ -98,6 +99,7 @@ class AppStrings {
 
   //Customers
   static const String Customer = "Customer";
+  static const String Customer_List = "Customer List";
   static const String AddCustomer = "Add customer";
   static const String Customer_Name = "Name";
   static const String Nick_Name = "Nick Name";
@@ -148,5 +150,5 @@ class AppStrings {
   static const String CashTransactionList = "Cash Transaction";
   static const String customerOrderList = "Customer Order";
    static const String customerOrderDetails = "Order Details";
-
+static const String Trans_Date = "Transaction Date";
 }

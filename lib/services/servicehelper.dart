@@ -10,7 +10,7 @@ class ServiceHelper {
   static String productById ="Products/GetProductByID";
 
   //Customer related API
-  static String listCustomer = 'Customer/GetAllCustomer';
+  static String listCustomer = 'Customer/GetAllCustomersWithBalance';
   static String getCustomerById = 'Customer/GetCustomerByID';
 
   //Expense related API
@@ -32,4 +32,10 @@ static String listAllSuppliers = 'Suppliers/GetSuppliers';
    static String customerOrderGetUrl = "CustomerOrder/GetAllCustomerOrders";
    static String customerOrderDetailsGetUrl = "CustomerOrder/GetAllCustomerOrdersDetailsByOrderID";
 static String SalecustomersDetails ="Customer/GetAllCustomerDetails";
+
+static String PostMoneyDetails ="CustomerOrder/PostCashInorOut";
+static String PostCustomerOrderDetails ="CustomerOrder/InsertCustomerNewOrder";
+  static var customerOrderDetailsGetUrlByCustomer="CustomerOrder/GetAllCustomerOrdersByCustomer";
+
+  static var customerCashTransactionGetUrlByCustomer="CustomerOrder/GetAllCustomerCashTransactionByCustomer";
 }

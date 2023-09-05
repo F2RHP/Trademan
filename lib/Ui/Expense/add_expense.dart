@@ -10,6 +10,7 @@ import 'package:trader_app/screens/shared_widgets/title_with_text_form_field.dar
 import '../../controllers/Expense/add_expense_controller.dart';
 import '../../controllers/Expense/list_expense_controller.dart';
 import '../../models/expense/expensedetails.dart';
+import '../../screens/shared_widgets/custom_text.dart';
 
 class AddExpense extends StatefulWidget {
   const AddExpense({Key? key}) : super(key: key);
@@ -24,14 +25,11 @@ class _AddExpenseState extends State<AddExpense> {
 
   @override
   void initState() {
-    if(arguments!=null)
-    {
-      ctrl.btnText.value="Edit";
+    if (arguments != null) {
+      ctrl.btnText.value = "Edit";
       ctrl.passExpensevalue(arguments);
-    }
-    else
-    {
-      ctrl.btnText.value="Save";
+    } else {
+      ctrl.btnText.value = "Save";
     }
     super.initState();
   }
@@ -68,8 +66,8 @@ class _AddExpenseState extends State<AddExpense> {
                   buildInputFiled(),
                   CustomBtn(
                     label: ctrl.btnText.value,
-                    action: ()  {
-                     saveAndNavigate();
+                    action: () {
+                      saveAndNavigate();
                     },
                   ),
                 ],
@@ -78,23 +76,25 @@ class _AddExpenseState extends State<AddExpense> {
           )),
     );
   }
-Future<void> saveAndNavigate() async {
-  if (await ctrl.saveExpenseDetail() > 0) {
-    String msg = ctrl.btnText.value;
-    Get.snackbar("Information", '$msg successfully',
-        snackPosition: SnackPosition.BOTTOM, duration: const Duration(seconds: 2));
-    bool isRegistered = GetInstance().isRegistered<ListExpenseCtrl>();
-    if (isRegistered) {
-      var listCustomerCtrl = Get.find<ListExpenseCtrl>();
-      await listCustomerCtrl.loadExpenseList();
-      navigateBack();
+
+  Future<void> saveAndNavigate() async {
+    if (await ctrl.saveExpenseDetail() > 0) {
+      String msg = ctrl.btnText.value;
+      Get.snackbar("Information", '$msg successfully',
+          snackPosition: SnackPosition.BOTTOM,
+          duration: const Duration(seconds: 2));
+      bool isRegistered = GetInstance().isRegistered<ListExpenseCtrl>();
+      if (isRegistered) {
+        var listCustomerCtrl = Get.find<ListExpenseCtrl>();
+        await listCustomerCtrl.loadExpenseList();
+        navigateBack();
+      }
     }
   }
-}
 
-void navigateBack() {
-  Get.back(closeOverlays: true);
-}
+  void navigateBack() {
+    Get.back(closeOverlays: true);
+  }
 
   Widget buildInputFiled() {
     return Column(
@@ -107,21 +107,17 @@ void navigateBack() {
           hintText: AppStrings.Expense_Name,
         ),
         TitleWithTextFormField(
-
           controller: ctrl.detailsController,
           titleText: AppStrings.Expense_Details,
           hintText: AppStrings.Expense_Details,
           maxLines: 5,
         ),
-        const Text(
-          AppStrings.Category,
-          style: TextStyle(
-            fontSize: 20,
-          ),
+        const CustomText(
+          text: AppStrings.Category,
+          isRequired: true,
         ),
         AppSizedBox.sizedBoxH15,
         // loadDropdown(),
-
         DropdownButtonFormField<int>(
           value: ctrl.dropDownExpenseType,
           onChanged: (newValue) {
@@ -137,7 +133,6 @@ void navigateBack() {
           }).toList(),
           decoration: dropDownDecoration(),
         ),
-
         AppSizedBox.sizedBoxH25,
         TitleWithTextFormField(
           isRequired: true,
@@ -157,11 +152,6 @@ void navigateBack() {
           hintText: AppStrings.ExpenseDate,
           controller: ctrl.dateController,
         ),
-        // TitleWithTextFormField(
-        //   controller: ctrl.dateController,
-        //   titleText: AppStrings.Data,
-        //   hintText: AppStrings.DataType,
-        // ),
         TitleWithTextFormField(
           isRequired: true,
           type: TextInputType.number,
@@ -192,6 +182,4 @@ void navigateBack() {
     );
     return dropdownButtonFormField;
   }
-
-
 }

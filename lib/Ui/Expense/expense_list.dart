@@ -276,7 +276,12 @@ class ExpenseList extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(item.expenseDescription.toString()),
+                  Flexible(
+                      child: Text(
+                    item.expenseDescription.toString(),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  )),
                   Text(
                     item.expenseCost.toString(),
                     style: TextStyle(

@@ -121,7 +121,7 @@ class _HomePageState extends State<HomePage> {
                               CommonCode.shadowRadiusColor,
                             ]
                           ),
-                          child: SvgPicture.asset('assets/images/person_full_color.svg')
+                          
                         ),
                       )
                     ],

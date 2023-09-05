@@ -19,6 +19,7 @@ class BaseService {
   }
 
   Future<T> post<T>(String endpoint, dynamic body) async {
+    //final d=jsonEncode(body);
     final apiUrl = '$_baseUrl/$endpoint';
     var path = Uri.parse(apiUrl);
     final response = await http.post(

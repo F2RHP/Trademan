@@ -5,16 +5,42 @@ import '../../constants/strings.dart';
 import '../../controllers/saleorder/SaleOrderCashController.dart';
 import '../../screens/shared_widgets/sized_box.dart';
 
-class Cash_TransactionList extends StatelessWidget {
+class Cash_TransactionList extends StatefulWidget {
+  @override
+  State<Cash_TransactionList> createState() => _Cash_TransactionListState();
+}
+
+class _Cash_TransactionListState extends State<Cash_TransactionList> {
   final SaleOrderCashController controller = Get.put(SaleOrderCashController());
+
+int? arguments = Get.arguments as int?;
+
+  @override
+  void initState() {
+    if (arguments!=null && arguments!>0) {
+      controller.Bycustomer = true;
+      controller.customerId = arguments!;
+    } else {
+      controller.Bycustomer = false;
+      controller.customerId = 0;
+    }
+    controller.LoadAllCashTransactions();
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(context),
       body: Obx(() {
-        if (controller.cashTransactions.isEmpty) {
+        if (controller.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
+        }
+        else if (controller.cashTransactions.isEmpty) {
+          return const Center(
+            child: Text('No cashTransactions available.'),
+          );
         }
 
          return ListView.builder(

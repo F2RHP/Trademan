@@ -118,10 +118,10 @@ class _DashBoardState extends State<DashBoard> {
 
   AppBar appBar() {
     return AppBar(
-      leading: const Icon(Icons.menu_outlined),
-      title: const Text(
+      title: Text(
         'Daily Sales Record',
         style: TextStyle(
+          color: AppColors.white,
           fontSize: 24.0,
         ),
       ),

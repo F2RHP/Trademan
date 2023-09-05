@@ -28,53 +28,47 @@ class _AllProductsState extends State<AllProducts> {
     return Scaffold(
       appBar: buildAppBar(context),
       body: Obx(
-        () => (ctrl.isLoading.value|| ctrl.products.isEmpty)
+        () => (ctrl.isLoading.value || ctrl.products.isEmpty)
             ? const Center(child: CircularProgressIndicator())
             : Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    topSection(),
-                    AppSizedBox.sizedBoxH20,
-                  /*  ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: GroupButton(
-                          options: GroupButtonOptions(
-                              spacing: 0,
-                              buttonWidth: 100,
-                              buttonHeight: 50,
-                              selectedColor: AppColors.kPrimaryColor,
-                              unselectedColor: AppColors.blueAccentShade700,
-                              unselectedTextStyle: TextStyle(
-                                color: AppColors.white,
-                              )),
-                          buttons: const <String>[
-                            'All',
-                            'In Stock',
-                            'Stock Out'
-                          ]),
-                    ),*/
-                    AppSizedBox.sizedBoxH20,
-                    ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: ctrl.filteredProducts.length,
-                      itemBuilder: (context, index) {
-                        var dateTime = DateTime.parse(
-                            ctrl.products[index].purchasEDate.toString());
-                        DateFormat dateFormat = DateFormat('yyy-MM-dd');
-                        var nowDate = dateFormat.format(dateTime);
-                        return listMenu(
-                            ctrl.filteredProducts[index],
-                            nowDate);
-                      },
-                    ),
-                  ],
+                padding: const EdgeInsets.all(20.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      topSection(),
+                      AppSizedBox.sizedBoxH20,
+                      AppSizedBox.sizedBoxH20,
+                      ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: ctrl.filteredProducts.length,
+                        itemBuilder: (context, index) {
+                          var dateTime = DateTime.parse(
+                              ctrl.products[index].purchasEDate.toString());
+                          DateFormat dateFormat = DateFormat('yyy-MM-dd');
+                          var nowDate = dateFormat.format(dateTime);
+                          return listMenu(
+                              ctrl.filteredProducts[index], nowDate);
+                        },
+                      ),
+                      AppSizedBox.sizedBoxH20,
+                    ],
+                  ),
                 ),
               ),
-            ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.to(
+            () => const AddProduct(),
+          );
+        },
+        child: Icon(
+          Icons.add,
+          size: 40.0,
+          color: AppColors.white,
+        ),
       ),
     );
   }
@@ -82,131 +76,137 @@ class _AllProductsState extends State<AllProducts> {
   Widget listMenu(listMenu, String nowDate) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
-      child: Container(
-        padding: const EdgeInsets.all(
-          15.0,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(13.0),
-          border: Border.all(
-            color: Colors.black,
+      child: GestureDetector(
+        onTap: () {
+              // Get.to(const AddProduct(),
+              //     arguments: listMenu);
+            },
+        child: Container(
+          padding: const EdgeInsets.all(
+            15.0,
           ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-                padding: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.black54,
-                  ),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.account_box_outlined,
-                  size: 50.0,
-                )),
-            AppSizedBox.sizedBoxW15,
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    listMenu.producTName.toString(),
-                    style: const TextStyle(
-                      fontSize: 20.0,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(13.0),
+            border: Border.all(
+              color: Colors.black,
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                  padding: const EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black54,
                     ),
+                    shape: BoxShape.circle,
                   ),
-                  AppSizedBox.sizedBoxH15,
-                  Row(
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontStyle: FontStyle.italic,
-                            ),
-                            text: 'Cost: ',
-                            children: [
-                              TextSpan(
-                                  text: listMenu.producTCost.toString(),
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                            ]),
+                  child: const Icon(
+                    Icons.account_box_outlined,
+                    size: 50.0,
+                  )),
+              AppSizedBox.sizedBoxW15,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      listMenu.producTName.toString(),
+                      style: const TextStyle(
+                        fontSize: 20.0,
                       ),
-                      AppSizedBox.sizedBoxW15,
-                      RichText(
-                        text: TextSpan(
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontStyle: FontStyle.italic,
-                            ),
-                            text: 'Sell: ',
-                            children: [
-                              TextSpan(
-                                  text: listMenu.sellinGCost.toString(),
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                            ]),
-                      ),
-                    ],
-                  ),
-                  AppSizedBox.sizedBoxH15,
-                  Text(
-                    listMenu.supplieRName.toString(),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                    style: const TextStyle(
-                      fontSize: 20.0,
                     ),
-                  ),
-                  AppSizedBox.sizedBoxH15,
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                            color: Colors.cyan,
-                            borderRadius: BorderRadius.circular(18.0)),
-                        child: Text(
-                          '${listMenu.nOOfQuantity} ${listMenu.quantitYTypeName}',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                    AppSizedBox.sizedBoxH15,
+                    Row(
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontStyle: FontStyle.italic,
+                              ),
+                              text: 'Cost: ',
+                              children: [
+                                TextSpan(
+                                    text: listMenu.producTCost.toString(),
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ]),
+                        ),
+                        AppSizedBox.sizedBoxW15,
+                        RichText(
+                          text: TextSpan(
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontStyle: FontStyle.italic,
+                              ),
+                              text: 'Sell: ',
+                              children: [
+                                TextSpan(
+                                    text: listMenu.sellinGCost.toString(),
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ]),
+                        ),
+                      ],
+                    ),
+                    AppSizedBox.sizedBoxH15,
+                    Text(
+                      listMenu.supplieRName.toString(),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      style: const TextStyle(
+                        fontSize: 20.0,
+                      ),
+                    ),
+                    AppSizedBox.sizedBoxH15,
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                              color: Colors.cyan,
+                              borderRadius: BorderRadius.circular(18.0)),
+                          child: Text(
+                            '${listMenu.nOOfQuantity} ${listMenu.quantitYTypeName}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
-                      AppSizedBox.sizedBoxW8,
-                      // Container(
-                      //   padding: const EdgeInsets.all(8.0),
-                      //   decoration: BoxDecoration(
-                      //       color: Colors.red,
-                      //       borderRadius:
-                      //           BorderRadius.circular(18.0)),
-                      //   child: Text(
-                      //     ctrl.products[index].nOOfQuantity
-                      //         .toString(),
-                      //     style: const TextStyle(
-                      //       color: Colors.white,
-                      //       fontWeight: FontWeight.bold,
-                      //     ),
-                      //   ),
-                      // ),
-                      const Spacer(),
-                      Text(
-                        nowDate,
-                      ),
-                    ],
-                  ),
-                ],
+                        AppSizedBox.sizedBoxW8,
+                        // Container(
+                        //   padding: const EdgeInsets.all(8.0),
+                        //   decoration: BoxDecoration(
+                        //       color: Colors.red,
+                        //       borderRadius:
+                        //           BorderRadius.circular(18.0)),
+                        //   child: Text(
+                        //     ctrl.products[index].nOOfQuantity
+                        //         .toString(),
+                        //     style: const TextStyle(
+                        //       color: Colors.white,
+                        //       fontWeight: FontWeight.bold,
+                        //     ),
+                        //   ),
+                        // ),
+                        const Spacer(),
+                        Text(
+                          nowDate,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -226,20 +226,6 @@ class _AllProductsState extends State<AllProducts> {
           ),
         ),
       ),
-      actions: [
-        GestureDetector(
-          onTap: () {
-            Get.to(
-                ()=>const AddProduct(),
-            );
-          },
-          child: Icon(
-            Icons.add,
-            color: AppColors.white,
-          ),
-        ),
-        AppSizedBox.sizedBoxW10,
-      ],
       centerTitle: true,
       title: Text(
         AppStrings.ProductList,
@@ -290,7 +276,7 @@ class _AllProductsState extends State<AllProducts> {
         ),
         SizedBox(height: Dimensions.calcH(15)),*/
         TextFormField(
-           onChanged: (value) => ctrl.filterText.value = value,
+          onChanged: (value) => ctrl.filterText.value = value,
           decoration: InputDecoration(
             hintText: 'Search...',
             focusedBorder: OutlineInputBorder(

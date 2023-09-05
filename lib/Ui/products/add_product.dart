@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/controllers/product/add_product_ctrl.dart';
+import 'package:trader_app/models/product/product_model.dart';
 import 'package:trader_app/models/supplier/supplier.dart';
 import 'package:trader_app/models/utility/utility_models.dart';
 import 'package:trader_app/screens/shared_widgets/custom_btn.dart';
@@ -22,6 +23,18 @@ class _AddProductState extends State<AddProduct> {
   AddProductCtrl ctrl = Get.put(
     AddProductCtrl(),
   );
+   Product? arguments = Get.arguments as Product?;
+
+  @override
+  void initState() {
+    if (arguments != null) {
+      ctrl.action.value = "Edit";
+      ctrl.updateproduct(arguments);
+    } else {
+      ctrl.action.value = "Save";
+    }
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,7 +121,7 @@ class _AddProductState extends State<AddProduct> {
           controller: ctrl.productNameCtrl,
         ),
         // Title Quantity type
-        const CustomText(text: AppStrings.ProductType),
+        const CustomText(text: AppStrings.ProductType,isRequired: true),
         AppSizedBox.sizedBoxH10,
         DropdownButtonFormField<ProductTypeModel>(
           // autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -128,7 +141,7 @@ class _AddProductState extends State<AddProduct> {
           decoration: dropDownDecoration(),
         ),
         AppSizedBox.sizedBoxH20,
-        const CustomText(text: AppStrings.Quantity_Type),
+        const CustomText(text: AppStrings.Quantity_Type,isRequired: true),
         AppSizedBox.sizedBoxH10,
         DropdownButtonFormField<QuantityTypeModel>(
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -150,7 +163,6 @@ class _AddProductState extends State<AddProduct> {
         // Title Quantity type
         AppSizedBox.sizedBoxH10,
         TitleWithTextFormField(
-          isRequired: true,
           titleText: AppStrings.Product_Code,
           hintText: AppStrings.Product_Code,
           controller: ctrl.productCodeCtrl,
@@ -158,14 +170,12 @@ class _AddProductState extends State<AddProduct> {
         AppSizedBox.sizedBoxH10,
         //Title Product description
         TitleWithTextFormField(
-          isRequired: true,
           titleText: AppStrings.Product_Description,
           hintText: AppStrings.Product_Description,
           controller: ctrl.productDecCtrl,
         ),
         //Title Product notes
         TitleWithTextFormField(
-          isRequired: true,
           titleText: AppStrings.Product_Notes,
           hintText: AppStrings.Product_Notes,
           controller: ctrl.productNotesCtrl,
@@ -221,7 +231,6 @@ class _AddProductState extends State<AddProduct> {
         ),
         // Title PURCHASE NOTES
         TitleWithTextFormField(
-          isRequired: true,
           titleText: AppStrings.Product_Purchase_Notes,
           hintText: AppStrings.Product_Purchase_Notes,
           controller: ctrl.purchaseNotesCtrl,
