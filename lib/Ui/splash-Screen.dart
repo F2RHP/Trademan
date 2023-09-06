@@ -46,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 fontStyle: FontStyle.italic
               ),
             ),
-            Image.asset('assets/images/logo.png'),
+            Image.asset('assets/images/logo.jpg'),
             CircularProgressIndicator(color: AppColors.white),
           ],
         ),
