@@ -12,9 +12,7 @@ class ListCustomersCtrl extends BaseController {
   late CustomerService service;
 
   void onItemClick(CustomersList m) {
-
-    Get.to(const CustomerRegistration(), arguments:  m);
-
+    Get.to(const CustomerRegistration(), arguments: m);
   }
 
   void onItemNewCustomerClick() {
@@ -34,16 +32,15 @@ class ListCustomersCtrl extends BaseController {
     customersList.value = await service.getAllListCustomers();
   }
 
-   List<CustomersList> get filteredCustomers {
+  List<CustomersList> get filteredCustomers {
     if (filterText.isEmpty) {
       return customersList;
     } else {
       return customersList.where((customer) {
-        
-        return customer.customeRName!.toLowerCase().contains(filterText.value.toLowerCase());
-      }
-      
-      ).toList();
+        return customer.customeRName!
+            .toLowerCase()
+            .contains(filterText.value.toLowerCase());
+      }).toList();
     }
-   }
+  }
 }

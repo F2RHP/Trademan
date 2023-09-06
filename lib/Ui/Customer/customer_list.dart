@@ -121,7 +121,7 @@ AppSizedBox.sizedBoxH10,
   }
 
   Widget customerCard() {
-    return ListView.builder(
+    return Obx(()=> ListView.builder(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: ctrl.filteredCustomers.length,
@@ -372,7 +372,7 @@ AppSizedBox.sizedBoxH10,
           ),
         );
       },
-    );
+    ));
   }
 
   AppBar buildAppBar(BuildContext context) {
