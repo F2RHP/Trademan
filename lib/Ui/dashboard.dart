@@ -126,10 +126,24 @@ class _DashBoardState extends State<DashBoard> {
         ),
       ),
       centerTitle: true,
-      actions:  const <Widget>[
-        Icon(
-          Icons.help_outline,
-          color: Colors.white,
+      actions:   <Widget>[
+        GestureDetector(
+          child:const Icon(
+            Icons.help_center,
+            color: Colors.white,
+          ),
+          onTap: (){
+              showAboutDialog(
+                context: context,
+                applicationName: 'KPR Trader',
+                applicationVersion: '1.0.0',
+                applicationLegalese: '© 2023 Your Organization',
+                children: [
+                  const Text('Developer: Ponsingh ,Jeba ,Sakthi'),
+                  const Text('Contact: 7708934748'),
+                ],
+              );
+            },
         ),
         SizedBox(width: 20.0),
       ],
