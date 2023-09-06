@@ -184,6 +184,7 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
           titleText: AppStrings.Pin_Code,
           hintText: AppStrings.Pin_Code,
           controller: ctrl.pinCodeController,
+          type:TextInputType.number,
         ),
         TitleWithTextFormField(
           // readOnly: true,

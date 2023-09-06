@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class Functions {
+ class Functions {
   static String formatDate(DateTime date) {
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
     final String formatted = formatter.format(date);

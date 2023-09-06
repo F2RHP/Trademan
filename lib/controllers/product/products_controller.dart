@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:trader_app/models/product/product_model.dart';
 import 'package:trader_app/services/utilityservice.dart';
-import '../../models/generalclass.dart';
-import '../../services/supplierService.dart';
 import '../base_controller.dart';
 import '../../services/productservice.dart';
 
