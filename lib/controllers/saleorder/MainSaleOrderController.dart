@@ -69,6 +69,8 @@ class MainSaleOrderController extends BaseController {
 
   final totalProductAmount = 0.0.obs;
 
+  var customerFilter="".obs;
+
   void CalculateTotalprodctAmount() {
     totalProductAmount.value =
         saleProductList.fold(0, (sum, product) => sum + product.total);
@@ -88,6 +90,18 @@ class MainSaleOrderController extends BaseController {
     }
   }
 
+  List<SaleCustomer> get filteredCustomer {
+    if (customerFilter.isEmpty) {
+      return customerList;
+    } else {
+      return customerList.where((prod) {
+        return prod.customerName!
+            .toLowerCase()
+            .contains(customerFilter.value.toLowerCase());
+      }).toList();
+    }
+  }
+
   @override
   void onInit() {
     service = SaleOrderService();
@@ -98,6 +112,8 @@ class MainSaleOrderController extends BaseController {
     LoadSaleCustomers();
     LoadAllTransactiontype();
     LoadAllProducts();
+    transactionAmount.text="0";
+    customerGiven.text="0";
     isLoading.value = false;
 
     super.onInit();

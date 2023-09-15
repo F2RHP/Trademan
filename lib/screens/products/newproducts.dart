@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:trader_app/controllers/product/products_controller.dart';
-import 'package:trader_app/models/generalclass.dart';
 import 'package:trader_app/screens/shared_widgets/appbar_eng_view.dart';
 import '../../constants/strings.dart';
 import '../shared_widgets/title_with_text_form_field.dart';

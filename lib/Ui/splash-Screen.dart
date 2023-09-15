@@ -32,21 +32,21 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.kPrimaryColor,
+      backgroundColor: AppColors.splashColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text(
-              AppStrings.KPR_TradersTitle,
-              style: TextStyle(
-                color: AppColors.white,
-                fontSize: 58.0,
-                fontWeight: FontWeight.bold,
-                fontStyle: FontStyle.italic
-              ),
-            ),
-            Image.asset('assets/images/logo.png'),
+            // Text(
+            //   AppStrings.KPR_TradersTitle,
+            //   style: TextStyle(
+            //     color: AppColors.white,
+            //     fontSize: 58.0,
+            //     fontWeight: FontWeight.bold,
+            //     fontStyle: FontStyle.italic
+            //   ),
+            // ),
+            Image.asset('assets/images/logo.jpg'),
             CircularProgressIndicator(color: AppColors.white),
           ],
         ),

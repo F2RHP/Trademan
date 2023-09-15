@@ -6,14 +6,13 @@ import 'package:trader_app/Ui/Common_Codes/common_codes.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/controllers/saleorder/MainSaleOrderController.dart';
-import 'package:trader_app/controllers/saleorder/SaleOrderCashController.dart';
-import 'package:trader_app/models/product/product_model.dart';
 import 'package:trader_app/screens/shared_widgets/custom_text.dart';
 import 'package:trader_app/screens/shared_widgets/sized_box.dart';
 import 'package:trader_app/screens/shared_widgets/title_with_text_form_field.dart';
 
 import '../models/SaleOrders/Saleproduct.dart';
 import '../screens/shared_widgets/custom_btn.dart';
+import '../utils/functions.dart';
 
 class AddSale extends StatefulWidget {
   const AddSale({Key? key}) : super(key: key);
@@ -224,9 +223,9 @@ class _AddSaleState extends State<AddSale> {
                   color: AppColors.greyLight,
                   border: Border.all(color: AppColors.grey),
                 ),
-                child: const Text(
-                  '2023-02-25',
-                  style: TextStyle(
+                child:  Text(
+                  Functions.formatDate(DateTime.now()),
+                  style:const TextStyle(
                     fontSize: 16.0,
                   ),
                 ),
@@ -243,6 +242,7 @@ class _AddSaleState extends State<AddSale> {
                 ? 'Customer Given'
                 : 'Trader Given',
             controller: mainSaleCtrl.customerGiven,
+            type: TextInputType.number,
           ),
           AppSizedBox.sizedBoxH15,
           FittedBox(
@@ -403,7 +403,7 @@ class _AddSaleState extends State<AddSale> {
           ),
           AppSizedBox.sizedBoxH20,
           TitleWithTextFormField(
-            // readOnly: true,
+           isRequired: true,
             onTap: () {
               showDatePicker(
                 context: context,
@@ -419,11 +419,13 @@ class _AddSaleState extends State<AddSale> {
             hintText: AppStrings.Trans_Date,
             controller: mainSaleCtrl.dataController,
           ),
-          TitleWithTextFormField(
+          TitleWithTextFormField(            
             titleText: 'Transaction Amount',
             controller: mainSaleCtrl.transactionAmount,
+            type: TextInputType.number,
           ),
           TitleWithTextFormField(
+            isRequired: true,
             titleText: 'Transaction Notes',
             controller: mainSaleCtrl.transactionNotes,
           ),

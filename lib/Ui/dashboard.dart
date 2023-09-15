@@ -17,7 +17,7 @@ class _DashBoardState extends State<DashBoard> {
     //   'name': 'addProduct',
     // },
     {
-      'icons': Icons.account_box_outlined,
+      'icons': Icons.production_quantity_limits_rounded,
       'caption':'Product',
       'name': 'allProduct',
     },
@@ -32,17 +32,17 @@ class _DashBoardState extends State<DashBoard> {
       'name': 'addExpense',
     },
         {
-      'icons': Icons.satellite_alt,
+      'icons': Icons.sell_outlined,
       'caption':'Sale',
       'name': 'addSale',
     },
             {
-      'icons': Icons.satellite_alt,
+      'icons': Icons.currency_rupee,
       'caption':'Cash Transaction',
       'name': 'cashTransaction',
     },
                 {
-      'icons': Icons.satellite_alt,
+      'icons': Icons.money_off_csred_sharp,
       'caption':'Goods Order',
       'name': 'productTransaction',
     },
@@ -126,10 +126,24 @@ class _DashBoardState extends State<DashBoard> {
         ),
       ),
       centerTitle: true,
-      actions:  const <Widget>[
-        Icon(
-          Icons.help_outline,
-          color: Colors.white,
+      actions:   <Widget>[
+        GestureDetector(
+          child:const Icon(
+            Icons.help_center,
+            color: Colors.white,
+          ),
+          onTap: (){
+              showAboutDialog(
+                context: context,
+                applicationName: 'KPR Trader',
+                applicationVersion: '1.0.0',
+                applicationLegalese: '© 2023 Your Organization',
+                children: [
+                  const Text('Developer: Ponsingh ,Jeba ,Sakthi'),
+                  const Text('Contact: 7708934748'),
+                ],
+              );
+            },
         ),
         SizedBox(width: 20.0),
       ],
