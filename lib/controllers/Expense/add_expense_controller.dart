@@ -82,10 +82,10 @@ class AddExpenseCtrl extends BaseController {
     detailsController.text = details?.expenseDescription ?? '';
 
     // Assuming dropDownExpenseType is of the same type as the ExpenseType in ExpenseDetails
-    dropDownExpenseType = details?.expenseTypeId ?? 0;
+    dropDownExpenseType = details?.expenseTypeId;
 
     costController.text = details?.expenseCost.toString() ?? '';
     dateController.text = details?.expenseDate.toString() ?? '';
-    expenseID = details?.expenseID ?? 0;
+    expenseID = (details?.expenseID)??0;
   }
 }

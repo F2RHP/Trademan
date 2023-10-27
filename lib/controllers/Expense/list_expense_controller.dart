@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:trader_app/controllers/base_controller.dart';
+import 'package:trader_app/models/expense/expensetype.dart';
 import 'package:trader_app/services/expenseservice.dart';
 import '../../Ui/Expense/add_expense.dart';
 import '../../models/expense/expensedetails.dart';
@@ -8,13 +9,18 @@ class ListExpenseCtrl extends BaseController {
   late ExpenseService service;
   var expenseList = <ExpenseDetails>[].obs;
   var filteredExpenseList = <ExpenseDetails>[].obs;
-  final Rx<String> selectedDate = "Today".obs;
+  final Rx<String> selectedDate = "".obs;
   final Rx<int> selectedExpenseTypeId = 0.obs;
   final Rx<bool> isFiltered = false.obs;
+  var expenseType = <ExpenseType>[].obs;
+  var dropDownExpenseType;
+
+  final filteredExpenseText = ''.obs;
   @override
   void onInit() async {
     isLoading.value = true;
     service = ExpenseService();
+    expenseType.value = await service.getAllListExpensesType();
     loadExpenseList();
     // TODO: implement onInit
     super.onInit();
@@ -27,7 +33,26 @@ class ListExpenseCtrl extends BaseController {
     isLoading.value = false;
   }
 
-   loadFilteredExpenseList(int? filterId, String? dateRange) {
+  loadFilteredExpenseList(int? filterId, String? dateRange) {
+    if (dropDownExpenseType != null && selectedDate.value != '') {
+      dataFilter(dateRange);
+      filteredExpenseList.value = filteredExpenseList
+          .where((e) => e.expenseTypeName!
+              .toLowerCase()
+              .contains(filteredExpenseText.toLowerCase()))
+          .toList();
+    } else if (selectedDate.value != '') {
+      dataFilter(dateRange);
+    } else if (dropDownExpenseType != null) {
+      filteredExpenseList.value = expenseList
+          .where((e) => e.expenseName!
+              .toLowerCase()
+              .contains(dropDownExpenseType.toString().toLowerCase()))
+          .toList();
+    }
+  }
+
+  void dataFilter(String? dateRange) {
     DateTime currentDate = DateTime.now();
     DateTime lastWeekStartDate = DateTime.now();
     switch (dateRange) {
@@ -35,14 +60,15 @@ class ListExpenseCtrl extends BaseController {
         lastWeekStartDate = currentDate;
         break;
       case "Last Week":
-        lastWeekStartDate = currentDate.subtract(Duration(days: 6));
+        lastWeekStartDate = currentDate.subtract(const Duration(days: 6));
         break;
       case "Last Month":
-        lastWeekStartDate = currentDate.subtract(Duration(days: 30));
+        lastWeekStartDate = currentDate.subtract(const Duration(days: 30));
         break;
     }
-    filteredExpenseList.value = expenseList.value.where((element) {
-      return element.expenseDate!.isBefore(currentDate) && element.expenseDate!.isAfter(lastWeekStartDate);
+    filteredExpenseList.value = expenseList.where((element) {
+      return element.expenseDate!.isBefore(currentDate) &&
+          element.expenseDate!.isAfter(lastWeekStartDate);
     }).toList();
   }
 
@@ -53,6 +79,6 @@ class ListExpenseCtrl extends BaseController {
   }
 
   void addnewExpense() {
-    Get.to(AddExpense());
+    Get.to(const AddExpense());
   }
 }

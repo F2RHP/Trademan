@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart';
+import 'package:intl/intl.dart';
 import 'package:trader_app/models/SaleOrders/SaleCustomer.dart';
 import 'package:trader_app/services/saleorderservice.dart';
 import 'package:trader_app/services/utilityservice.dart';
 import '../../models/SaleOrders/CashTransactionInput.dart';
 import '../../models/SaleOrders/Saleproduct.dart';
-import '../../models/SaleOrders/cash_transaction.dart';
 import '../../models/SaleOrders/new_order_input.dart';
 import '../../models/product/product_model.dart';
 import '../../models/utility/utility_models.dart';
@@ -17,7 +16,6 @@ class MainSaleOrderController extends BaseController {
   TextEditingController customerGiven = TextEditingController();
   TextEditingController orderNotes = TextEditingController();
   TextEditingController dataController = TextEditingController();
-
   TextEditingController transactionAmount = TextEditingController();
   TextEditingController transactionNotes = TextEditingController();
 
@@ -69,7 +67,10 @@ class MainSaleOrderController extends BaseController {
 
   final totalProductAmount = 0.0.obs;
 
-  var customerFilter="".obs;
+  var customerFilter = "".obs;
+
+  final goodsOrderDate = (DateFormat('yyyy-MM-dd').format(DateTime.now())).toString().obs;
+  //DateFormat('yyyy-MM-dd').format(value!)
 
   void CalculateTotalprodctAmount() {
     totalProductAmount.value =
@@ -95,7 +96,7 @@ class MainSaleOrderController extends BaseController {
       return customerList;
     } else {
       return customerList.where((prod) {
-        return prod.customerName!
+        return prod.customerName
             .toLowerCase()
             .contains(customerFilter.value.toLowerCase());
       }).toList();
@@ -112,8 +113,8 @@ class MainSaleOrderController extends BaseController {
     LoadSaleCustomers();
     LoadAllTransactiontype();
     LoadAllProducts();
-    transactionAmount.text="0";
-    customerGiven.text="0";
+    transactionAmount.text = "0";
+    customerGiven.text = "0";
     isLoading.value = false;
 
     super.onInit();
@@ -253,7 +254,9 @@ class MainSaleOrderController extends BaseController {
     double? customerGiv = double.tryParse(customerGiven.text);
     var customerOrder = CustomerOrder(
         customerGiven: customerGiv!,
-        orderDate: DateTime.now(),
+        orderDate: goodsOrderDate.value.isEmpty
+            ? DateTime.now()
+            : DateTime.parse(goodsOrderDate.value),
         isBuyOrder: Isbuy() ? 1 : 0,
         orderDetails: order_details,
         orderNotes: orderNotes.text);
@@ -265,7 +268,7 @@ class MainSaleOrderController extends BaseController {
       Get.snackbar("Information", "Saved sucessfullly");
       orderNotes.text = "";
       customerGiven.text = "";
-      totalProductAmount.value=0;
+      totalProductAmount.value = 0;
       saleProductList.clear();
       return true;
     } else {

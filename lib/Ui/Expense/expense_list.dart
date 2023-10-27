@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:trader_app/Ui/Common_Codes/common_codes.dart';
 import 'package:trader_app/Ui/Expense/add_expense.dart';
 import 'package:trader_app/constants/colors.dart';
@@ -58,159 +59,166 @@ class ExpenseList extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        String? selectedDateRange = ctrl.selectedDate.value ?? "Today";
-        int? selectedExpenseTypeId = ctrl.selectedExpenseTypeId.value ?? 0;
+        String? selectedDateRange = ctrl.selectedDate.value;
+        int? selectedExpenseTypeId = ctrl.selectedExpenseTypeId.value;
+        return Obx(() => AlertDialog(
+              title: const Text('Select Options'),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text('Date Range:'),
+                    ListTile(
+                      textColor: ctrl.selectedDate.value == 'Today'
+                          ? AppColors.kPrimaryColor
+                          : null,
+                      title: const Text('Today'),
+                      onTap: () {
+                        selectedDateRange = 'Today';
+                        ctrl.selectedDate.value = selectedDateRange!;
+                        // Navigator.of(context).pop(selectedDateRange);
+                      },
+                    ),
+                    ListTile(
+                      textColor: ctrl.selectedDate.value == 'Last Week'
+                          ? AppColors.kPrimaryColor
+                          : null,
+                      title: const Text('Last Week'),
+                      onTap: () {
+                        selectedDateRange = 'Last Week';
+                        ctrl.selectedDate.value = selectedDateRange!;
+                        // Navigator.of(context).pop(selectedDateRange);
+                      },
+                    ),
+                    ListTile(
+                      textColor: ctrl.selectedDate.value == 'Last Month'
+                          ? AppColors.kPrimaryColor
+                          : null,
+                      title: const Text('Last Month'),
+                      onTap: () {
+                        selectedDateRange = 'Last Month';
+                        ctrl.selectedDate.value = selectedDateRange!;
+                        // Navigator.of(context).pop(selectedDateRange);
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    const Text('Select Expense Type:'),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    DropdownButtonFormField<String>(
+                      value: ctrl.dropDownExpenseType,
+                      onChanged: (newValue) {
+                        ctrl.dropDownExpenseType = newValue!;
+                        ctrl.filteredExpenseText.value = ctrl.expenseType
+                            .firstWhere(
+                                (e) => e.expenseTypeID == int.parse(newValue))
+                            .expenseName!;
+                      },
+                      items: ctrl.expenseType.map((expenseType) {
+                        return DropdownMenuItem<String>(
+                          value: expenseType.expenseTypeID.toString(),
+                          child: Text(expenseType.expenseName!),
+                        );
+                      }).toList(),
+                      decoration: dropDownDecoration(),
+                    ),
+                    // Obx(()=>Container(
+                    //   width: MediaQuery.of(context).size.width,
+                    //   child: DropdownButtonHideUnderline(child:DropdownButton<int>(
+                    //     iconDisabledColor: Colors.amber,
+                    //     value: selectedExpenseTypeId,
+                    //     onChanged: (value) {
+                    //       ctrl.selectedExpenseTypeId.value = value!;
+                    //       // Navigator.of(context).pop(selectedName);
+                    //     },
+                    //     items:ctrlExpenseType.expenseType.value.map((expenseTypeObj) {
+                    //
+                    //       return DropdownMenuItem<int>(
+                    //         value: expenseTypeObj.expenseTypeID,
+                    //         child: Text(expenseTypeObj.expenseName!),
+                    //       );
+                    //     }).toList(),
+                    //   ),)
+                    // ))
+                  ],
+                ),
+              ),
+              actions: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        ctrl.isFiltered.value = false;
+                        ctrl.dropDownExpenseType = null;
+                        ctrl.selectedDate.value = '';
+                        Navigator.of(context).pop(); // Close the dialog
+                      },
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        log("name: ${selectedExpenseTypeId.toString()}");
+                        log("date: $selectedDateRange");
+                        if (selectedExpenseTypeId != 0 ||
+                            selectedDateRange != '') {
+                          ctrl.isFiltered.value = true;
+                          ctrl.selectedExpenseTypeId.value =
+                              selectedExpenseTypeId;
+                          ctrl.selectedDate.value = selectedDateRange!;
+                          ctrl.loadFilteredExpenseList(
+                              selectedExpenseTypeId, selectedDateRange);
+                        } else {
+                          ctrl.isFiltered.value = false;
+                        }
 
-        return AlertDialog(
-          title: const Text('Select Options'),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('Date Range:'),
-                ListTile(
-                  title: Text('Today'),
-                  onTap: () {
-                    selectedDateRange = 'Today';
-                    ctrl.selectedDate.value = selectedDateRange!;
-                    // Navigator.of(context).pop(selectedDateRange);
-                  },
-                ),
-                ListTile(
-                  title: Text('Last Week'),
-                  onTap: () {
-                    selectedDateRange = 'Last Week';
-                    ctrl.selectedDate.value = selectedDateRange!;
-                    // Navigator.of(context).pop(selectedDateRange);
-                  },
-                ),
-                ListTile(
-                  title: Text('Last Month'),
-                  onTap: () {
-                    selectedDateRange = 'Last Month';
-                    ctrl.selectedDate.value = selectedDateRange!;
-                    // Navigator.of(context).pop(selectedDateRange);
-                  },
-                ),
-                SizedBox(height: 20),
-                Text('Select Expense Type:'),
-                SizedBox(
-                  height: 10,
-                ),
-                // Obx(()=>Container(
-                //   width: MediaQuery.of(context).size.width,
-                //   child: DropdownButtonHideUnderline(child:DropdownButton<int>(
-                //     iconDisabledColor: Colors.amber,
-                //     value: selectedExpenseTypeId,
-                //     onChanged: (value) {
-                //       ctrl.selectedExpenseTypeId.value = value!;
-                //       // Navigator.of(context).pop(selectedName);
-                //     },
-                //     items:ctrlExpenseType.expenseType.value.map((expenseTypeObj) {
-                //
-                //       return DropdownMenuItem<int>(
-                //         value: expenseTypeObj.expenseTypeID,
-                //         child: Text(expenseTypeObj.expenseName!),
-                //       );
-                //     }).toList(),
-                //   ),)
-                // ))
-              ],
-            ),
-          ),
-          actions: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    ctrl.isFiltered.value = false;
-                    Navigator.of(context).pop(); // Close the dialog
-                  },
-                  child: const Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    log("name: ${selectedExpenseTypeId.toString()}");
-                    log("date: ${selectedDateRange}");
-                    if (selectedExpenseTypeId != 0 || selectedDateRange != '') {
-                      ctrl.isFiltered.value = true;
-                      ctrl.selectedExpenseTypeId.value = selectedExpenseTypeId!;
-                      ctrl.selectedDate.value = selectedDateRange!;
-                      ctrl.loadFilteredExpenseList(
-                          selectedExpenseTypeId, selectedDateRange);
-                    } else {
-                      ctrl.isFiltered.value = false;
-                    }
-
-                    Navigator.of(context)
-                        .pop(); // Close the dialog and return the selected values
-                  },
-                  child: const Text('OK'),
+                        Navigator.of(context)
+                            .pop(); // Close the dialog and return the selected values
+                      },
+                      child: const Text('OK'),
+                    ),
+                  ],
                 ),
               ],
-            ),
-          ],
-        );
+            ));
       },
     );
   }
 
   Widget _buildButtonRow(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
       children: [
-        ElevatedButton(
-          onPressed: () {
-            _showDialog(context);
-          },
-          child: const Text('Filter'),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                ctrl.isFiltered.value = false;
+                ctrl.dropDownExpenseType = null;
+                ctrl.selectedDate.value = '';
+                _showDialog(context);
+              },
+              child: const Text('Filter'),
+            ),
+            const SizedBox(width: 20), // Adding space between buttons
+            ElevatedButton(
+              onPressed: () {
+                ctrl.isFiltered.value = false;
+              },
+              child: const Text('Clear'),
+            ),
+          ],
         ),
-        const SizedBox(width: 20), // Adding space between buttons
-        ElevatedButton(
-          onPressed: () {
-            ctrl.isFiltered.value = false;
-          },
-          child: const Text('Clear'),
+        Visibility(
+          visible: ctrl.isFiltered.value,
+          child: ListTile(
+            title: Text(ctrl.selectedDate.value),
+            subtitle: Text(ctrl.filteredExpenseText.value),
+          ),
         ),
       ],
     );
-  }
-
-  topWidgets() {
-    //  AppSizedBox.sizedBoxH8,
-    //                   const KPRTraders(),
-    //                   AppSizedBox.sizedBoxH15,
-    //                   ElevatedButton.icon(
-    //                     onPressed: () {
-    //                       showDialog(
-    //                         context: context,
-    //                         builder: (context) => popIpContent(context),
-    //                       );
-    //                     },
-    //                     icon: Padding(
-    //                       padding: const EdgeInsets.symmetric(vertical: 10.0),
-    //                       child: Icon(
-    //                         Icons.filter_list_alt,
-    //                         color: AppColors.kSecondaryColor,
-    //                       ),
-    //                     ),
-    //                     label: Text(
-    //                       AppStrings.Filter_Expense,
-    //                       style: TextStyle(
-    //                         fontSize: 16.0,
-    //                         color: AppColors.kSecondaryColor,
-    //                       ),
-    //                     ),
-    //                   ),
-    //                   AppSizedBox.sizedBoxH15,
-    //                   const Text('1 Expense (1999-01-01 To2023-02-04)'),
-    //                   AppSizedBox.sizedBoxH15,
-    //                   const AppTextFormFiled(
-    //                     hintText: 'Search..',
-    //                     autoValidator: true,
-    //                   ),
-    //                   AppSizedBox.sizedBoxH15,
   }
 
   AppBar buildAppBar(BuildContext context) {
@@ -261,7 +269,7 @@ class ExpenseList extends StatelessWidget {
           Get.to(const AddExpense(), arguments: item)
         },
         child: Container(
-          padding: CustomPadding.padding18,
+          padding: CustomPadding.padding10,
           decoration: BoxDecoration(
             borderRadius: CustomBorderRadius.borderRadius8,
             border: Border.all(
@@ -272,7 +280,7 @@ class ExpenseList extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(item.expenseName!),
-              AppSizedBox.sizedBoxH15,
+              AppSizedBox.sizedBoxH5,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -283,7 +291,7 @@ class ExpenseList extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   )),
                   Text(
-                    item.expenseCost.toString(),
+                    'Rs: ${item.expenseCost}',
                     style: TextStyle(
                       fontSize: 24.0,
                       color: AppColors.red,
@@ -291,7 +299,7 @@ class ExpenseList extends StatelessWidget {
                   ),
                 ],
               ),
-              AppSizedBox.sizedBoxH15,
+              AppSizedBox.sizedBoxH5,
               Row(
                 children: [
                   Container(
@@ -317,7 +325,7 @@ class ExpenseList extends StatelessWidget {
                       borderRadius: CustomBorderRadius.borderRadius13,
                     ),
                     child: Text(
-                      item.expenseDate.toString(),
+                      DateFormat('yyyy-MM-dd').format(item.expenseDate!),
                       style: TextStyle(
                         color: AppColors.kSecondaryColor,
                         fontWeight: FontWeight.bold,
@@ -326,7 +334,7 @@ class ExpenseList extends StatelessWidget {
                   ),
                 ],
               ),
-              AppSizedBox.sizedBoxH15,
+              AppSizedBox.sizedBoxH5,
             ],
           ),
         ),
@@ -354,12 +362,12 @@ class ExpenseList extends StatelessWidget {
                 ),
                 GestureDetector(
                     onTap: () => Navigator.pop(context),
-                    child: Icon(Icons.clear)),
+                    child: const Icon(Icons.clear)),
               ],
             ),
           ),
           AppSizedBox.sizedBoxH10,
-          Divider(),
+          const Divider(),
           AppSizedBox.sizedBoxH10,
         ],
       ),

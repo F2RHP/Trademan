@@ -1,5 +1,6 @@
 // ignore_for_file: camel_case_types
 
+import 'package:flutter/services.dart';
 import 'package:trader_app/Ui/Common_Codes/common_codes.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/screens/shared_widgets/custom_richText.dart';
@@ -9,6 +10,7 @@ import 'package:trader_app/screens/shared_widgets/sized_box.dart';
 class TitleWithTextFormField extends StatelessWidget {
   final TextEditingController? controller;
   final TextInputType? type;
+  final List<TextInputFormatter>? inputFormatters;
   final Function()? onTap;
   final Function(String)? onChanged;
   final String titleText;
@@ -29,7 +31,9 @@ class TitleWithTextFormField extends StatelessWidget {
     this.isRequired = false,
     this.readOnly = false,
     Key? key,
-    this.maxLines, this.maxLength,
+    this.maxLines,
+    this.maxLength,
+    this.inputFormatters,
   }) : super(key: key);
 
   @override
@@ -53,6 +57,7 @@ class TitleWithTextFormField extends StatelessWidget {
         ),
         AppSizedBox.sizedBoxH8,
         TextFormField(
+          inputFormatters: inputFormatters,
           maxLength: maxLength,
           maxLines: maxLines,
           controller: controller,

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:trader_app/Ui/Common_Codes/common_codes.dart';
+import 'package:trader_app/Ui/Customer/customer_list.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/controllers/saleorder/MainSaleOrderController.dart';
@@ -12,7 +14,6 @@ import 'package:trader_app/screens/shared_widgets/title_with_text_form_field.dar
 
 import '../models/SaleOrders/Saleproduct.dart';
 import '../screens/shared_widgets/custom_btn.dart';
-import '../utils/functions.dart';
 
 class AddSale extends StatefulWidget {
   const AddSale({Key? key}) : super(key: key);
@@ -33,25 +34,47 @@ class _AddSaleState extends State<AddSale> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                GestureDetector(
-                  onTap: () => {_showCustomerListDialog(context)},
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: CustomPadding.padding20,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5.0),
-                      border: Border.all(color: AppColors.greyLight),
-                    ),
-                    child: Text(
-                      mainSaleCtrl.selectedCustomer.value.customerID == 0
-                          ? '+ ${AppStrings.chooseCustomer}'
-                          : mainSaleCtrl.selectedCustomer.value.customerName,
-                      style: TextStyle(
-                        color: AppColors.blueAccentShade700,
-                        fontSize: 16.0,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () => {_showCustomerListDialog(context)},
+                      child: Container(
+                        padding: CustomPadding.padding20,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5.0),
+                          border: Border.all(color: AppColors.greyLight),
+                        ),
+                        child: Text(
+                          mainSaleCtrl.selectedCustomer.value.customerID == 0
+                              ? '+ ${AppStrings.chooseCustomer}'
+                              : mainSaleCtrl
+                                  .selectedCustomer.value.customerName,
+                          style: TextStyle(
+                            color: AppColors.blueAccentShade700,
+                            fontSize: 16.0,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                    GestureDetector(
+                      onTap: () => Get.to(() => const CustomersList()),
+                      child: Container(
+                        padding: CustomPadding.padding20,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5.0),
+                          border: Border.all(color: AppColors.greyLight),
+                        ),
+                        child: Text(
+                          '+ ${AppStrings.addCustomer}',
+                          style: TextStyle(
+                            color: AppColors.blueAccentShade700,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 AppSizedBox.sizedBoxH15,
                 DropdownButtonFormField<int>(
@@ -108,38 +131,58 @@ class _AddSaleState extends State<AddSale> {
     );
   }
 
-  AlertDialog _buildCustomerListDialog(BuildContext context) {
-    return AlertDialog(
-      title: Text('Customer List'),
-      content: Container(
-        width: double.maxFinite,
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: mainSaleCtrl.customerList.length,
-          itemBuilder: (context, index) {
-            var customer = mainSaleCtrl.customerList[index];
-            return GestureDetector(
-              child: ListTile(
-                title: Text(customer.customerName),
-                subtitle: Text(customer.villageName),
-                onTap: () {
-                  mainSaleCtrl.selectedCustomer.value = customer;
-                  Get.back(closeOverlays: true);
-                },
-              ),
-            );
-          },
-        ),
-      ),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () {
-            Get.back(closeOverlays: true);
-          },
-          child: Text('Close'),
-        ),
-      ],
-    );
+  Widget _buildCustomerListDialog(BuildContext context) {
+    return Obx(() => AlertDialog(
+          title: const Text('Customer List'),
+          content: Container(
+            width: double.maxFinite,
+            child: Column(
+              children: [
+                TextFormField(
+                  onChanged: (value) =>
+                      mainSaleCtrl.customerFilter.value = value,
+                  decoration: InputDecoration(
+                    hintText: 'Search...',
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: mainSaleCtrl.filteredCustomer.length,
+                    itemBuilder: (context, index) {
+                      var customer = mainSaleCtrl.filteredCustomer[index];
+                      return GestureDetector(
+                        child: ListTile(
+                          title: Text(customer.customerName),
+                          subtitle: Text(customer.villageName),
+                          onTap: () {
+                            mainSaleCtrl.selectedCustomer.value = customer;
+                            mainSaleCtrl.customerFilter.value = '';
+                            Get.back(closeOverlays: true);
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Get.back(closeOverlays: true);
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        ));
   }
 
   AppBar buildAppBar() {
@@ -216,17 +259,30 @@ class _AddSaleState extends State<AddSale> {
                   ),
                 ),
               ),
-              Container(
-                padding: CustomPadding.padding14,
-                decoration: BoxDecoration(
-                  borderRadius: CustomBorderRadius.borderRadius5,
-                  color: AppColors.greyLight,
-                  border: Border.all(color: AppColors.grey),
-                ),
-                child:  Text(
-                  Functions.formatDate(DateTime.now()),
-                  style:const TextStyle(
-                    fontSize: 16.0,
+              GestureDetector(
+                onTap: () {
+                  showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1950),
+                    lastDate: DateTime.now(),
+                  ).then((value) {
+                    mainSaleCtrl.goodsOrderDate.value =
+                        DateFormat('yyyy-MM-dd').format(value!);
+                  });
+                },
+                child: Container(
+                  padding: CustomPadding.padding14,
+                  decoration: BoxDecoration(
+                    borderRadius: CustomBorderRadius.borderRadius5,
+                    color: AppColors.greyLight,
+                    border: Border.all(color: AppColors.grey),
+                  ),
+                  child: Text(
+                    mainSaleCtrl.goodsOrderDate.value,
+                    style: const TextStyle(
+                      fontSize: 16.0,
+                    ),
                   ),
                 ),
               ),
@@ -403,7 +459,7 @@ class _AddSaleState extends State<AddSale> {
           ),
           AppSizedBox.sizedBoxH20,
           TitleWithTextFormField(
-           isRequired: true,
+            isRequired: true,
             onTap: () {
               showDatePicker(
                 context: context,
@@ -419,7 +475,7 @@ class _AddSaleState extends State<AddSale> {
             hintText: AppStrings.Trans_Date,
             controller: mainSaleCtrl.dataController,
           ),
-          TitleWithTextFormField(            
+          TitleWithTextFormField(
             titleText: 'Transaction Amount',
             controller: mainSaleCtrl.transactionAmount,
             type: TextInputType.number,
@@ -517,7 +573,7 @@ class _EditDialogState extends State<EditDialog> {
                       widget.product.productName,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 5,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 20.0,
                       ),
                     ),
@@ -544,9 +600,25 @@ class _EditDialogState extends State<EditDialog> {
                               child:
                                   Icon(Icons.remove, color: AppColors.white)),
                         ),
-                        Text(qu.isEmpty
-                            ? widget.product.quantity.toString()
-                            : qu),
+                        SizedBox(
+                            width: 80,
+                            height: 60,
+                            child: TextField(
+                              textAlign: TextAlign.center,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                controller: TextEditingController(
+                                    text: widget.product.quantity.toString()),
+                                onChanged: (p0) {
+                                  int? parsedValue = int.tryParse(p0);
+                                  if (parsedValue != null) {
+                                    widget.product.quantity = parsedValue;
+                                  } else {
+                                    widget.product.quantity = 0;
+                                  }
+                                })),
                         GestureDetector(
                           onTap: () {
                             widget.product.quantity++;
@@ -569,6 +641,7 @@ class _EditDialogState extends State<EditDialog> {
                     ),
                     const SizedBox(height: 10.0),
                     TitleWithTextFormField(
+                        type: TextInputType.number,
                         controller: TextEditingController(
                             text: widget.product.productPrice.toString()),
                         onChanged: (p0) {
@@ -581,6 +654,7 @@ class _EditDialogState extends State<EditDialog> {
                         },
                         titleText: 'Product cost(per unit)'),
                     TitleWithTextFormField(
+                        type: TextInputType.number,
                         controller: TextEditingController(
                             text: widget.product.sellingPrice.toString()),
                         onChanged: (p0) {
@@ -700,7 +774,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
                                     '',
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 4,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20.0,
                                 ),

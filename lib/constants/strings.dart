@@ -131,6 +131,7 @@ class AppStrings {
   static const String addSale = "Add Sale";
   static const String addProduct = "Add Product";
   static const String chooseCustomer = "Choose Customer";
+  static const String addCustomer = "Add Customer";
   static const String no = "No";
   static const String detail = "Detail";
   static const String qty = "Qty";

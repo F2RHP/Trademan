@@ -27,10 +27,10 @@ class _AddExpenseState extends State<AddExpense> {
   void initState() {
     if (arguments != null) {
       ctrl.btnText.value = "Edit";
-      ctrl.passExpensevalue(arguments);
     } else {
       ctrl.btnText.value = "Save";
     }
+      ctrl.passExpensevalue(arguments);
     super.initState();
   }
 

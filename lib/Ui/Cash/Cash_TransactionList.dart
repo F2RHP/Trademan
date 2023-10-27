@@ -13,11 +13,11 @@ class Cash_TransactionList extends StatefulWidget {
 class _Cash_TransactionListState extends State<Cash_TransactionList> {
   final SaleOrderCashController controller = Get.put(SaleOrderCashController());
 
-int? arguments = Get.arguments as int?;
+  int? arguments = Get.arguments as int?;
 
   @override
   void initState() {
-    if (arguments!=null && arguments!>0) {
+    if (arguments != null && arguments! > 0) {
       controller.Bycustomer = true;
       controller.customerId = arguments!;
     } else {
@@ -28,7 +28,6 @@ int? arguments = Get.arguments as int?;
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,52 +35,58 @@ int? arguments = Get.arguments as int?;
       body: Obx(() {
         if (controller.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
-        }
-        else if (controller.cashTransactions.isEmpty) {
+        } else if (controller.cashTransactions.isEmpty) {
           return const Center(
             child: Text('No cashTransactions available.'),
           );
         }
 
-         return ListView.builder(
+        return ListView.builder(
           itemCount: controller.cashTransactions.length,
           itemBuilder: (context, index) {
             final transaction = controller.cashTransactions[index];
             return Card(
-  elevation: 4,
-  margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-  child: Padding(
-    padding: EdgeInsets.all(16),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          transaction.customerName,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 8),
-        Text('Transaction Type: ${transaction.transactionTypeName}'),
-        Text('Amount: \₹ ${transaction.transactionAmount.toStringAsFixed(2)}',style: TextStyle(fontStyle: FontStyle.italic,fontSize: 20),),
-        Text('Transaction Date: ${transaction.transactionDate.toString()}'),
-        // Other transaction details can be added here
-      ],
-    ),
-  ),
-);
-
+              elevation: 4,
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      transaction.customerName,
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                        'Transaction Type: ${transaction.transactionTypeName}'),
+                    Text(
+                      'Amount: \₹ ${transaction.transactionAmount.toStringAsFixed(2)}',
+                      style: const TextStyle(
+                          fontStyle: FontStyle.italic, fontSize: 20),
+                    ),
+                    Text(
+                        'Transaction Date: ${transaction.transactionDate.toString()}'),
+                    // Other transaction details can be added here
+                  ],
+                ),
+              ),
+            );
           },
         );
       }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          controller.LoadAllCashTransactions(); // Fetch transactions when the button is pressed
+          controller
+              .LoadAllCashTransactions(); // Fetch transactions when the button is pressed
         },
-        child:const Icon(Icons.refresh),
+        child: const Icon(Icons.refresh),
       ),
     );
   }
 
-    AppBar buildAppBar(BuildContext context) {
+  AppBar buildAppBar(BuildContext context) {
     return AppBar(
       elevation: 0,
       leading: GestureDetector(

@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import '../../constants/colors.dart';
 import '../../constants/strings.dart';
 import '../../controllers/saleorder/CustomerOrderController.dart';
-import '../../controllers/saleorder/SaleOrderCashController.dart';
 import '../../models/SaleOrders/customerorder.dart';
 import '../../screens/shared_widgets/sized_box.dart';
 
@@ -54,7 +53,7 @@ int? arguments = Get.arguments as int?;
                 },
                 child: Card(
                   elevation: 3,
-                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
@@ -67,7 +66,7 @@ int? arguments = Get.arguments as int?;
                         Text(
                             'Total Amount: ${customerOrder.totalCost.toStringAsFixed(2)}'),
                         Text(
-                            'Total Selling Amount: ${customerOrder.totalSellingAmount.toStringAsFixed(2)}'),
+                            'Transaction Amount: ${customerOrder.totalSellingAmount.toStringAsFixed(2)}'),
                         Text(
                             'Given Amount: ${customerOrder.customerGiven.toStringAsFixed(2)}'),
                         // Add more details as needed
