@@ -6,23 +6,26 @@ import '../../controllers/saleorder/CustomerOrderController.dart';
 import '../../controllers/saleorder/SaleOrderCashController.dart';
 import '../../models/SaleOrders/customerorder.dart';
 import '../../screens/shared_widgets/sized_box.dart';
+import '../Invoice/PdfInvoiceApi.dart';
+import '../Invoice/file_handle_api.dart';
 
 class CustomerOrderListScreen extends StatefulWidget {
   @override
-  State<CustomerOrderListScreen> createState() => _CustomerOrderListScreenState();
+  State<CustomerOrderListScreen> createState() =>
+      _CustomerOrderListScreenState();
 }
 
 class _CustomerOrderListScreenState extends State<CustomerOrderListScreen> {
   final controller = Get.put(CustomerOrderController());
 
-int? arguments = Get.arguments as int?;
+  int? arguments = Get.arguments as int?;
 
   @override
   void initState() {
-    if (arguments!=null && arguments!>0) {
+    if (arguments != null && arguments! > 0) {
       controller.Bycustomer = true;
       controller.customerId = arguments!;
-    }  else {
+    } else {
       controller.Bycustomer = false;
       controller.customerId = 0;
     }
@@ -60,7 +63,26 @@ int? arguments = Get.arguments as int?;
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Order ID: ${customerOrder.orderId}'),
+                        Row(                          
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Order ID: ${customerOrder.orderId}'),
+                            
+                            IconButton(
+                              iconSize: 36,
+                              onPressed: () async {
+                                final pdfFile = await PdfInvoiceApi.generate();
+                                // opening the pdf file
+                                FileHandleApi.openFile(pdfFile);
+                                ;
+                              },
+                              icon: const Icon(
+                                Icons.picture_as_pdf_rounded,
+                                color: Colors.greenAccent,
+                              ),
+                            )
+                          ],
+                        ),
                         Text('Customer Name: ${customerOrder.customerName}'),
                         Text(
                             'Order Date: ${customerOrder.orderDate.toString()}'),
@@ -89,64 +111,65 @@ int? arguments = Get.arguments as int?;
     );
   }
 
- void _showOrderDetailsDialog(CustomerOrder customerOrder) async {
-  if (customerOrder.orderId > 0) {
-    await controller.LoadCustomerOrderDetails(customerOrder.orderId);
-  }
-  showDialog(
-    context: Get.overlayContext!,
-    builder: (context) {
-      return Obx(() => Dialog(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text('Order ID: ${customerOrder.orderId}'),
-                ),
-                const Divider(),
-                const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text('Order Details:'),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: controller.orderDetails.length,
-                    itemBuilder: (context, index) {
-                      final orderDetail = controller.orderDetails[index];
-                      return Card(
-                        elevation: 3,
-                        margin: EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 6),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Product Name: ${orderDetail.productName}'),
-                              Text('Quantity: ${orderDetail.quantity}'),
-                            ],
+  void _showOrderDetailsDialog(CustomerOrder customerOrder) async {
+    if (customerOrder.orderId > 0) {
+      await controller.LoadCustomerOrderDetails(customerOrder.orderId);
+    }
+    showDialog(
+      context: Get.overlayContext!,
+      builder: (context) {
+        return Obx(() => Dialog(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text('Order ID: ${customerOrder.orderId}'),
+                  ),
+                  const Divider(),
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text('Order Details:'),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: controller.orderDetails.length,
+                      itemBuilder: (context, index) {
+                        final orderDetail = controller.orderDetails[index];
+                        return Card(
+                          elevation: 3,
+                          margin:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                    'Product Name: ${orderDetail.productName}'),
+                                Text('Quantity: ${orderDetail.quantity}'),
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Get.back(closeOverlays: true);
-                    },
-                    child: const Text('Close'),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Get.back(closeOverlays: true);
+                      },
+                      child: const Text('Close'),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ));
-    },
-  );
-}
+                ],
+              ),
+            ));
+      },
+    );
+  }
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
