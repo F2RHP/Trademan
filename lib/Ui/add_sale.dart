@@ -604,7 +604,7 @@ class _EditDialogState extends State<EditDialog> {
                             width: 80,
                             height: 60,
                             child: TextField(
-                              textAlign: TextAlign.center,
+                                textAlign: TextAlign.center,
                                 keyboardType: TextInputType.number,
                                 inputFormatters: <TextInputFormatter>[
                                   FilteringTextInputFormatter.digitsOnly

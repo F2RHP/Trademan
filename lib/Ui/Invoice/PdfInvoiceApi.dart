@@ -1,16 +1,18 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:pdf/widgets.dart';
 import 'file_handle_api.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 class PdfInvoiceApi {
   static Future<File> generate() async {
-    final pdf = pw.Document();
-
     final iconImage =
         (await rootBundle.load('assets/icons/icon.png')).buffer.asUint8List();
-
+    var myTheme = ThemeData.withFont(
+      base: Font.ttf(await rootBundle.load("assets/fonts/Nunito-Regular.ttf")),
+    );
+    final pdf = pw.Document(theme: myTheme);
     final tableHeaders = [
       'Description',
       'Quantity',
