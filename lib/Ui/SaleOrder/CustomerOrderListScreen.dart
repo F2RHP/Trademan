@@ -5,6 +5,8 @@ import '../../constants/strings.dart';
 import '../../controllers/saleorder/CustomerOrderController.dart';
 import '../../models/SaleOrders/customerorder.dart';
 import '../../screens/shared_widgets/sized_box.dart';
+import '../Invoice/PdfInvoiceApi.dart';
+import '../Invoice/file_handle_api.dart';
 
 class CustomerOrderListScreen extends StatefulWidget {
   @override
@@ -60,7 +62,25 @@ class _CustomerOrderListScreenState extends State<CustomerOrderListScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Order ID: ${customerOrder.orderId}'),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Order ID: ${customerOrder.orderId}'),
+                            IconButton(
+                              iconSize: 36,
+                              onPressed: () async {
+                                final pdfFile = await PdfInvoiceApi.generate();
+                                // opening the pdf file
+                                FileHandleApi.openFile(pdfFile);
+                                ;
+                              },
+                              icon: const Icon(
+                                Icons.picture_as_pdf_rounded,
+                                color: Colors.greenAccent,
+                              ),
+                            )
+                          ],
+                        ),
                         Text('Customer Name: ${customerOrder.customerName}'),
                         Text(
                             'Order Date: ${customerOrder.orderDate.toString()}'),
@@ -135,26 +155,11 @@ class _CustomerOrderListScreenState extends State<CustomerOrderListScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            Get.back(closeOverlays: true);
-                          },
-                          child: const Text('Close'),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Get.back(closeOverlays: true);
-                          },
-                          child: const Text('Print'),
-                        ),
-                      ],
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Get.back(closeOverlays: true);
+                      },
+                      child: const Text('Close'),
                     ),
                   ),
                 ],
