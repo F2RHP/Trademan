@@ -46,4 +46,8 @@ class CustomerOrderController extends BaseController {
     orderDetails.value = await service.getOrderDetailsbyOrderid(orderId);
     isLoading.value = false;
   }
+
+
+  ///  Table List Label
+  List<String> tableLabelList = ['S.No','Product Name','Quantity'];
 }

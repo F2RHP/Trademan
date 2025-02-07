@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/controllers/base_controller.dart';
 import 'package:trader_app/models/customer_model/list_customer_model.dart';
 
@@ -10,7 +11,7 @@ import 'list_customers_ctrl.dart';
 
 class AddKPRCustomerController extends BaseController {
   late CustomerService service;
-
+  final formKey = GlobalKey<FormState>();
   CustomerDTO_UPD? kprCustomer;
   final action = "".obs;
 
@@ -37,7 +38,7 @@ class AddKPRCustomerController extends BaseController {
   bool customerFormValidate() {
     if (nameController.text.isEmpty ||
         fatherNameController.text.isEmpty ||
-        genderDropdownvalue.isEmpty||
+        genderDropdownvalue.isEmpty ||
         villageNameController.text.isEmpty ||
         contactNumberController.text.isEmpty ||
         address1Controller.text.isEmpty) {
@@ -111,7 +112,8 @@ class AddKPRCustomerController extends BaseController {
     final contactNumber = contactNumberController.text;
     final email = emailController.text;
     final gender = genderDropdownvalue.value;
-    final dob = DateTime.parse(dOBController.text.isEmpty ? '1899-01-01':dOBController.text);
+    final dob = DateTime.parse(
+        dOBController.text.isEmpty ? '1899-01-01' : dOBController.text);
     // Assumes the date format is in 'yyyy-MM-dd' format
 
     //final profilePictureUrl = profilePictureController.text;
@@ -138,26 +140,34 @@ class AddKPRCustomerController extends BaseController {
     );
   }
 
+  var isSaveCustomerLoader = false.obs;
   Future<bool> saveCustomer() async {
     if (!customerFormValidate()) {
       return false;
     }
+    isSaveCustomerLoader.value = true;
     var customer = createCustomerObject();
     var isInserted = await service.addCustomer(customer);
-
+    isSaveCustomerLoader.value = false;
+    Get.defaultDialog(
+      barrierDismissible: false,
+      title:
+          isInserted ? AppStrings.saveToSuccessfully : AppStrings.errorMessage,
+      content: Text(
+          isInserted
+              ? AppStrings.recordSubmittedSuccessfully
+              : AppStrings.failedToSave,
+          textAlign: TextAlign.center),
+      onWillPop: () async {
+        return false;
+      },
+      onConfirm: () => Get.back(),
+    );
     if (isInserted) {
-      var snackbar = Get.snackbar(
-        "Information",
-        '${action.value}ed successfully',
-        snackPosition: SnackPosition.BOTTOM,
-      );
-      snackbar.close();
       bool isRegistered = GetInstance().isRegistered<ListCustomersCtrl>();
       if (isRegistered) {
         var listCustomerCtrl = Get.find<ListCustomersCtrl>();
         await listCustomerCtrl.getAllListCustomersList();
-
-        return true;
       }
     }
     return false;

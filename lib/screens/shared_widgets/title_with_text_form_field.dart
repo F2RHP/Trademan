@@ -15,7 +15,9 @@ class TitleWithTextFormField extends StatelessWidget {
   final Function(String)? onChanged;
   final String titleText;
   final String? hintText;
+  final String? Function(String?)? validator;
   final bool isRequired;
+  final bool isupperCase;
   final bool? readOnly;
   final double? height;
   final int? maxLines;
@@ -34,6 +36,8 @@ class TitleWithTextFormField extends StatelessWidget {
     this.maxLines,
     this.maxLength,
     this.inputFormatters,
+    this.isupperCase = true,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -57,12 +61,22 @@ class TitleWithTextFormField extends StatelessWidget {
         ),
         AppSizedBox.sizedBoxH8,
         TextFormField(
-          inputFormatters: inputFormatters,
+          inputFormatters: isupperCase
+              ? [
+                  TextInputFormatter.withFunction((oldValue, newValue) {
+                    return TextEditingValue(
+                      text: newValue.text.toUpperCase(),
+                      selection: newValue.selection,
+                    );
+                  }),
+                ]
+              : inputFormatters,
           maxLength: maxLength,
           maxLines: maxLines,
           controller: controller,
           keyboardType: type,
           onTap: onTap,
+          validator: validator,
           onChanged: onChanged,
           readOnly: readOnly!,
           decoration: InputDecoration(

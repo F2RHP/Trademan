@@ -95,7 +95,7 @@ class AppStrings {
   static const String Product_Quantity = "No Of Quantity";
   static const String Product_Selling_Cost = "Selling Cost";
   static const String Product_Purchase_Notes = "Purchase Notes";
-  static const Product_Code="Product Code";
+  static const Product_Code = "Product Code";
 
   //Customers
   static const String Customer = "Customer";
@@ -146,10 +146,18 @@ class AppStrings {
   static const String profit = "Profit";
   static const String notes = "Notes";
 
-
 //SALEORDER SCREEN STRINGS
   static const String CashTransactionList = "Cash Transaction";
   static const String customerOrderList = "Customer Order";
-   static const String customerOrderDetails = "Order Details";
-static const String Trans_Date = "Transaction Date";
+  static const String customerOrderDetails = "Order Details";
+  static const String Trans_Date = "Transaction Date";
+
+////
+  static const String failedToSave = "Failed to Save";
+  static const String saveToSuccessfully = "Save to Successfully";
+  static const String errorMessage = "Error";
+  static const String recordSubmittedSuccessfully =
+      "Record submitted successfully";
+  static const String KPRTraderAddress =
+      "KPR Trader Tenkasi 627808, 9500744207";
 }

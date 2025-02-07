@@ -116,7 +116,8 @@ class SaleOrderService extends BaseService {
     final body = customer.toJson();
 
     try {
-      final response = await post(endpoint, body);
+      // final response = 
+      await post(endpoint, body);
       return true;
     } catch (e) {
       //print('Error occurred: $e');
@@ -129,7 +130,8 @@ class SaleOrderService extends BaseService {
     final body = productOrder.toJson();
 
     try {
-      final response = await post(endpoint, body);
+      // final response = 
+      await post(endpoint, body);
       return true;
     } catch (e) {
       //print('Error occurred: $e');

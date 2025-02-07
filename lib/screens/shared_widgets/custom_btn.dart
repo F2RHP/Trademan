@@ -30,8 +30,8 @@ class CustomBtn extends StatelessWidget {
       splashColor: AppColors.kPrimaryLight,
       color: color ?? AppColors.kPrimaryLight,
       elevation: 0,
-      height: height ?? 30,
-      minWidth: width ?? Dimensions.calcH(120),
+      // height: height ?? 30,
+      // minWidth: width ?? Dimensions.calcH(120),
       shape: RoundedRectangleBorder(
         borderRadius: CustomBorderRadius.borderRadius8,
       ),

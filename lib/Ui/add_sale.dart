@@ -1,10 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:printing/printing.dart';
 import 'package:trader_app/Ui/Common_Codes/common_codes.dart';
 import 'package:trader_app/Ui/Customer/customer_list.dart';
+import 'package:trader_app/Ui/Invoice/file_handle_api.dart';
 import 'package:trader_app/constants/colors.dart';
 import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/controllers/saleorder/MainSaleOrderController.dart';
@@ -40,6 +47,7 @@ class _AddSaleState extends State<AddSale> {
                     GestureDetector(
                       onTap: () => {_showCustomerListDialog(context)},
                       child: Container(
+                        width: Get.size.width / 1.6,
                         padding: CustomPadding.padding20,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5.0),
@@ -60,19 +68,21 @@ class _AddSaleState extends State<AddSale> {
                     GestureDetector(
                       onTap: () => Get.to(() => const CustomersList()),
                       child: Container(
-                        padding: CustomPadding.padding20,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5.0),
-                          border: Border.all(color: AppColors.greyLight),
-                        ),
-                        child: Text(
-                          '+ ${AppStrings.addCustomer}',
-                          style: TextStyle(
-                            color: AppColors.blueAccentShade700,
-                            fontSize: 16.0,
+                          padding: CustomPadding.padding20,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5.0),
+                            border: Border.all(color: AppColors.greyLight),
                           ),
-                        ),
-                      ),
+                          child: const Icon(Icons.add)
+                          // Text(
+                          //   '+ ${AppStrings.addCustomer}',
+                          //   style: TextStyle(
+                          //     color: AppColors.blueAccentShade700,
+                          //     fontSize: 16.0,
+                          //   ),
+                          // ),
+
+                          ),
                     ),
                   ],
                 ),
@@ -108,12 +118,44 @@ class _AddSaleState extends State<AddSale> {
                         : CrossFadeState.showSecond,
                   ),
                 ),
-                CustomBtn(
-                  label: "Save",
-                  action: () {
-                    mainSaleCtrl.saveAndNavigate();
-                  },
-                )
+                Row(
+                  mainAxisAlignment:
+                      // mainSaleCtrl.saleProductList.isEmpty
+                      //     ? MainAxisAlignment.center
+                      //     :
+                      MainAxisAlignment.spaceEvenly,
+                  children: [
+                    mainSaleCtrl.isSaveLoading.value
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : CustomBtn(
+                            label: "Save",
+                            action: () {
+                              mainSaleCtrl.saveAndNavigate();
+                            },
+                          ),
+                    // mainSaleCtrl.saleProductList.isEmpty
+                    //     ? const SizedBox()
+                    //     :
+                    CustomBtn(
+                      action: () async {
+                        // mainSaleCtrl.saveAndNavigate();
+                        // // // Generate PDF and download it
+                        // final pdfData = await generatePdf(
+                        //   PdfPageFormat.a4,
+                        //   mainSaleOrderController: mainSaleCtrl,
+                        // );
+                        // await downloadAndOpenPdf(pdfData);
+
+                        Get.to(PdfView(
+                          mainSaleOrderController: mainSaleCtrl,
+                        ));
+                      },
+                      label: 'View PDF',
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -160,7 +202,14 @@ class _AddSaleState extends State<AddSale> {
                       return GestureDetector(
                         child: ListTile(
                           title: Text(customer.customerName),
-                          subtitle: Text(customer.villageName),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(customer.villageName),
+                              Text(customer.contactNumber),
+                            ],
+                          ),
+                          // isThreeLine: true,
                           onTap: () {
                             mainSaleCtrl.selectedCustomer.value = customer;
                             mainSaleCtrl.customerFilter.value = '';
@@ -301,38 +350,24 @@ class _AddSaleState extends State<AddSale> {
             type: TextInputType.number,
           ),
           AppSizedBox.sizedBoxH15,
-          FittedBox(
-            child: Obx(() => DataTable(
-                  columnSpacing: 10.0,
+          Obx(() => FittedBox(
+                child: DataTable(
+                  columnSpacing: Get.size.width > 600
+                      ? Get.size.width / 8
+                      : Get.size.width / 30,
                   headingRowHeight: 30.0,
                   headingRowColor: MaterialStateColor.resolveWith(
                     (states) {
                       return const Color(0xFFE7E7E7);
                     },
                   ),
-                  columns: const [
-                    DataColumn(
-                      label: Text(''),
-                    ),
-                    DataColumn(
-                      label: Text('No.'),
-                    ),
-                    DataColumn(
-                      label: Text('Details'),
-                    ),
-                    DataColumn(
-                      label: Text('Qty'),
-                    ),
-                    DataColumn(
-                      label: Text('Prices'),
-                    ),
-                    DataColumn(
-                      label: Text('Total'),
-                    ),
-                    DataColumn(
-                      label: Text(''),
-                    ),
-                  ],
+                  columns: mainSaleCtrl.tableLabelList
+                      .map(
+                        (e) => DataColumn(
+                          label: Text(e),
+                        ),
+                      )
+                      .toList(),
                   rows: List.generate(
                     mainSaleCtrl.saleProductList.length,
                     (index) => DataRow(
@@ -340,7 +375,6 @@ class _AddSaleState extends State<AddSale> {
                         DataCell(
                           GestureDetector(
                             onTap: () => {
-                              if (true) {},
                               showDialog(
                                 context: context,
                                 builder: (context) => EditDialog(
@@ -348,23 +382,30 @@ class _AddSaleState extends State<AddSale> {
                                         mainSaleCtrl.saleProductList[index]),
                               )
                             },
-                            child: SvgPicture.asset(
-                              'assets/icons/pen.svg',
-                              height: 20.0,
+                            child: const Icon(
+                              Icons.edit,
+                              color: Colors.green,
                             ),
                           ),
                         ),
                         DataCell(
-                          Text(mainSaleCtrl.saleProductList[index].sno
-                              .toString()),
+                          Text(
+                            mainSaleCtrl.saleProductList[index].sno.toString(),
+                            style: const TextStyle(
+                              fontSize: 18.0,
+                            ),
+                          ),
                         ),
                         DataCell(
                           SizedBox(
-                            width: 120.0,
+                            width: Get.size.width > 600 ? 300 : 180,
                             child: Text(
                               mainSaleCtrl.saleProductList[index].productName,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 3,
+                              style: const TextStyle(
+                                fontSize: 18.0,
+                              ),
                             ),
                           ),
                         ),
@@ -375,18 +416,29 @@ class _AddSaleState extends State<AddSale> {
                             style: TextStyle(
                               color: AppColors.kPrimaryColor,
                               fontWeight: FontWeight.bold,
+                              fontSize: 20.0,
                               decorationStyle: TextDecorationStyle.double,
                               decoration: TextDecoration.underline,
                             ),
                           ),
                         ),
                         DataCell(
-                          Text(mainSaleCtrl.saleProductList[index].sellingPrice
-                              .toString()),
+                          Text(
+                            mainSaleCtrl.saleProductList[index].sellingPrice
+                                .toString(),
+                            style: const TextStyle(
+                              fontSize: 18.0,
+                            ),
+                          ),
                         ),
                         DataCell(
-                          Text(mainSaleCtrl.saleProductList[index].total
-                              .toString()),
+                          Text(
+                            mainSaleCtrl.saleProductList[index].total
+                                .toString(),
+                            style: const TextStyle(
+                              fontSize: 18.0,
+                            ),
+                          ),
                         ),
                         DataCell(
                           GestureDetector(
@@ -397,6 +449,7 @@ class _AddSaleState extends State<AddSale> {
                             },
                             child: const Icon(
                               Icons.delete,
+                              size: 30,
                               color: Colors.grey,
                             ),
                           ),
@@ -404,8 +457,8 @@ class _AddSaleState extends State<AddSale> {
                       ],
                     ),
                   ),
-                )),
-          ),
+                ),
+              )),
           const Divider(),
           Table(
             children: [
@@ -754,88 +807,77 @@ class _AddProductDialogState extends State<AddProductDialog> {
                 // ),
                 AppSizedBox.sizedBoxH10,
                 Expanded(
-                  child: ListView.builder(
+                  child: ListView.separated(
                     itemCount: mainSaleCtrl.filteredProducts.length,
                     shrinkWrap: true,
-                    itemBuilder: (context, index) => GestureDetector(
+                    separatorBuilder: (context, index) => const Divider(),
+                    itemBuilder: (context, index) => ListTile(
                       onTap: () {
                         mainSaleCtrl.addSaleProductList(
                             mainSaleCtrl.filteredProducts[index]);
                         mainSaleCtrl.filterText.value = '';
                         Get.back();
                       },
-                      child: Column(
+                      title: Text(
+                        mainSaleCtrl.filteredProducts[index].producTName ?? '',
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 4,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20.0,
+                        ),
+                      ),
+                      subtitle: Row(
                         children: [
-                          Row(
-                            children: [
-                              Text(
-                                mainSaleCtrl
-                                        .filteredProducts[index].producTName ??
-                                    '',
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 4,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20.0,
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'Cost : ',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0,
+                                    color: AppColors.kPrimaryColor,
+                                  ),
                                 ),
-                              )
-                            ],
+                                TextSpan(
+                                  text: mainSaleCtrl
+                                      .filteredProducts[index].producTCost
+                                      .toString(),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15.0,
+                                    color: AppColors.kPrimaryColor,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                          AppSizedBox.sizedBoxH10,
-                          Row(
-                            children: [
-                              RichText(
-                                text: TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: 'Cost : ',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18.0,
-                                        color: AppColors.kPrimaryColor,
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text: mainSaleCtrl
-                                          .filteredProducts[index].producTCost
-                                          .toString(),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15.0,
-                                        color: AppColors.kPrimaryColor,
-                                      ),
-                                    ),
-                                  ],
+                          AppSizedBox.sizedBoxW10,
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'Sell : ',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0,
+                                    color: AppColors.kPrimaryColor,
+                                  ),
                                 ),
-                              ),
-                              AppSizedBox.sizedBoxW10,
-                              RichText(
-                                text: TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: 'Sell : ',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18.0,
-                                        color: AppColors.kPrimaryColor,
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text: mainSaleCtrl
-                                          .filteredProducts[index].sellinGCost
-                                          .toString(),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15.0,
-                                        color: AppColors.kPrimaryColor,
-                                      ),
-                                    ),
-                                  ],
+                                TextSpan(
+                                  text: mainSaleCtrl
+                                      .filteredProducts[index].sellinGCost
+                                      .toString(),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15.0,
+                                    color: AppColors.kPrimaryColor,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                          const Divider(),
                         ],
                       ),
                     ),
@@ -845,5 +887,204 @@ class _AddProductDialogState extends State<AddProductDialog> {
             ),
           ),
         ));
+  }
+}
+
+class PdfView extends StatefulWidget {
+  final MainSaleOrderController mainSaleOrderController;
+  const PdfView({super.key, required this.mainSaleOrderController});
+
+  @override
+  State<PdfView> createState() => _PdfViewState();
+}
+
+class _PdfViewState extends State<PdfView> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: PdfPreview(
+        canChangePageFormat: false,
+        canDebug: false,
+        // pdfFileName: 'Product-Sale-pdf',
+        // actions: [
+        //   IconButton(onPressed: () async {}, icon: const Icon(Icons.download))
+        // ],
+        build: (format) => generatePdf(format,
+            mainSaleOrderController: widget.mainSaleOrderController),
+      ),
+    );
+  }
+}
+
+Future<Uint8List> generatePdf(PdfPageFormat format,
+    {MainSaleOrderController? mainSaleOrderController}) async {
+  final pdf = pw.Document();
+  final font = await PdfGoogleFonts.nunitoExtraLight();
+
+  pdf.addPage(
+    pw.MultiPage(
+      pageFormat: format,
+      build: (context) {
+        return [
+          /// PDF Title
+          pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+              children: [
+                pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      pw.Text(
+                        AppStrings.KPR_TradersTitle,
+                        style: pw.TextStyle(
+                          fontSize: 23.0,
+                          fontWeight: pw.FontWeight.bold,
+                        ),
+                      ),
+                      pw.Text(
+                        AppStrings.KPRTraderAddress,
+                        style: pw.TextStyle(
+                          // fontSize: 23.0,
+                          fontWeight: pw.FontWeight.bold,
+                        ),
+                      ),
+                    ]),
+                pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.end,
+                    children: [
+                      pw.Align(
+                          alignment: pw.Alignment.topRight,
+                          child: pw.Text(
+                              DateFormat.yMMMMEEEEd().format(DateTime.now()))),
+                      pw.Align(
+                          alignment: pw.Alignment.topRight,
+                          child:
+                              pw.Text(DateFormat.jmz().format(DateTime.now()))),
+                    ]),
+              ]),
+
+          /// Table Section
+          pw.SizedBox(height: 20.0),
+          pw.Row(
+            children: mainSaleOrderController!.tablePdfLabelList
+                .map(
+                  (e) => pw.Expanded(
+                    child: pw.Container(
+                      alignment: pw.Alignment.center,
+                      padding: const pw.EdgeInsets.all(8.0),
+                      color: const PdfColor.fromInt(0xFFc2c2c2),
+                      child: pw.Text(e),
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+
+          ...mainSaleOrderController.saleProductList
+              .map((element) => pw.Column(children: [
+                    pw.Row(children: [
+                      pw.Expanded(
+                        child: pw.Container(
+                          alignment: pw.Alignment.center,
+                          padding: const pw.EdgeInsets.all(8.0),
+                          // color: const PdfColor.fromInt(0xFFc2c2c2),
+                          child: pw.Text('${element.sno}'),
+                        ),
+                      ),
+                      pw.Expanded(
+                        child: pw.Container(
+                          alignment: pw.Alignment.center,
+                          padding: const pw.EdgeInsets.all(8.0),
+                          // color: const PdfColor.fromInt(0xFFc2c2c2),
+                          child: pw.Text(
+                            element.productName,
+                          ),
+                        ),
+                      ),
+                      pw.Expanded(
+                        child: pw.Container(
+                          alignment: pw.Alignment.center,
+                          padding: const pw.EdgeInsets.all(8.0),
+                          // color: const PdfColor.fromInt(0xFFc2c2c2),
+                          child: pw.Text(
+                            element.quantity.toString(),
+                          ),
+                        ),
+                      ),
+                      // pw.Expanded(
+                      //   child: pw.Container(
+                      //     alignment: pw.Alignment.center,
+                      //     padding: const pw.EdgeInsets.all(8.0),
+                      //     // color: const PdfColor.fromInt(0xFFc2c2c2),
+                      //     child: pw.Text(
+                      //       element.productPrice.toString(),
+                      //     ),
+                      //   ),
+                      // ),
+                      pw.Expanded(
+                        child: pw.Container(
+                          alignment: pw.Alignment.center,
+                          padding: const pw.EdgeInsets.all(8.0),
+                          // color: const PdfColor.fromInt(0xFFc2c2c2),
+                          child: pw.Text(
+                            element.total.toString(),
+                          ),
+                        ),
+                      ),
+                    ]),
+                    pw.Divider(),
+                  ])),
+          pw.Row(mainAxisAlignment: pw.MainAxisAlignment.end, children: [
+            pw.Container(
+              alignment: pw.Alignment.center,
+              padding: const pw.EdgeInsets.all(8.0),
+              child: pw.Text(
+                'Total',
+                style: const pw.TextStyle(
+                  fontSize: 20.0,
+                ),
+              ),
+            ),
+            pw.SizedBox(width: 23.0),
+            pw.Container(
+              alignment: pw.Alignment.center,
+              padding: const pw.EdgeInsets.all(8.0),
+              child: pw.Text(
+                mainSaleOrderController.totalProductAmount.value.toString(),
+                style: const pw.TextStyle(
+                  fontSize: 20.0,
+                ),
+              ),
+            ),
+          ]),
+        ];
+      },
+    ),
+  );
+
+  return pdf.save();
+}
+
+Future<void> downloadAndOpenPdf(Uint8List pdfData) async {
+  // Get the path to the Download directory
+  final directory = await getExternalStorageDirectory(); // For Android
+  final downloadDirectory = Directory('${directory!.path}/Download');
+  await downloadDirectory.create(recursive: true);
+
+  // Define the file path where PDF will be saved
+  final filePath = '${downloadDirectory.path}/Product-Sale-pdf.pdf';
+  final file = File(filePath);
+
+  // Save the PDF data to the Download folder
+  await file.writeAsBytes(pdfData);
+
+  // Open the PDF file using the open_file package
+  final result = await OpenFile.open(filePath);
+  if (result.type != ResultType.done) {
+    // Handle the case where the PDF couldn't be opened (maybe due to an error or missing app)
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(content: Text('Unable to open the PDF.')),
+    // );
+    Get.snackbar('Error', 'Unable to open the PDF.');
   }
 }

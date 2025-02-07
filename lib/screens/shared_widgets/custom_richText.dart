@@ -8,6 +8,7 @@ import 'package:trader_app/env/dimensions.dart';
 class CustomRichText extends StatelessWidget {
   final String text;
   final double? fontSize;
+  final int maxLines;
   final double spacing;
   final double height;
   final Color color;
@@ -26,6 +27,7 @@ class CustomRichText extends StatelessWidget {
     this.color = Colors.black,
     this.align = TextAlign.center,
     this.fontWeight = FontWeight.normal,
+    this.maxLines = 2,
   }) : super(key: key);
 
   @override
@@ -33,7 +35,7 @@ class CustomRichText extends StatelessWidget {
     return RichText(
       textAlign: align,
       textDirection: direction,
-      maxLines: 2,
+      maxLines: maxLines,
       overflow: TextOverflow.ellipsis,
       text: TextSpan(
         text: text,

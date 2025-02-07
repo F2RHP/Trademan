@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:trader_app/constants/colors.dart';
@@ -37,179 +38,254 @@ class _CustomerRegistrationState extends State<CustomerRegistration> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        leading: GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 20.0),
-            child: Icon(
-              Icons.arrow_back_ios_new_rounded,
-              size: 40.0,
-              color: AppColors.kSecondaryColor,
-            ),
-          ),
-        ),
-        centerTitle: true,
-        title: Obx(() => Text(
-              ctrl.action.value,
-              style: TextStyle(
+        appBar: AppBar(
+          elevation: 0,
+          leading: GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20.0),
+              child: Icon(
+                Icons.arrow_back_ios_new_rounded,
+                size: 40.0,
                 color: AppColors.kSecondaryColor,
               ),
-            )),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              buildInputSection(),
-              // Save Button
-              Center(
-                child: CustomBtn(
-                  action: () async {
-                    await ctrl.saveCustomer();
-                    Get.back();
-                  },
-                  label: 'Save',
-                  width: 300.0,
-                  height: 45.0,
-                  textColor: AppColors.kSecondaryColor,
-                  color: AppColors.kPrimaryColor,
-                ),
-              ),
-            ],
+            ),
           ),
+          centerTitle: true,
+          title: Obx(() => Text(
+                ctrl.action.value,
+                style: TextStyle(
+                  color: AppColors.kSecondaryColor,
+                ),
+              )),
         ),
-      ),
-    );
+        body: Obx(
+          () => Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  buildInputSection(),
+                  // Save Button
+                  ctrl.isSaveCustomerLoader.value
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Center(
+                          child: CustomBtn(
+                            action: () async {
+                              FocusScope.of(context).unfocus();
+                              if (ctrl.formKey.currentState!.validate()) {
+                                await ctrl.saveCustomer();
+                              }
+                            },
+                            label: 'Save',
+                            width: 300.0,
+                            height: 45.0,
+                            textColor: AppColors.kSecondaryColor,
+                            color: AppColors.kPrimaryColor,
+                          ),
+                        ),
+                ],
+              ),
+            ),
+          ),
+        ));
   }
 
   Widget buildInputSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Title product name
-        TitleWithTextFormField(
-          isRequired: true,
-          controller: ctrl.nameController,
-          titleText: AppStrings.Customer_Name,
-          hintText: AppStrings.Customer_Name,
-        ),
-        TitleWithTextFormField(
-          controller: ctrl.nickNameController,
-          titleText: AppStrings.Nick_Name,
-          hintText: AppStrings.Nick_Name,
-        ),
-        TitleWithTextFormField(
-          isRequired: true,
-          controller: ctrl.fatherNameController,
-          titleText: AppStrings.Father_Name,
-          hintText: AppStrings.Father_Name,
-        ),
-        // Title product ID
-        const CustomText(
-          text: AppStrings.Gender,
-          isRequired: true,
-        ),
-        AppSizedBox.sizedBoxH10,
-        Obx(
-          () => DropdownButtonFormField(
-            value: ctrl.genderDropdownvalue.value,
-            items: ctrl.genderList
-                .map((label) => DropdownMenuItem(
-                      value: label,
-                      child: Text(label.toString()),
-                    ))
-                .toList(),
-            hint: const Text(AppStrings.Gender),
-            onChanged: (value) {
-              setState(() {
-                ctrl.genderDropdownvalue.value = value.toString();
-              });
+    return Form(
+      key: ctrl.formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Title product name
+          TitleWithTextFormField(
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter ${AppStrings.Customer_Name}';
+              }
+              return null;
             },
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: CustomBorderRadius.borderRadius8,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: CustomBorderRadius.borderRadius8,
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: CustomBorderRadius.borderRadius8,
-                borderSide: BorderSide(
-                  color: AppColors.grey,
+            isRequired: true,
+            controller: ctrl.nameController,
+            titleText: AppStrings.Customer_Name,
+            hintText: AppStrings.Customer_Name,
+          ),
+          TitleWithTextFormField(
+            // validator: (value) {
+            //   if (value == null || value.isEmpty) {
+            //     return 'Please enter ${AppStrings.Nick_Name}';
+            //   }
+            //   return null;
+            // },
+            controller: ctrl.nickNameController,
+            titleText: AppStrings.Nick_Name,
+            hintText: AppStrings.Nick_Name,
+          ),
+          TitleWithTextFormField(
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter ${AppStrings.Father_Name}';
+              }
+              return null;
+            },
+            isRequired: true,
+            controller: ctrl.fatherNameController,
+            titleText: AppStrings.Father_Name,
+            hintText: AppStrings.Father_Name,
+          ),
+          // Title product ID
+          const CustomText(
+            text: AppStrings.Gender,
+            isRequired: true,
+          ),
+          AppSizedBox.sizedBoxH10,
+          Obx(
+            () => DropdownButtonFormField(
+              validator: (value) {
+                if (value == null) {
+                  return 'Please select the ${AppStrings.Gender}';
+                }
+                return null;
+              },
+              value: ctrl.genderDropdownvalue.value,
+              items: ctrl.genderList
+                  .map((label) => DropdownMenuItem(
+                        value: label,
+                        child: Text(label.toString()),
+                      ))
+                  .toList(),
+              hint: const Text(AppStrings.Gender),
+              onChanged: (value) {
+                setState(() {
+                  ctrl.genderDropdownvalue.value = value.toString();
+                });
+              },
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: CustomBorderRadius.borderRadius8,
                 ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: CustomBorderRadius.borderRadius8,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: CustomBorderRadius.borderRadius8,
+                  borderSide: BorderSide(
+                    color: AppColors.grey,
+                  ),
+                ),
+                fillColor: AppColors.kSecondaryColor,
+                filled: true,
               ),
-              fillColor: AppColors.kSecondaryColor,
-              filled: true,
             ),
           ),
-        ),
-        AppSizedBox.sizedBoxH20,
-        // Title Quantity type
-        TitleWithTextFormField(
-          controller: ctrl.emailController,
-          titleText: AppStrings.Customer_Email,
-          hintText: AppStrings.Customer_Email,
-        ),
-        // Title SELLING_COST
-        TitleWithTextFormField(
-          isRequired: true,
-          titleText: AppStrings.Address1,
-          hintText: AppStrings.Address1,
-          controller: ctrl.address1Controller,
-        ),
-        TitleWithTextFormField(
-          titleText: AppStrings.Address2,
-          hintText: AppStrings.Address2,
-          controller: ctrl.address2Controller,
-        ),
-        TitleWithTextFormField(
-          isRequired: true,
-          titleText: AppStrings.Village_Name,
-          hintText: AppStrings.Village_Name,
-          controller: ctrl.villageNameController,
-        ),
-        TitleWithTextFormField(
-          isRequired: true,
-          maxLength: 10,
-          type: TextInputType.number,
-          titleText: AppStrings.Contact_Number,
-          hintText: AppStrings.Contact_Number,
-          controller: ctrl.contactNumberController,
-        ),
-        TitleWithTextFormField(
-          titleText: AppStrings.Pin_Code,
-          hintText: AppStrings.Pin_Code,
-          controller: ctrl.pinCodeController,
-          type:TextInputType.number,
-        ),
-        TitleWithTextFormField(
-          // readOnly: true,
-          onTap: () {
-            showDatePicker(
-              context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime(1950),
-              lastDate: DateTime.now(),
-            ).then((value) {
-              ctrl.dOBController.text = DateFormat('yyyy-MM-dd').format(value!);
-            });
-          },
-          titleText: AppStrings.Data_Birth,
-          hintText: AppStrings.Data_Birth,
-          controller: ctrl.dOBController,
-        ),
-        TitleWithTextFormField(
-          // type: TextInputType.number,
-          titleText: AppStrings.Customer_Notes,
-          hintText: AppStrings.Customer_Notes,
-          maxLines: 3,
-          controller: ctrl.customerNotesController,
-        ),
-      ],
+          AppSizedBox.sizedBoxH20,
+          // Title Quantity type
+          TitleWithTextFormField(
+            // validator: (value) {
+            //   if (value == null || value.isEmpty) {
+            //     return 'Please enter ${AppStrings.Customer_Email}';
+            //   }
+            //   return null;
+            // },
+            controller: ctrl.emailController,
+            titleText: AppStrings.Customer_Email,
+            hintText: AppStrings.Customer_Email,
+          ),
+          // Title SELLING_COST
+          TitleWithTextFormField(
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter ${AppStrings.Address1}';
+              }
+              return null;
+            },
+            isRequired: true,
+            titleText: AppStrings.Address1,
+            hintText: AppStrings.Address1,
+            controller: ctrl.address1Controller,
+          ),
+          TitleWithTextFormField(
+            // validator: (value) {
+            //   if (value == null || value.isEmpty) {
+            //     return 'Please enter ${AppStrings.Address2}';
+            //   }
+            //   return null;
+            // },
+            titleText: AppStrings.Address2,
+            hintText: AppStrings.Address2,
+            controller: ctrl.address2Controller,
+          ),
+          TitleWithTextFormField(
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter ${AppStrings.Village_Name}';
+              }
+              return null;
+            },
+            isRequired: true,
+            titleText: AppStrings.Village_Name,
+            hintText: AppStrings.Village_Name,
+            controller: ctrl.villageNameController,
+          ),
+          TitleWithTextFormField(
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter ${AppStrings.Contact_Number}';
+              }
+              return null;
+            },
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(10),
+            ],
+            isRequired: true,
+            maxLength: 10,
+            type: TextInputType.number,
+            titleText: AppStrings.Contact_Number,
+            hintText: AppStrings.Contact_Number,
+            controller: ctrl.contactNumberController,
+          ),
+          TitleWithTextFormField(
+            // validator: (value) {
+            //   if (value == null || value.isEmpty) {
+            //     return 'Please enter ${AppStrings.Pin_Code}';
+            //   }
+            //   return null;
+            // },
+            titleText: AppStrings.Pin_Code,
+            hintText: AppStrings.Pin_Code,
+            controller: ctrl.pinCodeController,
+            type: TextInputType.number,
+          ),
+          TitleWithTextFormField(
+            // readOnly: true,
+            onTap: () {
+              showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(1950),
+                lastDate: DateTime.now(),
+              ).then((value) {
+                ctrl.dOBController.text =
+                    DateFormat('yyyy-MM-dd').format(value!);
+              });
+            },
+            readOnly: true,
+            titleText: AppStrings.Data_Birth,
+            hintText: AppStrings.Data_Birth,
+            controller: ctrl.dOBController,
+          ),
+          TitleWithTextFormField(
+            // type: TextInputType.number,
+            titleText: AppStrings.Customer_Notes,
+            hintText: AppStrings.Customer_Notes,
+            maxLines: 3,
+            controller: ctrl.customerNotesController,
+          ),
+        ],
+      ),
     );
   }
 }

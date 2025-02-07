@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class BaseController extends GetxController {
-  final isLoading = false.obs;
+  var isLoading = false.obs;
 
   void navigateBack(String action, bool goback) {
     

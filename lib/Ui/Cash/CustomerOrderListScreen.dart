@@ -1,5 +1,10 @@
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:printing/printing.dart';
 import '../../constants/colors.dart';
 import '../../constants/strings.dart';
 import '../../controllers/saleorder/CustomerOrderController.dart';
@@ -65,6 +70,8 @@ class _CustomerOrderListScreenState extends State<CustomerOrderListScreen> {
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                          /// TMBL0000498 498100050303092
                           children: [
                             Text('Order ID: ${customerOrder.orderId}'),
                             IconButton(
@@ -72,7 +79,15 @@ class _CustomerOrderListScreenState extends State<CustomerOrderListScreen> {
                               onPressed: () async {
                                 final pdfFile = await PdfInvoiceApi.generate();
                                 // opening the pdf file
-                                FileHandleApi.openFile(pdfFile);
+                                // FileHandleApi.openFile(pdfFile);
+
+                                if (customerOrder.orderId > 0) {
+                                  await controller.LoadCustomerOrderDetails(
+                                      customerOrder.orderId);
+                                  Get.to(PdfViewCustomerOrderList(
+                                      index: index,
+                                      customerOrderController: controller));
+                                }
                               },
                               icon: const Icon(
                                 Icons.picture_as_pdf_rounded,
@@ -207,4 +222,179 @@ class _CustomerOrderListScreenState extends State<CustomerOrderListScreen> {
       ),
     );
   }
+}
+
+///======================================================================
+
+class PdfViewCustomerOrderList extends StatefulWidget {
+  final CustomerOrderController customerOrderController;
+  final int index;
+  const PdfViewCustomerOrderList(
+      {super.key, required this.customerOrderController, required this.index});
+
+  @override
+  State<PdfViewCustomerOrderList> createState() =>
+      _PdfViewCustomerOrderListState();
+}
+
+class _PdfViewCustomerOrderListState extends State<PdfViewCustomerOrderList> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: PdfPreview(
+        canChangePageFormat: false,
+        canDebug: false,
+        // pdfFileName: 'Customer-Order',
+        build: (format) => generatePdf(format, widget.index,
+            customerOrderController: widget.customerOrderController),
+      ),
+    );
+  }
+}
+
+Future<Uint8List> generatePdf(PdfPageFormat format, int index,
+    {required CustomerOrderController customerOrderController}) async {
+  final pdf = pw.Document();
+  final font = await PdfGoogleFonts.nunitoExtraLight();
+
+  var serialNumber = List.generate(
+      customerOrderController.orderDetails.length, (index) => index + 1);
+
+  pdf.addPage(
+    pw.MultiPage(
+      pageFormat: format,
+      build: (context) {
+        return [
+          /// PDF Title
+          pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+              children: [
+                pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      pw.Text(
+                        AppStrings.KPR_TradersTitle,
+                        style: pw.TextStyle(
+                          fontSize: 23.0,
+                          fontWeight: pw.FontWeight.bold,
+                        ),
+                      ),
+                      pw.Text(
+                        AppStrings.KPRTraderAddress,
+                        style: pw.TextStyle(
+                          // fontSize: 23.0,
+                          fontWeight: pw.FontWeight.bold,
+                        ),
+                      ),
+                    ]),
+                pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.end,
+                    children: [
+                      pw.Align(
+                          alignment: pw.Alignment.topRight,
+                          child: pw.Text(
+                              DateFormat.yMMMMEEEEd().format(DateTime.now()))),
+                      pw.Align(
+                          alignment: pw.Alignment.topRight,
+                          child:
+                              pw.Text(DateFormat.jmz().format(DateTime.now()))),
+                    ]),
+              ]),
+
+          /// Table Section
+          pw.SizedBox(height: 20.0),
+          pw.Text(
+              'Order ID: ${customerOrderController.customerOrders[index].orderId.toString()}',
+              style: pw.TextStyle(
+                fontSize: 20.0,
+                fontWeight: pw.FontWeight.bold,
+              )),
+
+          pw.SizedBox(height: 20.0),
+          pw.Row(
+              children: customerOrderController.tableLabelList
+                  .map(
+                    (e) => pw.Expanded(
+                      child: pw.Container(
+                        alignment: pw.Alignment.center,
+                        padding: const pw.EdgeInsets.all(8.0),
+                        color: const PdfColor.fromInt(0xFFc2c2c2),
+                        child: pw.Text(e),
+                      ),
+                    ),
+                  )
+                  .toList()),
+
+          ...customerOrderController.orderDetails.asMap().entries.map((entry) {
+            int index = entry.key; // This is the index of the current element
+            var element =
+                entry.value; // This is the current element in the list
+            return pw.Column(children: [
+              pw.Row(children: [
+                pw.Expanded(
+                  child: pw.Container(
+                    alignment: pw.Alignment.center,
+                    padding: const pw.EdgeInsets.all(8.0),
+                    // color: const PdfColor.fromInt(0xFFc2c2c2),
+                    child: pw.Text(
+                      '${index + 1}',
+                    ),
+                  ),
+                ),
+                pw.Expanded(
+                  child: pw.Container(
+                    alignment: pw.Alignment.center,
+                    padding: const pw.EdgeInsets.all(8.0),
+                    // color: const PdfColor.fromInt(0xFFc2c2c2),
+                    child: pw.Text(
+                      element.productName,
+                    ),
+                  ),
+                ),
+                pw.Expanded(
+                  child: pw.Container(
+                    alignment: pw.Alignment.center,
+                    padding: const pw.EdgeInsets.all(8.0),
+                    // color: const PdfColor.fromInt(0xFFc2c2c2),
+                    child: pw.Text(
+                      element.quantity.toString(),
+                    ),
+                  ),
+                ),
+              ]),
+              pw.Divider(),
+            ]);
+          }),
+
+          pw.Row(mainAxisAlignment: pw.MainAxisAlignment.end, children: [
+            pw.Container(
+              alignment: pw.Alignment.center,
+              padding: const pw.EdgeInsets.all(8.0),
+              child: pw.Text(
+                'Total',
+                style: const pw.TextStyle(
+                  fontSize: 20.0,
+                ),
+              ),
+            ),
+            pw.SizedBox(width: 23.0),
+            pw.Container(
+              alignment: pw.Alignment.center,
+              padding: const pw.EdgeInsets.all(8.0),
+              child: pw.Text(
+                customerOrderController.customerOrders[index].totalCost
+                    .toString(),
+                style: const pw.TextStyle(
+                  fontSize: 20.0,
+                ),
+              ),
+            ),
+          ]),
+        ];
+      },
+    ),
+  );
+
+  return pdf.save();
 }

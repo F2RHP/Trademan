@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:trader_app/constants/strings.dart';
 import 'package:trader_app/models/SaleOrders/SaleCustomer.dart';
 import 'package:trader_app/services/saleorderservice.dart';
 import 'package:trader_app/services/utilityservice.dart';
@@ -18,7 +19,7 @@ class MainSaleOrderController extends BaseController {
   TextEditingController dataController = TextEditingController();
   TextEditingController transactionAmount = TextEditingController();
   TextEditingController transactionNotes = TextEditingController();
-
+  var isSaveLoading = false.obs;
   final customerList = <SaleCustomer>[].obs;
 
   Rx<SaleCustomer> selectedCustomer = Rx<SaleCustomer>(SaleCustomer(
@@ -69,7 +70,8 @@ class MainSaleOrderController extends BaseController {
 
   var customerFilter = "".obs;
 
-  final goodsOrderDate = (DateFormat('yyyy-MM-dd').format(DateTime.now())).toString().obs;
+  final goodsOrderDate =
+      (DateFormat('yyyy-MM-dd').format(DateTime.now())).toString().obs;
   //DateFormat('yyyy-MM-dd').format(value!)
 
   void CalculateTotalprodctAmount() {
@@ -191,13 +193,14 @@ class MainSaleOrderController extends BaseController {
   }
 
   void saveAndNavigate() {
-    isLoading.value = true;
+    update();
     if (IsMoney()) {
       addMoneyDetails();
     } else {
       addProductOrderDetails();
     }
-    isLoading.value = false;
+
+    update();
   }
 
   addSaleProductList(Product product) {
@@ -221,20 +224,32 @@ class MainSaleOrderController extends BaseController {
         transactionDate: dataController.text,
         customerId: selectedCustomer.value.customerID,
         comments: transactionNotes.text);
-
+    isSaveLoading.value = true;
     if (await service.addMoneyDetails(customer)) {
-      Get.snackbar("Information", "Saved sucessfullly");
+      isSaveLoading.value = false;
+      // Get.snackbar("Information", "Saved successfully");
+      Get.defaultDialog(
+        title: AppStrings.saveToSuccessfully,
+        content: const Text(AppStrings.recordSubmittedSuccessfully),
+        onConfirm: () => Get.back(),
+      );
       dataController.text = "";
       transactionNotes.text = "";
       transactionAmount.text = "";
       return true;
     } else {
-      Get.snackbar("Information", "Failed to save");
+      isSaveLoading.value = false;
+      Get.defaultDialog(
+        title: AppStrings.errorMessage,
+        content: const Text(AppStrings.failedToSave),
+        onConfirm: () => Get.back(),
+      );
       return false;
     }
   }
 
   Future<bool> addProductOrderDetails() async {
+    isSaveLoading.value = true;
     Customer customer = Customer(
         customerId: selectedCustomer.value.customerID,
         name: selectedCustomer.value.customerName,
@@ -253,7 +268,7 @@ class MainSaleOrderController extends BaseController {
 
     double? customerGiv = double.tryParse(customerGiven.text);
     var customerOrder = CustomerOrder(
-        customerGiven: customerGiv!,
+        customerGiven: customerGiv ?? 0,
         orderDate: goodsOrderDate.value.isEmpty
             ? DateTime.now()
             : DateTime.parse(goodsOrderDate.value),
@@ -265,15 +280,46 @@ class MainSaleOrderController extends BaseController {
         ProductOrder(customer: customer, customerOrder: customerOrder);
 
     if (await service.addProductOrderDetails(productOrder)) {
-      Get.snackbar("Information", "Saved sucessfullly");
+      isSaveLoading.value = false;
+      Get.defaultDialog(
+        title: AppStrings.saveToSuccessfully,
+        content: const Text(AppStrings.recordSubmittedSuccessfully),
+        onConfirm: () => Get.back(),
+      );
       orderNotes.text = "";
       customerGiven.text = "";
       totalProductAmount.value = 0;
       saleProductList.clear();
       return true;
     } else {
-      Get.snackbar("Information", "Failed to save");
+      isSaveLoading.value = false;
+      Get.defaultDialog(
+        title: AppStrings.errorMessage,
+        content: const Text(AppStrings.failedToSave),
+        onConfirm: () => Get.back(),
+      );
       return false;
     }
   }
+
+  /// 3/02/2025 Sakthy
+  /// Table label List
+  List<String> tableLabelList = [
+    'Edit',
+    'No.',
+    'Details',
+    'Qty',
+    'Prices',
+    'Total',
+    'Delete'
+  ];
+
+  /// Table PDF List
+  List<String> tablePdfLabelList = [
+    'No.',
+    'Details',
+    'Qty',
+    // 'Prices',
+    'Total',
+  ];
 }
